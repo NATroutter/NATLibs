@@ -1,0 +1,6 @@
+main: net.natroutter.natlibs.NATLibs
+name: NATLibs
+version: 1.0
+author: NATroutter
+description: NATroutter's library for plugin developement
+api-version: 1.16
