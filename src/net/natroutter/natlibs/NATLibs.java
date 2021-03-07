@@ -44,8 +44,7 @@ public class NATLibs extends JavaPlugin {
 		);
 		
 		eventManager.RegisterCommands(this, SoundTester.class);
-		
-		
+
 		utils.printBanner();
 	}  
 	 
@@ -53,13 +52,7 @@ public class NATLibs extends JavaPlugin {
 	public void onDisable() {
 		NATLibs.Instance = null;
 	}
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 }
