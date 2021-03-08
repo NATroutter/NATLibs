@@ -6,7 +6,7 @@ public class GsonFieldExeption extends Exception {
 
 	private static final long serialVersionUID = -135785561545832646L;
 
-	private Field field;
+	private final Field field;
 	
 	public GsonFieldExeption(Field field) {
 		this.field = field;

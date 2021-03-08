@@ -129,22 +129,21 @@ public class NATlogger {
 
             BufferedWriter writer = new BufferedWriter(new FileWriter(saveTo, true));
             
-            Integer SaveCount = 0;
-            for (int i = 0; i < logEntries.size(); i++) {
-            	
-            	LogEntry log = logEntries.get(i);
-            	String timeStamp2 = TimeStampFormat(log.date);
-   
-            	String logString = "[" +timeStamp2+ "][" +log.getType().name()+ "] " + log.getInfo();
-            	
-            	if (log.getType().equals(Type.NONE)) {
-            		logString = "[" +timeStamp2+ "] " + log.getInfo();
-            	}
-            	
+            int SaveCount = 0;
+			for (LogEntry log : logEntries) {
+
+				String timeStamp2 = TimeStampFormat(log.date);
+
+				String logString = "[" + timeStamp2 + "][" + log.getType().name() + "] " + log.getInfo();
+
+				if (log.getType().equals(Type.NONE)) {
+					logString = "[" + timeStamp2 + "] " + log.getInfo();
+				}
+
 				writer.append(logString);
 				writer.newLine();
-				
-				SaveCount++;	
+
+				SaveCount++;
 			}
             logEntries.clear();
           
@@ -185,7 +184,7 @@ public class NATlogger {
         		logFolder.mkdirs();
         	}
         	
-    		Integer pruneCount = 0;
+    		int pruneCount = 0;
         	for (File file : logFolder.listFiles()) {
         		if (file.isDirectory()) { continue; }
         		if (!file.getName().endsWith(".log")) { continue; }

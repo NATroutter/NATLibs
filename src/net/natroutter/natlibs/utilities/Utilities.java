@@ -1,33 +1,25 @@
 package net.natroutter.natlibs.utilities;
 
-import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import net.natroutter.natlibs.objects.BaseItem;
+import net.natroutter.natlibs.objects.BasePlayer;
+import net.natroutter.natlibs.objects.ParticleSettings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.natroutter.natlibs.objects.BaseItem;
-import net.natroutter.natlibs.objects.BasePlayer;
-import net.natroutter.natlibs.objects.ParticleSettings;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @SuppressWarnings({"unused"})
 public class Utilities {
 
-	private JavaPlugin pl;
-	
 	public Utilities(JavaPlugin pl) {
-		this.pl = pl;
 	}
 	
 	public void consoleMessage(String msg) {
@@ -43,25 +35,7 @@ public class Utilities {
 		}
 		
 	}
-	
-	public Entity[] GetNearbyEntities(Location l, int radius) {
-        int chunkRadius = radius < 16 ? 1 : (radius - (radius % 16)) / 16;
-        HashSet<Entity> radiusEntities = new HashSet<Entity>();
-        for (int chX = 0 - chunkRadius; chX <= chunkRadius; chX++) {
-            for (int chZ = 0 - chunkRadius; chZ <= chunkRadius; chZ++) {
-                int x = (int) l.getX(), y = (int) l.getY(), z = (int) l.getZ();
-                for (Entity e : new Location(l.getWorld(), x + (chX * 16), y, z
-                        + (chZ * 16)).getChunk().getEntities()) {
-                    if (e.getLocation().distance(l) <= radius
-                            && e.getLocation().getBlock() != l.getBlock()) {
-                        radiusEntities.add(e);
-                    }
-                }
-            }
-        }
-        return radiusEntities.toArray(new Entity[radiusEntities.size()]);
-    }
-	
+
 	public float pitchToFloat(Player p) {
         return 2 - (p.getLocation().getPitch() + 90) / 90;
     }
@@ -90,10 +64,7 @@ public class Utilities {
 	}
 	
 	public boolean isBetween(int Check, int start, int end) {
-		if (Check >= start && Check <= end) {
-			return true;
-		}
-		return false;
+		return Check >= start && Check <= end;
 	}
 	
 	public Float ParseSpeed(Integer val, boolean isFly) {return ParseSpeed(val,isFly,false);}
@@ -112,7 +83,7 @@ public class Utilities {
 	}
 	
 	public Boolean FlipBool(Boolean bool) {
-        return bool ? false : true;
+        return !bool;
 	}
 	
 	public void spawnParticle(BasePlayer p, ParticleSettings settings) {
@@ -125,7 +96,10 @@ public class Utilities {
 	}
 	 
 	public void spawnParticleInRadius(ParticleSettings settings, int radius) {
-		for (Entity ent : settings.getLoc().getWorld().getNearbyEntities(settings.getLoc(), radius, radius, radius)) {
+		World world = settings.getLoc().getWorld();
+		if (world == null) {return;}
+
+		for (Entity ent : world.getNearbyEntities(settings.getLoc(), radius, radius, radius)) {
 			if (ent instanceof Player) {
 				BasePlayer p = BasePlayer.from(ent);
 				spawnParticle(p, settings);
@@ -143,17 +117,13 @@ public class Utilities {
 	
 	public boolean ItemsMatch(BaseItem item1, BaseItem item2) {
 		if (item1.getDisplayName().equals(item2.getDisplayName())) {
-			if (item1.getLore().equals(item2.getLore())) {
-				return true;
-			}
+			return item1.getLore().equals(item2.getLore());
 		}
 		return false;
 	}
 	
 	public boolean NameMatch(BaseItem item1, BaseItem item2) {
-		if (item1.getDisplayName().equals(item2.getDisplayName())) {
-			return true;
-		}return false;
+		return item1.getDisplayName().equals(item2.getDisplayName());
 	}
 	
 } 

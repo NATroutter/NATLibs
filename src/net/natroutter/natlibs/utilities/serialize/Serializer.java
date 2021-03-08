@@ -24,10 +24,10 @@ public class Serializer {
 		GSON,YAML
 	}
 	
-	private JavaPlugin pl;
-	private Gson gson;
+	private final JavaPlugin pl;
+	private final Gson gson;
 	private Object Instance;
-	private ConsoleCommandSender console;
+	private final ConsoleCommandSender console;
 	
 	public Serializer(JavaPlugin pl) {
 		this.pl = pl;
@@ -83,7 +83,7 @@ public class Serializer {
 			Instance = clazz.newInstance();
 			return gson.toJson(Instance);
 			
-		}catch(Exception e) {}
+		}catch(Exception ignored) {}
 		return null;
 	}
 	
@@ -120,7 +120,7 @@ public class Serializer {
                 	getClassPathsPart2(list, startClass, c);
                 }
             }
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
         return list;
     }
 	
@@ -132,7 +132,7 @@ public class Serializer {
 					list.add(field.getName());
 				}
 			}
-		} catch(Exception e) {}
+		} catch(Exception ignored) {}
         return list;
     }
 	
@@ -143,7 +143,7 @@ public class Serializer {
 		return list;
 	}
 
-	private class NamedObject {
+	private static class NamedObject {
 		private String name;
 		private JsonObject obj;
 		NamedObject(String name, JsonObject obj) {
@@ -184,32 +184,19 @@ public class Serializer {
     }
 
 	private boolean isValid(Class<?> cls, String jsonString) {
-
-		if (jsonString.length() < 1 || jsonString == null) {
-			return false;
-		}
-		
-		return true;
-    }
+		return jsonString.length() >= 1 && jsonString != null;
+	}
 	
 	private Boolean validFieldType(String type) {
 		switch (type) {
 	        case "java.lang.String":
-	            return true;
 	        case "java.lang.Double":
-	        	return true;
 	        case "java.lang.Boolean":
-	        	return true;
 	        case "java.lang.Long":
-	        	return true;
 	        case "java.lang.Float":
-	        	return true;
 	        case "java.lang.Integer":
-	        	return true;
 	        case "java.lang.Short":
-	        	return true;
 	        case "java.lang.Byte":
-	        	return true;
 	        case "java.util.List":
 	        	return true;
 	    }

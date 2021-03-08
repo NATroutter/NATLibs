@@ -15,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class FileManager {
   
     private final JavaPlugin plugin;
-    private HashMap<String, Config> configs = new HashMap<String, Config>();
+    private final HashMap<String, Config> configs = new HashMap<String, Config>();
   
     public FileManager(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -39,9 +39,9 @@ public class FileManager {
   
     public class Config {
       
-        private String                        name;
-        private File                            file;
-        private YamlConfiguration    config;
+        private final String name;
+        private File file;
+        private YamlConfiguration config;
       
         public Config(String name) {
             this.name = name;
@@ -84,12 +84,10 @@ public class FileManager {
             Reader defConfigStream;
             try {
                 defConfigStream = new InputStreamReader(plugin.getResource(this.name), "UTF8");
-              
-                if (defConfigStream != null) {
-                    YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-                    this.config.setDefaults(defConfig);
-                }
-            } catch (UnsupportedEncodingException | NullPointerException e) {}
+
+                YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+                this.config.setDefaults(defConfig);
+            } catch (UnsupportedEncodingException | NullPointerException ignored) {}
             return this;
         }
 

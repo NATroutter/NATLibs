@@ -24,10 +24,11 @@ public class RawFileManager {
     	this.Directory = new File(pl.getDataFolder().getAbsolutePath());
     	init();
     }
-    
-    public RawFileManager(File rawFile) {
+
+    public RawFileManager(JavaPlugin pl, File rawFile) {
+        this.pl = pl;
     	this.rawFile = rawFile;
-    	this.Directory = new File(pl.getDataFolder().getAbsolutePath());
+        this.Directory = new File(pl.getDataFolder().getAbsolutePath());
     	init();
     }
     

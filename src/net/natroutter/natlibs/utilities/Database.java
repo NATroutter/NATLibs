@@ -35,7 +35,7 @@ public class Database {
 	
 	//Save data to config
 	public void save(Object Identifier, String key, Object Value) {	
-		if (Identifier instanceof Player || Identifier instanceof OfflinePlayer || Identifier instanceof BasePlayer) {
+		if (Identifier instanceof OfflinePlayer) {
 			OfflinePlayer p = (OfflinePlayer)Identifier;
 			fileManager.getConfig(fileName).get().set("PlayerData." + p.getUniqueId().toString() + "." + key, Value);
 			fileManager.getConfig(fileName).save();		
@@ -52,16 +52,12 @@ public class Database {
 	
 	//Check if contains value
 	public boolean valueExits(String value) {
-		if (fileManager.getConfig(fileName).get().contains(value)) {
-			return true;
-		} else {
-			return false;
-		}
+		return fileManager.getConfig(fileName).get().contains(value);
 	}
 	
 	//Save location to config
 	public void saveLoc(Object Identifier, String key, Location loc) {	
-		if (Identifier instanceof Player || Identifier instanceof OfflinePlayer || Identifier instanceof BasePlayer) {
+		if (Identifier instanceof OfflinePlayer) {
 			OfflinePlayer p = (OfflinePlayer)Identifier;
 			if (loc == null) {
 				fileManager.getConfig(fileName).get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".World", null);
@@ -70,7 +66,6 @@ public class Database {
 				fileManager.getConfig(fileName).get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".Z", null);
 				fileManager.getConfig(fileName).get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".Pitch", null);
 				fileManager.getConfig(fileName).get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".Yaw", null);
-				fileManager.getConfig(fileName).save();
 			} else {
 				fileManager.getConfig(fileName).get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".World", loc.getWorld().getName());
 				fileManager.getConfig(fileName).get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".X", loc.getX());
@@ -78,8 +73,8 @@ public class Database {
 				fileManager.getConfig(fileName).get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".Z", loc.getZ());
 				fileManager.getConfig(fileName).get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".Pitch", loc.getPitch());
 				fileManager.getConfig(fileName).get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".Yaw", loc.getYaw());
-				fileManager.getConfig(fileName).save();	
 			}
+			fileManager.getConfig(fileName).save();
 		} else {
 			if (loc == null) {
 				fileManager.getConfig(fileName).get().set(Identifier + "." + key + ".World", null);
@@ -88,7 +83,6 @@ public class Database {
 				fileManager.getConfig(fileName).get().set(Identifier + "." + key + ".Z", null);
 				fileManager.getConfig(fileName).get().set(Identifier + "." + key + ".Pitch", null);
 				fileManager.getConfig(fileName).get().set(Identifier + "." + key + ".Yaw", null);
-				fileManager.getConfig(fileName).save();
 			} else {
 				fileManager.getConfig(fileName).get().set(Identifier + "." + key + ".World", loc.getWorld().getName());
 				fileManager.getConfig(fileName).get().set(Identifier + "." + key + ".X", loc.getX());
@@ -96,8 +90,8 @@ public class Database {
 				fileManager.getConfig(fileName).get().set(Identifier + "." + key + ".Z", loc.getZ());
 				fileManager.getConfig(fileName).get().set(Identifier + "." + key + ".Pitch", loc.getPitch());
 				fileManager.getConfig(fileName).get().set(Identifier + "." + key + ".Yaw", loc.getYaw());
-				fileManager.getConfig(fileName).save();	
 			}
+			fileManager.getConfig(fileName).save();
 		}
 	}
 	
@@ -105,7 +99,7 @@ public class Database {
 	public Location getLocation(Object Identifier, String key) {
 		
 		try {
-			if (Identifier instanceof Player || Identifier instanceof OfflinePlayer || Identifier instanceof BasePlayer) {
+			if (Identifier instanceof OfflinePlayer) {
 				OfflinePlayer p = (OfflinePlayer)Identifier;
 				String world = fileManager.getConfig(fileName).get().getString("PlayerData." + p.getUniqueId().toString() + "." + key + ".World");
 				Double X = fileManager.getConfig(fileName).get().getDouble("PlayerData." + p.getUniqueId().toString() + "." + key + ".X");
@@ -113,8 +107,7 @@ public class Database {
 				Double Z = fileManager.getConfig(fileName).get().getDouble("PlayerData." + p.getUniqueId().toString() + "." + key + ".Z");
 				Float Pitch = Float.valueOf(fileManager.getConfig(fileName).get().getString("PlayerData." + p.getUniqueId().toString() + "." + key + ".Pitch"));
 				Float Yaw = Float.valueOf(fileManager.getConfig(fileName).get().getString("PlayerData." + p.getUniqueId().toString() + "." + key + ".Yaw"));
-				Location getloc = new Location(Bukkit.getWorld(world), X, Y, Z, Yaw, Pitch);
-				return getloc;
+				return new Location(Bukkit.getWorld(world), X, Y, Z, Yaw, Pitch);
 				
 			} else {	
 				String world = fileManager.getConfig(fileName).get().getString(Identifier + "." + key + ".World");
@@ -123,8 +116,7 @@ public class Database {
 				Double Z = fileManager.getConfig(fileName).get().getDouble(Identifier + "." + key + ".Z");
 				Float Pitch = Float.valueOf(fileManager.getConfig(fileName).get().getString(Identifier + "." + key + ".Pitch"));
 				Float Yaw = Float.valueOf(fileManager.getConfig(fileName).get().getString(Identifier + "." + key + ".Yaw"));
-				Location getloc = new Location(Bukkit.getWorld(world), X, Y, Z, Yaw, Pitch);
-				return getloc;
+				return new Location(Bukkit.getWorld(world), X, Y, Z, Yaw, Pitch);
 			}
 		} catch (Exception e) {
 			return null;
@@ -140,7 +132,7 @@ public class Database {
 	//Get String from configs
 	public String getString(Object Identifier, String key) {
 		
-		if (Identifier instanceof Player || Identifier instanceof OfflinePlayer || Identifier instanceof BasePlayer) {
+		if (Identifier instanceof OfflinePlayer) {
 			OfflinePlayer p = (OfflinePlayer)Identifier;
 			return fileManager.getConfig(fileName).get().getString("PlayerData." + p.getUniqueId().toString() + "." + key);
 		} else {
@@ -152,7 +144,7 @@ public class Database {
 	//Get Boolean from config
 	public Boolean getBoolean(Object Identifier, String key) {
 		
-		if (Identifier instanceof Player || Identifier instanceof OfflinePlayer || Identifier instanceof BasePlayer) {
+		if (Identifier instanceof OfflinePlayer) {
 			OfflinePlayer p = (OfflinePlayer)Identifier;
 			return fileManager.getConfig(fileName).get().getBoolean("PlayerData." + p.getUniqueId().toString() + "." + key);
 		} else {
@@ -162,7 +154,7 @@ public class Database {
 	
 	//Get Integer from config
 	public Integer getInt(Object Identifier, String key) {		
-		if (Identifier instanceof Player || Identifier instanceof OfflinePlayer || Identifier instanceof BasePlayer) {
+		if (Identifier instanceof OfflinePlayer) {
 			OfflinePlayer p = (OfflinePlayer)Identifier;
 			return fileManager.getConfig(fileName).get().getInt("PlayerData." + p.getUniqueId().toString() + "." + key);
 		} else {
@@ -172,7 +164,7 @@ public class Database {
 	
 	//Get Double from config
 	public Double getDouble(Object Identifier, String key) {		
-		if (Identifier instanceof Player || Identifier instanceof OfflinePlayer || Identifier instanceof BasePlayer) {
+		if (Identifier instanceof OfflinePlayer) {
 			OfflinePlayer p = (OfflinePlayer)Identifier;
 			return fileManager.getConfig(fileName).get().getDouble("PlayerData." + p.getUniqueId().toString() + "." + key);
 		} else {
@@ -181,7 +173,7 @@ public class Database {
 	}
 	
 	public Long getLong(Object Identifier, String key) {		
-		if (Identifier instanceof Player || Identifier instanceof OfflinePlayer || Identifier instanceof BasePlayer) {
+		if (Identifier instanceof OfflinePlayer) {
 			OfflinePlayer p = (OfflinePlayer)Identifier;
 			return fileManager.getConfig(fileName).get().getLong("PlayerData." + p.getUniqueId().toString() + "." + key);
 		} else {

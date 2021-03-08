@@ -10,7 +10,7 @@ import net.natroutter.natlibs.objects.BasePlayer;
 
 public class StringHandler {
 
-	String value = "";
+	String value;
 	String prefix = "";
 	String suffix = "";
 	

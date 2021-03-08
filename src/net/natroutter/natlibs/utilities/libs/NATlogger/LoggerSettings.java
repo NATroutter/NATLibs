@@ -3,10 +3,10 @@ package net.natroutter.natlibs.utilities.libs.NATlogger;
 public class LoggerSettings {
 
 	//Constructor variables
-	private String path;
-	private Integer interval;
-	private Integer pruneInterval;
-	private Boolean silent;
+	private final String path;
+	private final Integer interval;
+	private final Integer pruneInterval;
+	private final Boolean silent;
 	
 	public LoggerSettings(String logFolderPath, Integer SaveInterval, Integer pruneOlderThanDays, boolean silent) {
 		this.path = logFolderPath;

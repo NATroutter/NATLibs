@@ -5,8 +5,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import net.natroutter.natlibs.objects.BaseItem;
 
 public class GUIItem {
-	private Consumer<InventoryClickEvent> invClick;
-    private BaseItem item;
+	private final Consumer<InventoryClickEvent> invClick;
+    private final BaseItem item;
 
     public GUIItem(BaseItem item, Consumer<InventoryClickEvent> toRun) {
         this.invClick = toRun;

@@ -22,6 +22,7 @@ public class SkullCreator {
 	public BaseItem Create(BasePlayer p) {
 		BaseItem item = new BaseItem(Material.PLAYER_HEAD);
 		SkullMeta meta = (SkullMeta) item.getItemMeta();
+		assert meta != null;
 		meta.setOwningPlayer(p);
 		item.setItemMeta(meta);
 		return item;

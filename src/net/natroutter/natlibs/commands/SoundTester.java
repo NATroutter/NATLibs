@@ -97,7 +97,7 @@ public class SoundTester extends Command {
 	}
 	
 	public Integer getLastSoundIndex(BasePlayer p) {
-		Integer index = 0;
+		int index = 0;
 		ArrayList<Sound> list = getSoundList(getCategory(p));
 		for (int i = 0; i < list.size(); i++) {
 			Sound sound = list.get(i);
@@ -111,9 +111,7 @@ public class SoundTester extends Command {
 	
 	public void resetLastSound(BasePlayer p) {
 		p.stopSound(getLastSound(p));
-		if (LastSound.containsKey(p.getUniqueId())) {
-			LastSound.remove(p.getUniqueId());
-		}
+		LastSound.remove(p.getUniqueId());
 	}
 	
 	public ArrayList<Sound> getSoundList(SoundCategory cat) {
@@ -150,7 +148,7 @@ public class SoundTester extends Command {
 		SoundCategory cat = Category.get(p.getUniqueId());
 		float pitch = getPitch(p);
 		
-		Integer nextIndex = getLastSoundIndex(p) - 1;
+		int nextIndex = getLastSoundIndex(p) - 1;
 		ArrayList<Sound> list = getSoundList(cat);
 		
 		if (nextIndex <= 0) {
@@ -167,7 +165,7 @@ public class SoundTester extends Command {
 		SoundCategory cat = Category.get(p.getUniqueId());
 		float pitch = getPitch(p);
 		
-		Integer nextIndex = getLastSoundIndex(p) + 1;
+		int nextIndex = getLastSoundIndex(p) + 1;
 		ArrayList<Sound> list = getSoundList(cat);
 		
 		if (nextIndex >= list.size()) {
@@ -207,7 +205,7 @@ public class SoundTester extends Command {
 			Pitch.put(p.getUniqueId(), 1.0f);
 		}
 		Float pitch = Pitch.get(p.getUniqueId());
-		Float newPitch = pitch - 0.1f;
+		float newPitch = pitch - 0.1f;
 		
 		if (newPitch <= 0.1f) {
 			newPitch = 0.1f;

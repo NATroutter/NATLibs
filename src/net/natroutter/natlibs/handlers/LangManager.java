@@ -23,7 +23,7 @@ import net.natroutter.natlibs.utilities.serialize.Serializer.Type;
 
 public class LangManager {
 
-	private JavaPlugin pl;
+	private final JavaPlugin pl;
 	private String fileName = "lang.json";
 	private RawFileManager rfm;
 	private Object Lang;
