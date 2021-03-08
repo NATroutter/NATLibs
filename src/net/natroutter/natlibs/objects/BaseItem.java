@@ -24,9 +24,6 @@ import org.bukkit.persistence.PersistentDataContainer;
 
 import com.google.common.collect.Multimap;
 
-/**
- * @Author Zoltus
- */
 @SuppressWarnings("deprecation")
 public class BaseItem extends ItemStack implements Cloneable, ConfigurationSerializable {
 
