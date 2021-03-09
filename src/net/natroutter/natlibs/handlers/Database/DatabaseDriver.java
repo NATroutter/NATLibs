@@ -17,6 +17,7 @@ public enum DatabaseDriver {
     /**
      * Method for getting selected database drivers
      * name what is used to construct connection strings
+     * @return returns database driver name
      */
     public String get() {
         return driver;

@@ -17,7 +17,6 @@ public class YamlDataHandler {
      * with default file name "Database.yaml"
      *
      * @param  pl      JavaPlugin instance
-     * @return          returns current instance of YamlDataHandler
      */
     public YamlDataHandler(JavaPlugin pl) {
         this.fileManager = new FileManager(pl);
@@ -30,7 +29,6 @@ public class YamlDataHandler {
      *
      * @param  pl       JavaPlugin instance
      * @param  fileName yaml filename (must end with .yaml)
-     * @return          returns current instance of YamlDataHandler
      */
     public YamlDataHandler(JavaPlugin pl, String fileName) {
         this.fileManager = new FileManager(pl);;

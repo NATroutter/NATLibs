@@ -19,7 +19,6 @@ public class DatabaseCredentials {
      * @param port  Database servers port
      * @param user  User for database
      * @param pass  Password for database
-     * @return      returns current instance of DatabaseCredentials
      */
     public DatabaseCredentials(String host, Integer port, String user, String pass) {
         this.host = host;

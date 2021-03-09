@@ -43,7 +43,6 @@ public class Database {
      * @param  dbName   Database name
      * @param  driver   Database driver for defining database type
      * @param  cred     Credentials for authorizing database connection
-     * @return          returns current instance of Database
      */
     public Database(JavaPlugin pl, String dbName, DatabaseDriver driver, DatabaseCredentials cred) {
         this.pl = pl;
@@ -71,7 +70,6 @@ public class Database {
      * @param  pl       JavaPlugin instance
      * @param  dbName   Database name
      * @param  driver   Database driver for defining database type
-     * @return          returns current instance of Database
      */
     public Database(JavaPlugin pl, String dbName, DatabaseDriver driver) {
         this.pl = pl;
@@ -92,7 +90,6 @@ public class Database {
      * for this operation is /
      *
      * @param  ch   Line separator
-     * @return      returns current instance of Database
      */
     public Database setLineSeperator(Character ch) {
         this.LineSep = ch;
@@ -105,7 +102,6 @@ public class Database {
      * identifier and key to one singlekey
      *
      * @param  ch   Key separator
-     * @return      returns current instance of Database
      */
     public Database setKeySeperator(Character ch) {
         this.keySep = ch;
@@ -119,7 +115,6 @@ public class Database {
      * @param  id   Identifier for where to set data
      * @param  key  key for identifing where to set data
      * @param value data to save into database
-     * @return      returns double
      */
     public void save(Object id, String key, Object value) {
         if (!CheckConfigError()) {return;}
