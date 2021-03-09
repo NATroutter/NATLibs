@@ -1,5 +1,7 @@
 package net.natroutter.natlibs;
 
+import net.natroutter.natlibs.handlers.Database.Database;
+import net.natroutter.natlibs.handlers.Database.DatabaseDriver;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -42,10 +44,11 @@ public class NATLibs extends JavaPlugin {
 		eventManager.RegisterListeners(this,
 				GUIListener.class, PlayerJumpEventListener.class
 		);
-		
+
 		eventManager.RegisterCommands(this, SoundTester.class);
 
 		utils.printBanner();
+
 	}  
 	 
 	@Override

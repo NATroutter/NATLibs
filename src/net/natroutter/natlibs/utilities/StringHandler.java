@@ -1,6 +1,8 @@
 package net.natroutter.natlibs.utilities;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -21,8 +23,12 @@ public class StringHandler {
 	public StringHandler(String[] list, Character separator) {
 		this.value = String.join(separator.toString(), list);
 	}
-	public StringHandler(List<String> list, Character separator) {
-		this.value = String.join(separator.toString(), list);
+	public StringHandler(Collection<?> list, Character separator) {
+		List<String> strList = new ArrayList<String>();
+		for (Object ob : list) {
+			strList.add(ob.toString());
+		}
+		this.value = String.join(separator.toString(), strList);
 	}
 	
 	public static StringHandler from(StringHandler OriginalHandler, String value) {
@@ -70,6 +76,10 @@ public class StringHandler {
 	public StringHandler stripColors() {
 		value = ChatColor.stripColor(value);
 		return this;
+	}
+
+	public StringHandler compine(StringHandler handler) {
+		return new StringHandler(this.build()).addToEnd(handler.build());
 	}
 	
 	public List<String> split(Character ch) {
