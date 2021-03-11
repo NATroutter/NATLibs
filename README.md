@@ -13,7 +13,7 @@
 
 NATLibs is simple and powerful spigot plugin library that provides  
 easier and faster way to do things in code i have made this library mainly  
-for my personal use but if you want to use it feel free to do it
+for my personal use but if you want to use it feel free to use it
 
 </div>
 
