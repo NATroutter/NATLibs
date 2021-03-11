@@ -1,7 +1,7 @@
 ![banner](https://cdn.nat.gs/img/NATLibs_Banner.png)
 
 <div align="center">
-## NATLibs
+<h1 style="margin: 0px;font-weight: 700;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji">NATLibs</h1>
 
 ![licence](https://img.shields.io/badge/License-MIT-brightgreen)
 
@@ -12,7 +12,8 @@
 ![Sonatype Nexus (Repository)](https://img.shields.io/nexus/NATLibs-stable/net.natroutter/NATLibs?label=nexus%20-%20stable&server=https%3A%2F%2Fhub.nat.gs%2Fnexus%2F&style=flat-square)
 
 NATLibs is simple and powerful spigot plugin library that provides  
-Easier and faster way to do things in code
+easier and faster way to do things in code i have made this library mainly  
+for my personal use but if you want to use it feel free to do it
 
 </div>
 
