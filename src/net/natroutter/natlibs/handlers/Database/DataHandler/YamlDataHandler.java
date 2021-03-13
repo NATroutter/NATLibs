@@ -43,7 +43,7 @@ public class YamlDataHandler {
      * @param value value what to save into yaml file
      */
     public void save(String key, String value) {
-        fileManager.getConfig(fileName).set(key, value);
+        fileManager.getConfig(fileName).get().set(key, value);
         fileManager.getConfig(fileName).save();
     }
 
