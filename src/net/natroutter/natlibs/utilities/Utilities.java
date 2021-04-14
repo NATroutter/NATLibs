@@ -140,7 +140,7 @@ public class Utilities {
 
 	public Location deserializeLocation(String loc, Character separator) {
 		String sep = separator.toString();
-		String[] parts = loc.split(sep);
+		String[] parts = loc.split(Pattern.quote(sep));
 		if (parts.length == 6) {
 			try {
 				return new Location(
