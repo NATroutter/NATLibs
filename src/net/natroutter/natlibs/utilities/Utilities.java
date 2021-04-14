@@ -22,7 +22,10 @@ import java.util.regex.Pattern;
 @SuppressWarnings({"unused"})
 public class Utilities {
 
+	JavaPlugin pl;
+
 	public Utilities(JavaPlugin pl) {
+		this.pl	= pl;
 	}
 	
 	public void consoleMessage(String msg) {
@@ -71,8 +74,8 @@ public class Utilities {
 		return Check >= start && Check <= end;
 	}
 	
-	public Float ParseSpeed(Integer val, boolean isFly) {return ParseSpeed(val,isFly,false);}
-	public Float ParseSpeed(Integer val, boolean isFly, boolean bypassLimits) {
+	public Float parseSpeed(Integer val, boolean isFly) {return parseSpeed(val,isFly,false);}
+	public Float parseSpeed(Integer val, boolean isFly, boolean bypassLimits) {
 		float speed = val.floatValue();
 		float defaultSpeed = isFly ? 0.1F : 0.2F;
 	    float maxSpeed = 1.0F;
@@ -86,7 +89,7 @@ public class Utilities {
 	    return ratio + defaultSpeed;
 	}
 	
-	public Boolean FlipBool(Boolean bool) {
+	public Boolean flipBool(Boolean bool) {
         return !bool;
 	}
 	
@@ -111,7 +114,7 @@ public class Utilities {
 		}
 	}
 	
-	public Integer ToGround(Location start) {
+	public Integer distanceToGround(Location start) {
 		int amount = 0;
 		while (!start.subtract(0, 1, 0).getBlock().getType().isSolid()) {
 		    amount++;
@@ -119,15 +122,37 @@ public class Utilities {
 		return amount;
 	}
 	
-	public boolean ItemsMatch(BaseItem item1, BaseItem item2) {
+	public boolean itemsMatch(BaseItem item1, BaseItem item2) {
 		if (item1.getDisplayName().equals(item2.getDisplayName())) {
 			return item1.getLore().equals(item2.getLore());
 		}
 		return false;
 	}
 	
-	public boolean NameMatch(BaseItem item1, BaseItem item2) {
+	public boolean nameMatch(BaseItem item1, BaseItem item2) {
 		return item1.getDisplayName().equals(item2.getDisplayName());
 	}
-	
+
+
+	public String serializeLocation(Location loc, Character separator) {
+		String sep = separator.toString();
+		return loc.getWorld() + sep + loc.getX() + sep + loc.getY() + sep + loc.getZ()  + sep + loc.getYaw()  + sep + loc.getPitch();
+	}
+
+	public Location deserializeLocation(String loc, Character separator) {
+		String sep = separator.toString();
+		String[] parts = loc.split(sep);
+		if (parts.length == 6) {
+			try {
+				return new Location(
+						Bukkit.getWorld(parts[0]),
+						Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]),
+						Float.parseFloat(parts[4]), Float.parseFloat(parts[5]));
+			} catch (Exception e) {
+				consoleMessage("§4["+pl.getName()+"][Serializer] invalid values entered to location deserializer");
+			}
+		}
+		return null;
+	}
+
 } 
