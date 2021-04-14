@@ -204,7 +204,7 @@ public class Serializer {
 	}
 	
 	private void JsonValitdationError(Exception e) {
-		Utilities utils = new Utilities(pl);
+		Utilities utils = NATLibs.getUtilities();
     	
 		if (e instanceof JsonSyntaxException) {
 			String line = utils.getRegExMatch("(?<=line )([0-9]{1,})(?= column)", e.getMessage());

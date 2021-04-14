@@ -23,16 +23,33 @@ import java.util.ArrayList;
 //Lisää eventhandleriin tarkistus  - IllegalAccessException
 //
 
-public class NATLibs {
+
+
+
+
+public final class NATLibs {
 
 	private static JavaPlugin Instance;
 
+	private static EventManager eventManager;
+	private static Utilities utils;
+	private static SkullCreator SkullCreator;
+
+
 	public static JavaPlugin getInstance() {return Instance;}
+
+	public static EventManager getEventManager() {return eventManager;}
+	public static Utilities getUtilities() {return utils;}
+	public static NATlogger getNATLogger(LoggerSettings set) {return new NATlogger(set);}
+	public static SkullCreator getSkullCreator() {return SkullCreator;}
 
 	public NATLibs(JavaPlugin plugin, boolean useSoundTester) {
 		Instance = plugin;
 
-		EventManager eventManager = new EventManager();
+		utils = new Utilities(plugin);
+		eventManager = new EventManager();
+		SkullCreator = new SkullCreator();
+
 		eventManager.RegisterListeners(plugin,
 				GUIListener.class, PlayerJumpEventListener.class
 		);
