@@ -136,7 +136,7 @@ public class Utilities {
 
 	public String serializeLocation(Location loc, Character separator) {
 		String sep = separator.toString();
-		return loc.getWorld() + sep + loc.getX() + sep + loc.getY() + sep + loc.getZ()  + sep + loc.getYaw()  + sep + loc.getPitch();
+		return loc.getWorld().getName() + sep + loc.getX() + sep + loc.getY() + sep + loc.getZ()  + sep + loc.getYaw()  + sep + loc.getPitch();
 	}
 
 	public Location deserializeLocation(String loc, Character separator) {
