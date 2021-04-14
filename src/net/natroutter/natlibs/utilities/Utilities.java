@@ -25,7 +25,7 @@ public class Utilities {
 	JavaPlugin pl;
 
 	public Utilities(JavaPlugin pl) {
-		this.pl	= pl;
+		this.pl = pl;
 	}
 	
 	public void consoleMessage(String msg) {
@@ -39,7 +39,6 @@ public class Utilities {
 		} else {
 			item.removeEnchantment(Enchantment.DURABILITY);
 		}
-		
 	}
 
 	public float pitchToFloat(Player p) {
