@@ -43,7 +43,7 @@ public class NATLibs {
 	public static NATlogger getNATLogger(LoggerSettings set) {return new NATlogger(set);}
 	public static SkullCreator getSkullCreator() {return SkullCreator;}
 
-	public void NATLibs(JavaPlugin plugin, boolean useSoundTester) {
+	public NATLibs(JavaPlugin plugin, boolean useSoundTester) {
 		Instance = plugin;
 		
 		utils = new Utilities(plugin);
