@@ -10,45 +10,38 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-@SuppressWarnings("deprecation")
 public class EventManager {
 
-	
-	public void RegisterListeners(JavaPlugin pl, Class<?>... classes) {
+
+	public final void RegisterListeners(JavaPlugin pl, Class<?>... classes) {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
-		
 		for (Class<?> clazz : classes) {
 			if (Arrays.asList(clazz.getInterfaces()).contains(Listener.class)) {
-
 				try {
-					pm.registerEvents((Listener)clazz.newInstance(), pl);
+					pm.registerEvents((Listener)clazz.getDeclaredConstructor().newInstance(), pl);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
 	}
-	
-	public void RegisterCommands(JavaPlugin pl, Class<?>... classes) {
-		
-		for (Class<?> clazz : classes) {
+
+	public final void RegisterCommands(JavaPlugin pl, Class<? extends Command>... classes) {
+		for (Class<? extends Command> clazz : classes) {
 			if (clazz.getSuperclass().equals(Command.class)) {
-				
 				try {
-					Command cmd = (Command)clazz.newInstance();
+					Command cmd = clazz.getDeclaredConstructor().newInstance();
 					cmd.setName(clazz.getSimpleName());
-					
+
 					Field bukkitCommandMap = pl.getServer().getClass().getDeclaredField("commandMap");
 					bukkitCommandMap.setAccessible(true);
 					CommandMap commandMap = (CommandMap) bukkitCommandMap.get(pl.getServer());
 					commandMap.register(pl.getName(), cmd);
-				} catch (Exception e) { 
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
 			}
 		}
-		
 	}
 	
 }

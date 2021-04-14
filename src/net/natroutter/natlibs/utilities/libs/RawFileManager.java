@@ -18,9 +18,9 @@ public class RawFileManager {
     private Boolean FileCreated = false;
     private JavaPlugin pl;
     
-    public RawFileManager(JavaPlugin pl, String configName) {
+    public RawFileManager(JavaPlugin pl, String fileName) {
     	this.pl = pl;
-    	this.rawFile = new File(pl.getDataFolder().getAbsolutePath(), configName);
+    	this.rawFile = new File(pl.getDataFolder().getAbsolutePath(), fileName);
     	this.Directory = new File(pl.getDataFolder().getAbsolutePath());
     	init();
     }

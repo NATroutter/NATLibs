@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import com.google.common.collect.Multimap;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -21,8 +22,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
 import org.bukkit.material.MaterialData;
 import org.bukkit.persistence.PersistentDataContainer;
-
-import com.google.common.collect.Multimap;
 
 @SuppressWarnings("deprecation")
 public class BaseItem extends ItemStack implements Cloneable, ConfigurationSerializable {

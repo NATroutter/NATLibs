@@ -1,6 +1,7 @@
 package net.natroutter.natlibs.handlers.gui;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -10,7 +11,6 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import net.md_5.bungee.api.ChatColor;
 import net.natroutter.natlibs.objects.BaseItem;
 import net.natroutter.natlibs.objects.BasePlayer;
 

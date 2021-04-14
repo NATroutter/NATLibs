@@ -1,5 +1,7 @@
 package net.natroutter.natlibs.utilities;
 
+import com.sun.tools.javac.Main;
+import net.natroutter.natlibs.NATLibs;
 import net.natroutter.natlibs.objects.BaseItem;
 import net.natroutter.natlibs.objects.BasePlayer;
 import net.natroutter.natlibs.objects.ParticleSettings;
@@ -10,6 +12,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.regex.Matcher;
@@ -53,12 +56,13 @@ public class Utilities {
 	}
 	
 	public void printBanner() {
+		PluginDescriptionFile pdf = NATLibs.getInstance().getDescription();
 		consoleMessage("§4  _  _   _ _____ _    _ _       ");
 		consoleMessage("§4 | \\| | /_\\_   _| |  (_) |__ ___");
 		consoleMessage("§4 | .` |/ _ \\| | | |__| | '_ (_-<");
 		consoleMessage("§4 |_|\\_/_/ \\_\\_| |____|_|_.__/__/");
 		consoleMessage(" ");
-		consoleMessage("      §cNATLibs §4v1.0 §cloaded");
+		consoleMessage("      §cNATLibs §4v" + pdf.getVersion() + " §cloaded");
 		consoleMessage(" §8Environment: §4" + Bukkit.getVersion());
 		consoleMessage(" ");
 	}

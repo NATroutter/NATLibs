@@ -1,7 +1,10 @@
 package net.natroutter.natlibs;
 
-import net.natroutter.natlibs.handlers.Database.Database;
-import net.natroutter.natlibs.handlers.Database.DatabaseDriver;
+import net.natroutter.natlibs.handlers.Database.*;
+import net.natroutter.natlibs.handlers.Database.enums.DatabaseDriver;
+import net.natroutter.natlibs.handlers.Database.enums.FieldType;
+import net.natroutter.natlibs.handlers.Database.objects.*;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +17,16 @@ import net.natroutter.natlibs.utilities.Utilities;
 import net.natroutter.natlibs.utilities.libs.NATlogger.LoggerSettings;
 import net.natroutter.natlibs.utilities.libs.NATlogger.NATlogger;
 
+import java.util.ArrayList;
+
+//TODO
+//Lisää eventhandleriin tarkistus  - IllegalAccessException
+//
+
+
+
+
+
 public class NATLibs extends JavaPlugin {
 	
 	private static JavaPlugin Instance; 
@@ -22,7 +35,7 @@ public class NATLibs extends JavaPlugin {
 	private static EventManager eventManager;
 	private static Utilities utils;
 	private static SkullCreator SkullCreator;
-	
+
 	
 	public static JavaPlugin getInstance() {return Instance;}
 	public static PluginDescriptionFile getInfo() {return pdf;}
@@ -49,7 +62,7 @@ public class NATLibs extends JavaPlugin {
 
 		utils.printBanner();
 
-	}  
+	}
 	 
 	@Override
 	public void onDisable() {

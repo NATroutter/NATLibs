@@ -2,7 +2,7 @@ package net.natroutter.natlibs.handlers;
 
 import java.lang.reflect.Field;
 
-import org.apache.commons.lang.ObjectUtils.Null;
+import org.apache.commons.lang3.ObjectUtils.Null;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -48,15 +48,15 @@ public class ConfigManager {
 		rawContent = rfm.readFile().replaceAll("&", "§");
 		serializer = new Serializer(pl);
 	}
-	
-	public Object get() {
-		return Instance;
+
+	public <T> T get(Class<T> type) {
+		return type.cast(Instance);
 	}
 	
 	public ConfigManager load(Class<?> clazz) {
 		this.clazz = clazz;
 		try {
-			this.Instance = clazz.newInstance();
+			this.Instance = clazz.getDeclaredConstructor().newInstance();
 			if (rfm.getFileCreated()) {
 				rfm.writeFile(serializer.unSerialize(Type.GSON, clazz).replaceAll("§", "&"));
 				Lang = Instance;
