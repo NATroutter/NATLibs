@@ -271,13 +271,13 @@ public class DatabaseTable {
 
     }
 
-    public boolean updateWhere(DataField selectField, Object newdata) {
+    public boolean updateWhere(DataField selectField, String columnName, Object newdata) {
         if (!Valid) {console.sendMessage("§4["+pl.getName()+"][DatabaseHandler] §cDatabase is not valid!"); return false;}
 
         Connection con = null;
         PreparedStatement stmt = null;
         try {
-            String sql = "UPDATE "+tableName+" SET "+selectField.getName()+"=? WHERE "+ selectField.getName() + "=?;";
+            String sql = "UPDATE "+tableName+" SET "+columnName+"=? WHERE "+ selectField.getName() + "=?;";
             con = hikData.getConnection();
             stmt = con.prepareStatement(sql);
 
