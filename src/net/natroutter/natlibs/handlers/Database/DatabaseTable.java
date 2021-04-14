@@ -233,7 +233,7 @@ public class DatabaseTable {
 
             ResultSet result = stmt.executeQuery();
 
-            if (!result.next()) { return null; }
+            //if (!result.next()) { return null; }
 
             TableRow row = new TableRow();
             for (TableField field : tableFields) {
