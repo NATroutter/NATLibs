@@ -27,10 +27,9 @@ import java.util.ArrayList;
 
 
 
-public class NATLibs extends JavaPlugin {
+public class NATLibs {
 	
-	private static JavaPlugin Instance; 
-	private static PluginDescriptionFile pdf;
+	private static JavaPlugin Instance;
 	
 	private static EventManager eventManager;
 	private static Utilities utils;
@@ -38,37 +37,27 @@ public class NATLibs extends JavaPlugin {
 
 	
 	public static JavaPlugin getInstance() {return Instance;}
-	public static PluginDescriptionFile getInfo() {return pdf;}
 	
 	public static EventManager getEventManager() {return eventManager;}
 	public static Utilities getUtilities() {return utils;}
 	public static NATlogger getNATLogger(LoggerSettings set) {return new NATlogger(set);}
 	public static SkullCreator getSkullCreator() {return SkullCreator;}
-	
-	@Override
-	public void onEnable() {
-		Instance = this;
-		pdf = this.getDescription();
+
+	public void NATLibs(JavaPlugin plugin, boolean useSoundTester) {
+		Instance = plugin;
 		
-		utils = new Utilities(this);
+		utils = new Utilities(plugin);
 		eventManager = new EventManager();
 		SkullCreator = new SkullCreator();
 		
-		eventManager.RegisterListeners(this,
+		eventManager.RegisterListeners(plugin,
 				GUIListener.class, PlayerJumpEventListener.class
 		);
 
-		eventManager.RegisterCommands(this, SoundTester.class);
-
-		utils.printBanner();
+		if (useSoundTester) {
+			eventManager.RegisterCommands(plugin, SoundTester.class);
+		}
 
 	}
-	 
-	@Override
-	public void onDisable() {
-		NATLibs.Instance = null;
-	}
-
-	
 	
 }
