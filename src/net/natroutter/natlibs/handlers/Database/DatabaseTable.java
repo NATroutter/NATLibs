@@ -25,7 +25,7 @@ public class DatabaseTable {
     private String tableName;
     private DatabaseCredentials cred;
     private DatabaseDriver driver;
-    private List<TableField> tableFields;
+    private List<TableColumn> tableFields;
 
     private List<String> fieldNames = new ArrayList<>();
 
@@ -33,7 +33,7 @@ public class DatabaseTable {
     private HikariDataSource hikData;
     boolean Valid = false;
 
-    public DatabaseTable(JavaPlugin pl, String tableName, DatabaseCredentials cred, DatabaseDriver driver, TableField... fields) {
+    public DatabaseTable(JavaPlugin pl, String tableName, DatabaseCredentials cred, DatabaseDriver driver, TableColumn... fields) {
         this.pl = pl;
         this.console = pl.getServer().getConsoleSender();
         this.tableName = tableName;
@@ -43,7 +43,7 @@ public class DatabaseTable {
 
         //Construct table creation query and construct field name list for future use
         ArrayList<String> queryParts = new ArrayList<>();
-        for (TableField field : fields) {
+        for (TableColumn field : fields) {
             queryParts.add(field.getName()+" "+field.getType()+" NOT NULL");
             fieldNames.add(field.getName());
         }
@@ -101,7 +101,7 @@ public class DatabaseTable {
         }
     }
 
-    public boolean insert(InsertField... data) {
+    public boolean insert(RowField... data) {
         if (!Valid) {console.sendMessage("§4["+pl.getName()+"][DatabaseHandler] §cDatabase is not valid!"); return false;}
 
         if (data.length != fieldNames.size()) {
@@ -127,7 +127,7 @@ public class DatabaseTable {
 
 
             for (int i = 0; i < data.length; i++) {
-                InsertField field = data[i];
+                RowField field = data[i];
                 int index = i + 1;
 
                 if (field.getType().equals(FieldType.TEXT)) {
@@ -173,7 +173,7 @@ public class DatabaseTable {
 
             while (result.next()) {
                 TableRow row = new TableRow();
-                for (TableField field : tableFields) {
+                for (TableColumn field : tableFields) {
                     DataField getF = null;
 
                     if (field.getType().equals(FieldType.TEXT)) {
@@ -236,7 +236,7 @@ public class DatabaseTable {
             //if (!result.next()) { return null; }
 
             TableRow row = new TableRow();
-            for (TableField field : tableFields) {
+            for (TableColumn field : tableFields) {
                 DataField getF = null;
 
                 if (field.getType().equals(FieldType.TEXT)) {
@@ -271,26 +271,26 @@ public class DatabaseTable {
 
     }
 
-    public boolean updateWhere(DataField selectField, String columnName, Object newdata) {
+    public boolean updateWhere(DataField selectField, DataField updateField) {
         if (!Valid) {console.sendMessage("§4["+pl.getName()+"][DatabaseHandler] §cDatabase is not valid!"); return false;}
 
         Connection con = null;
         PreparedStatement stmt = null;
         try {
-            String sql = "UPDATE "+tableName+" SET "+columnName+"=? WHERE "+ selectField.getName() + "=?;";
+            String sql = "UPDATE "+tableName+" SET "+updateField.getName()+"=? WHERE "+ selectField.getName() + "=?;";
             con = hikData.getConnection();
             stmt = con.prepareStatement(sql);
 
-            if (selectField.getType().equals(FieldType.TEXT)) {
-                stmt.setString(1, newdata.toString());
+            if (updateField.getType().equals(FieldType.TEXT)) {
+                stmt.setString(1, updateField.getData().toString());
                 stmt.setString(2, selectField.getData().toString());
 
-            } else if (selectField.getType().equals(FieldType.INTEGER)) {
-                stmt.setInt(1, Integer.parseInt(newdata.toString()));
+            } else if (updateField.getType().equals(FieldType.INTEGER)) {
+                stmt.setInt(1, Integer.parseInt(updateField.getData().toString()));
                 stmt.setInt(2, Integer.parseInt(selectField.getData().toString()));
 
-            } else if (selectField.getType().equals(FieldType.BOOLEAN)) {
-                stmt.setBoolean(1, Boolean.parseBoolean(newdata.toString()));
+            } else if (updateField.getType().equals(FieldType.BOOLEAN)) {
+                stmt.setBoolean(1, Boolean.parseBoolean(updateField.getData().toString()));
                 stmt.setBoolean(2, Boolean.parseBoolean(selectField.getData().toString()));
 
             }

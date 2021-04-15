@@ -2,7 +2,7 @@ package net.natroutter.natlibs.handlers.Database;
 
 import net.natroutter.natlibs.handlers.Database.enums.DatabaseDriver;
 import net.natroutter.natlibs.handlers.Database.objects.DatabaseCredentials;
-import net.natroutter.natlibs.handlers.Database.objects.TableField;
+import net.natroutter.natlibs.handlers.Database.objects.TableColumn;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,7 +24,7 @@ public class Database {
         this.driver = driver;
     }
 
-    public DatabaseTable create(String tableName, TableField... fields) {
+    public DatabaseTable create(String tableName, TableColumn... fields) {
         DatabaseTable table = new DatabaseTable(pl, tableName, cred, driver, fields);
         tables.add(table);
         return table;

@@ -2,13 +2,13 @@ package net.natroutter.natlibs.handlers.Database.objects;
 
 import net.natroutter.natlibs.handlers.Database.enums.FieldType;
 
-public class InsertField {
+public class TableColumn {
 
     private FieldType type;
-    private Object data;
+    private String name;
 
-    public InsertField(Object data, FieldType type) {
-        this.data = data;
+    public TableColumn(String name, FieldType type) {
+        this.name = name;
         this.type = type;
     }
 
@@ -16,7 +16,7 @@ public class InsertField {
         return type;
     }
 
-    public Object getData() {
-        return data;
+    public String getName() {
+        return name;
     }
 }
