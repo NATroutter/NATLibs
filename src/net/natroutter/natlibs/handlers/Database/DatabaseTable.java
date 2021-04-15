@@ -283,17 +283,24 @@ public class DatabaseTable {
 
             if (updateField.getType().equals(FieldType.TEXT)) {
                 stmt.setString(1, updateField.getData().toString());
-                stmt.setString(2, selectField.getData().toString());
 
             } else if (updateField.getType().equals(FieldType.INTEGER)) {
                 stmt.setInt(1, Integer.parseInt(updateField.getData().toString()));
-                stmt.setInt(2, Integer.parseInt(selectField.getData().toString()));
 
             } else if (updateField.getType().equals(FieldType.BOOLEAN)) {
                 stmt.setBoolean(1, Boolean.parseBoolean(updateField.getData().toString()));
-                stmt.setBoolean(2, Boolean.parseBoolean(selectField.getData().toString()));
-
             }
+
+            if (selectField.getType().equals(FieldType.TEXT)) {;
+                stmt.setString(2, selectField.getData().toString());
+
+            } else if (selectField.getType().equals(FieldType.INTEGER)) {
+                stmt.setInt(2, Integer.parseInt(selectField.getData().toString()));
+
+            } else if (selectField.getType().equals(FieldType.BOOLEAN)) {
+                stmt.setBoolean(2, Boolean.parseBoolean(selectField.getData().toString()));
+            }
+
             stmt.execute();
             stmt.close();
             con.close();

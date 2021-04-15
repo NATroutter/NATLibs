@@ -23,10 +23,6 @@ import java.util.ArrayList;
 //Lisää eventhandleriin tarkistus  - IllegalAccessException
 //
 
-
-
-
-
 public final class NATLibs {
 
 	private static JavaPlugin Instance;
