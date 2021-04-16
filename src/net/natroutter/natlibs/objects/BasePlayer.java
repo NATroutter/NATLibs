@@ -141,8 +141,8 @@ public class BasePlayer implements Player {
 	}
 
 	@Override
-	public BaseItem getItemInHand() {
-		return BaseItem.from(getItemInHand());
+	public ItemStack getItemInHand() {
+		return p.getItemInHand();
 	}
 
 	@Override
