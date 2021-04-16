@@ -38,13 +38,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityCategory;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Pose;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Villager;
+import org.bukkit.entity.*;
 import org.bukkit.entity.memory.MemoryKey;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -97,6 +91,10 @@ public class BasePlayer implements Player {
         if (sender == null) { return null; }
         return players.containsKey(sender) ? players.get(sender) : new BasePlayer((Player) sender);
     }
+	public static BasePlayer from(AnimalTamer tamer) {
+		if (tamer == null) { return null; }
+		return players.containsKey(tamer) ? players.get(tamer) : new BasePlayer((Player) tamer);
+	}
 	
     
     public static List<BasePlayer> getOnlinePlayers() {
