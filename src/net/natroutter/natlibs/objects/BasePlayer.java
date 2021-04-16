@@ -9,24 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
-import org.bukkit.Effect;
-import org.bukkit.EntityEffect;
-import org.bukkit.FluidCollisionMode;
-import org.bukkit.GameMode;
-import org.bukkit.Instrument;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Note;
-import org.bukkit.Particle;
-import org.bukkit.Server;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
-import org.bukkit.Statistic;
-import org.bukkit.WeatherType;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.advancement.AdvancementProgress;
 import org.bukkit.attribute.Attribute;
@@ -83,10 +66,15 @@ public class BasePlayer implements Player {
 
     }
     public static BasePlayer from(Player p) {
-        if (p == null) { return null; }
-        return players.containsKey(p) ? players.get(p) : new BasePlayer(p);
+		if (p == null) { return null; }
+		return players.containsKey(p) ? players.get(p) : new BasePlayer(p);
 
-    }
+	}
+	public static BasePlayer from(OfflinePlayer p) {
+		if (p == null) { return null; }
+		return players.containsKey(p) ? players.get(p) : new BasePlayer((Player)p);
+
+	}
     public static BasePlayer from(CommandSender sender) {
         if (sender == null) { return null; }
         return players.containsKey(sender) ? players.get(sender) : new BasePlayer((Player) sender);
