@@ -91,10 +91,6 @@ public class BasePlayer implements Player {
         if (sender == null) { return null; }
         return players.containsKey(sender) ? players.get(sender) : new BasePlayer((Player) sender);
     }
-	public static BasePlayer from(AnimalTamer tamer) {
-		if (tamer == null) { return null; }
-		return players.containsKey(tamer) ? players.get(tamer) : new BasePlayer((Player) tamer);
-	}
 	
     
     public static List<BasePlayer> getOnlinePlayers() {
