@@ -22,7 +22,7 @@ public class YamlDatabase {
     public YamlDatabase(JavaPlugin pl) {
         this.pl = pl;
         this.fileManager = new FileManager(pl);
-        this.data = data;
+        this.data = fileManager.getConfig(fileName);
 
         data.copyDefaults(true).save();
     }
@@ -31,7 +31,7 @@ public class YamlDatabase {
         this.pl = pl;
         this.fileName = fileName;
         this.fileManager = new FileManager(pl);
-        this.data = data;
+        this.data = fileManager.getConfig(fileName);;
 
         data.copyDefaults(true).save();
     }
