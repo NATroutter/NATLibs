@@ -77,7 +77,7 @@
         </plugins>
         <resources>
             <resource>
-                <directory>${project.basedir}</directory>
+                <directory>${project.basedir}/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
