@@ -36,7 +36,10 @@ public class EventManager {
 			if (clazz.getSuperclass().equals(Command.class)) {
 				try {
 					Command cmd = (Command)clazz.getDeclaredConstructor().newInstance();
-					cmd.setName(clazz.getSimpleName());
+
+					if (cmd.getName().length() < 1) {
+						cmd.setName(clazz.getSimpleName());
+					}
 
 					Field bukkitCommandMap = pl.getServer().getClass().getDeclaredField("commandMap");
 					bukkitCommandMap.setAccessible(true);
