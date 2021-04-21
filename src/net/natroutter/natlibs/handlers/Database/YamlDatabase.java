@@ -6,22 +6,21 @@ import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import net.natroutter.natlibs.utilities.libs.FileManager;
+import net.natroutter.natlibs.utilities.libs.FileHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class YamlDatabase {
 
     JavaPlugin pl;
     String fileName = "Database.yml";
-    FileManager fileManager;
-    FileManager.Config data;
+    FileHandler fileManager;
+    FileHandler.Config data;
 
     public YamlDatabase(JavaPlugin pl) {
         this.pl = pl;
-        this.fileManager = new FileManager(pl);
+        this.fileManager = new FileHandler(pl);
         this.data = fileManager.getConfig(fileName);
 
         data.copyDefaults(true).save();
@@ -30,7 +29,7 @@ public class YamlDatabase {
     public YamlDatabase(JavaPlugin pl, String fileName) {
         this.pl = pl;
         this.fileName = fileName;
-        this.fileManager = new FileManager(pl);
+        this.fileManager = new FileHandler(pl);
         this.data = fileManager.getConfig(fileName);;
 
         data.copyDefaults(true).save();

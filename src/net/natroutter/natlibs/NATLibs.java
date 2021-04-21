@@ -1,5 +1,6 @@
 package net.natroutter.natlibs;
 
+import net.natroutter.natlibs.commands.SoundTester;
 import net.natroutter.natlibs.handlers.Database.*;
 import net.natroutter.natlibs.handlers.Database.enums.DatabaseDriver;
 import net.natroutter.natlibs.handlers.Database.enums.FieldType;
@@ -8,7 +9,6 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.natroutter.natlibs.commands.SoundTester;
 import net.natroutter.natlibs.events.PlayerJumpEvent.PlayerJumpEventListener;
 import net.natroutter.natlibs.handlers.EventManager;
 import net.natroutter.natlibs.handlers.gui.GUIListener;
@@ -27,9 +27,9 @@ public final class NATLibs {
 	public NATLibs(JavaPlugin plugin) {
 		this.plugin	 = plugin;
 
-		eventManager = new EventManager();
+		eventManager = new EventManager(plugin);
 
-		eventManager.RegisterListeners(plugin,
+		eventManager.RegisterListeners(
 				GUIListener.class,
 				PlayerJumpEventListener.class
 		);
@@ -37,7 +37,7 @@ public final class NATLibs {
 	}
 
 	public NATLibs enableSoundTester() {
-		eventManager.RegisterCommands(plugin, SoundTester.class);
+		eventManager.RegisterCommands(SoundTester.class);
 		return this;
 	}
 	

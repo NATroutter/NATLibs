@@ -12,8 +12,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class EventManager {
 
+	JavaPlugin pl;
 
-	public final void RegisterListeners(JavaPlugin pl, Class<?>... classes) {
+	public EventManager(JavaPlugin pl) {
+		this.pl = pl;
+	}
+
+	public final void RegisterListeners(Class<?>... classes) {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
 		for (Class<?> clazz : classes) {
 			if (Arrays.asList(clazz.getInterfaces()).contains(Listener.class)) {
@@ -26,11 +31,11 @@ public class EventManager {
 		}
 	}
 
-	public final void RegisterCommands(JavaPlugin pl, Class<? extends Command>... classes) {
-		for (Class<? extends Command> clazz : classes) {
+	public final void RegisterCommands(Class<?>... classes) {
+		for (Class<?> clazz : classes) {
 			if (clazz.getSuperclass().equals(Command.class)) {
 				try {
-					Command cmd = clazz.getDeclaredConstructor().newInstance();
+					Command cmd = (Command)clazz.getDeclaredConstructor().newInstance();
 					cmd.setName(clazz.getSimpleName());
 
 					Field bukkitCommandMap = pl.getServer().getClass().getDeclaredField("commandMap");

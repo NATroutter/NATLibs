@@ -12,12 +12,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
-public class FileManager {
+public class FileHandler {
   
     private final JavaPlugin plugin;
     private final HashMap<String, Config> configs = new HashMap<String, Config>();
   
-    public FileManager(JavaPlugin plugin) {
+    public FileHandler(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
