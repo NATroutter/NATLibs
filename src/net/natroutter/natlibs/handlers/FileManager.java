@@ -6,30 +6,21 @@ import net.natroutter.natlibs.utilities.libs.RawFileManager;
 import net.natroutter.natlibs.utilities.serialize.Serializer;
 import net.natroutter.natlibs.utilities.serialize.Serializer.Type;
 
-@SuppressWarnings({"unused", "deprecation"})
 public class FileManager {
 
 	private final JavaPlugin pl;
-	private String fileName = "lang.json";
+	private final String fileName;
 	private RawFileManager rfm;
-	private Object obj;
 	private String rawContent;
 	private Serializer serializer;
-	private Class<?> clazz;
-	private Object Instance;
 
-	public enum CfgType {
+	public enum ConfType {
 		Config("Config.json"),
 		Lang("Lang.json");
 
 		private String file;
-		CfgType(String file) { this.file = file; }
+		ConfType(String file) { this.file = file; }
 		public String getFile() { return file; }
-	}
-
-	public FileManager(JavaPlugin pl) {
-		this.pl = pl;
-		init();
 	}
 
 	public FileManager(JavaPlugin pl, String fileName) {
@@ -43,7 +34,7 @@ public class FileManager {
 		init();
 	}
 
-	public FileManager(JavaPlugin pl, CfgType type) {
+	public FileManager(JavaPlugin pl, ConfType type) {
 		this.pl = pl;
 		this.fileName = type.getFile();
 		init();
@@ -57,20 +48,18 @@ public class FileManager {
 
 
 	public <T> T load(Class<T> type) {
-		this.clazz = clazz;
+		Object obj = null;
+		Object instance = null;
 		try {
-			this.Instance = clazz.getDeclaredConstructor().newInstance();
+			instance = type.getDeclaredConstructor().newInstance();
 			if (rfm.getFileCreated()) {
-				rfm.writeFile(serializer.unSerialize(Type.GSON, clazz).replaceAll("§", "&"));
-				obj = Instance;
+				rfm.writeFile(serializer.unSerialize(Type.GSON, type).replaceAll("§", "&"));
+				obj = instance;
 			} else {
-				obj = serializer.serialize(rawContent, Type.GSON, clazz);
+				obj = serializer.serialize(rawContent, Type.GSON, type);
 			}
 			return type.cast(obj);
-		} catch(Exception e) {
-			Instance = null;
-			obj = null;
-		}
+		} catch(Exception ignored) {}
 		return null;
 	}
 	
