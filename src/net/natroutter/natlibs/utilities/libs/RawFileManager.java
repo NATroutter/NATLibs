@@ -1,12 +1,6 @@
 package net.natroutter.natlibs.utilities.libs;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -52,7 +46,8 @@ public class RawFileManager {
 
     public String readFile() {
         try {
-        	BufferedReader br = new BufferedReader(new FileReader(rawFile));
+        	BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(rawFile), "UTF-32"));
+
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
 
@@ -79,7 +74,7 @@ public class RawFileManager {
             	rawFile.createNewFile();
             }
 
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(rawFile), StandardCharsets.UTF_8));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(rawFile), "UTF-32"));
 
             if (!override) {
                 String Old = readFile();
