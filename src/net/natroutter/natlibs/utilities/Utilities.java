@@ -15,6 +15,10 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,7 +35,17 @@ public class Utilities {
 	public void consoleMessage(String msg) {
 		Bukkit.getConsoleSender().sendMessage(msg);
 	}
-	
+
+	public String CurrencyFormat(double balance) {
+		DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.ENGLISH);
+		DecimalFormatSymbols sym = formatter.getDecimalFormatSymbols();
+		sym.setCurrencySymbol("");
+		sym.setDecimalSeparator(',');
+		sym.setGroupingSeparator('.');
+		formatter.setDecimalFormatSymbols(sym);
+		return formatter.format(balance);
+	}
+
 	public void glint(BaseItem item, boolean state) {
 		item.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		if (state) {
@@ -141,6 +155,22 @@ public class Utilities {
 			}
 		}
 		return null;
+	}
+
+	public boolean inRegion(Location loc, Location loc1, Location loc2) {
+		double x1 = loc1.getX();
+		double y1 = loc1.getY();
+		double z1 = loc1.getZ();
+
+		double x2 = loc2.getX();
+		double y2 = loc2.getY();
+		double z2 = loc2.getZ();
+
+		if((loc.getX() > x1) && (loc.getY() > y1) && (loc.getZ() > z1) && (loc.getX() < x2) && (loc.getY() < y2) && (loc.getZ() < z2)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 } 
