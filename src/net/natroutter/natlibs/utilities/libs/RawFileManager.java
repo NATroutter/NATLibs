@@ -46,7 +46,7 @@ public class RawFileManager {
 
     public String readFile() {
         try {
-        	BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(rawFile), "windows-1252"));
+        	BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(rawFile), StandardCharsets.UTF_8));
 
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
@@ -74,7 +74,7 @@ public class RawFileManager {
             	rawFile.createNewFile();
             }
 
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(rawFile), "windows-1252"));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(rawFile), StandardCharsets.UTF_8));
 
             if (!override) {
                 String Old = readFile();
