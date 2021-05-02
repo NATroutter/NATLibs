@@ -8,6 +8,7 @@ import net.natroutter.natlibs.objects.ParticleSettings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -18,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -155,6 +157,19 @@ public class Utilities {
 			}
 		}
 		return null;
+	}
+
+	public ArrayList<Block> getBlocks(Location start, int radius){
+		ArrayList<Block> blocks = new ArrayList<Block>();
+		for(double x = start.getX() - radius; x <= start.getX() + radius; x++){
+			for(double y = start.getY() - radius; y <= start.getY() + radius; y++){
+				for(double z = start.getZ() - radius; z <= start.getZ() + radius; z++){
+					Location loc = new Location(start.getWorld(), x, y, z);
+					blocks.add(loc.getBlock());
+				}
+			}
+		}
+		return blocks;
 	}
 
 	public boolean inRegion(Location loc, Location loc1, Location loc2) {
