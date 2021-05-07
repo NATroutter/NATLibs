@@ -50,34 +50,32 @@ import org.bukkit.util.Vector;
 @SuppressWarnings("deprecation")
 public class BasePlayer implements Player {
 
-	private static HashMap<Player, BasePlayer> players = new HashMap<>();
+	//private static HashMap<Player, BasePlayer> players = new HashMap<>();
 	
 	private final Player p;
 	
 	private BasePlayer(Player p) {
         this.p = p;
-        players.put(p, this);
-        
     }
 	
 	public static BasePlayer from(Entity p) {
         if (p == null) { return null; }
-        return players.containsKey(p) ? players.get(p) : new BasePlayer((Player)p);
+        return new BasePlayer((Player)p);
 
     }
     public static BasePlayer from(Player p) {
 		if (p == null) { return null; }
-		return players.containsKey(p) ? players.get(p) : new BasePlayer(p);
+		return new BasePlayer(p);
 
 	}
 	public static BasePlayer from(OfflinePlayer p) {
 		if (p == null) { return null; }
-		return players.containsKey(p) ? players.get(p) : new BasePlayer((Player)p);
+		return new BasePlayer((Player)p);
 
 	}
     public static BasePlayer from(CommandSender sender) {
         if (sender == null) { return null; }
-        return players.containsKey(sender) ? players.get(sender) : new BasePlayer((Player) sender);
+        return new BasePlayer((Player) sender);
     }
 	
     
