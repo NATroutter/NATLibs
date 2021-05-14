@@ -577,7 +577,7 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
      * @return true if location is inside cuboid
      */
     public boolean inRegion(Location loc) {
-        return (loc.getX() > getLowerX()) && (loc.getY() > getLowerY()) && (loc.getZ() > getLowerZ()) && (loc.getX() < getUpperX()) && (loc.getY() < getUpperY()) && (loc.getZ() < getLowerZ());
+        return (loc.getX() > getUpperX()) && (loc.getY() > getUpperY()) && (loc.getZ() > getUpperZ()) && (loc.getX() < getLowerX()) && (loc.getY() < getLowerY()) && (loc.getZ() < getLowerZ());
     }
 
     public Iterator<Block> iterator() {
