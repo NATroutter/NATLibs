@@ -1296,6 +1296,11 @@ public class BasePlayer implements Player {
 	}
 
 	@Override
+	public int getPing() {
+		return p.getPing();
+	}
+
+	@Override
 	public  Location getCompassTarget() {
 		return p.getCompassTarget();
 	}
