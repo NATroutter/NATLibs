@@ -53,3 +53,29 @@ Maven Dependency:
     <version>{VERSION}</version>
 </dependency>
 ````
+
+Needed maven plugins with configuration
+`````xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-shade-plugin</artifactId>
+    <version>3.2.4</version> <!-- Check if there are newer versions available-->
+    <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>shade</goal>
+            </goals>
+            <configuration>
+                <createDependencyReducedPom>false</createDependencyReducedPom>
+                <relocations>
+                    <relocation>
+                        <pattern>net.natroutter.natlibs</pattern>
+                        <shadedPattern>${project.groupId}.natlibs</shadedPattern>
+                    </relocation>
+                </relocations>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+`````
