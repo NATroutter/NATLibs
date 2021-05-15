@@ -1,5 +1,6 @@
 package net.natroutter.natlibs.handlers;
 
+import net.natroutter.natlibs.objects.ConfType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.natroutter.natlibs.utilities.libs.RawFileManager;
@@ -14,14 +15,6 @@ public class FileManager {
 	private String rawContent;
 	private Serializer serializer;
 
-	public enum ConfType {
-		Config("Config.json"),
-		Lang("Lang.json");
-
-		private String file;
-		ConfType(String file) { this.file = file; }
-		public String getFile() { return file; }
-	}
 
 	public FileManager(JavaPlugin pl, String fileName) {
 		this.pl = pl;

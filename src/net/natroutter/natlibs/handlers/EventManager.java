@@ -3,6 +3,7 @@ package net.natroutter.natlibs.handlers;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
+import net.natroutter.natlibs.objects.CondCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -26,6 +27,29 @@ public class EventManager {
 					pm.registerEvents((Listener)clazz.getDeclaredConstructor().newInstance(), pl);
 				} catch (Exception e) {
 					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public final void RegisterConditionalCommands(CondCommand... commands) {
+		for (CondCommand ccmd : commands) {
+			if (ccmd.getState()) {
+				if (ccmd.getClazz().getSuperclass().equals(Command.class)) {
+					try {
+						Command cmd = (Command)ccmd.getClazz().getDeclaredConstructor().newInstance();
+
+						if (cmd.getName().length() < 1) {
+							cmd.setName(ccmd.getClazz().getSimpleName());
+						}
+
+						Field bukkitCommandMap = pl.getServer().getClass().getDeclaredField("commandMap");
+						bukkitCommandMap.setAccessible(true);
+						CommandMap commandMap = (CommandMap) bukkitCommandMap.get(pl.getServer());
+						commandMap.register(pl.getName(), cmd);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}

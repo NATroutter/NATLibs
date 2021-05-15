@@ -13,22 +13,29 @@
 
 NATLibs is simple and powerful spigot plugin library that provides  
 easier and faster way to do things in code i have made this library mainly  
-for my personal use but if you want to use it feel free to use it
+for my personal use but if you want to use it feel free to do so
 
 </div>
 
-## Installation
-When you are using this library you must have this library plugin in your plugin folder  
-
-1. Download newest stable/dev version of this plugin from [Jenkins](https://hub.nat.gs/jenkins)  
-2. Install that plugin to your server just drop it in your plugins fodler
-3. Include maven repository and stable/dev dependency to your project
-4. Start coding!
 
 ## Documentation
 Documentation (stable): [here](https://hub.nat.gs/javadoc/NATLibs/latest.php?branch=stable)  
 Documentation (dev): [here](https://hub.nat.gs/javadoc/NATLibs/latest.php?branch=dev)  
 Old version documentation can be found in [ProjectHub](https://hub.nat.gs/) for limited time
+
+##Getting Started
+````java
+@Override
+public class ExamplePlugin extends JavaPlugin {
+    
+    @Override
+    public void onEnable() {
+        //This is needed for being available to use some features
+        NATLibs lib = new NATLibs(this);
+    }
+    
+}
+````
 
 ## Api
 Maven Repository (Stable):
