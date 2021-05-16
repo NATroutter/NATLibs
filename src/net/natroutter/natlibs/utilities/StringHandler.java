@@ -20,13 +20,21 @@ public class StringHandler {
 	public StringHandler(Object value) {
 		this.value = value.toString();
 	}
-	
+
+	public StringHandler(List<String> list, Character separator) {
+		this.value = String.join(separator.toString(), list);
+	}
 	public StringHandler(String[] list, Character separator) {
 		this.value = String.join(separator.toString(), list);
+	}
+
+	public StringHandler(List<String> list, String separator) {
+		this.value = String.join(separator, list);
 	}
 	public StringHandler(String[] list, String separator) {
 		this.value = String.join(separator, list);
 	}
+
 	public StringHandler(Collection<?> list, Character separator) {
 		List<String> strList = new ArrayList<String>();
 		for (Object ob : list) {
