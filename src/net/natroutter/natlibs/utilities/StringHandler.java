@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import net.natroutter.natlibs.objects.BasePlayer;
@@ -23,6 +24,9 @@ public class StringHandler {
 	public StringHandler(String[] list, Character separator) {
 		this.value = String.join(separator.toString(), list);
 	}
+	public StringHandler(String[] list, String separator) {
+		this.value = String.join(separator, list);
+	}
 	public StringHandler(Collection<?> list, Character separator) {
 		List<String> strList = new ArrayList<String>();
 		for (Object ob : list) {
@@ -39,31 +43,49 @@ public class StringHandler {
 	}
 	
 	public StringHandler replace(Object oldValue, Object newValue) {
+		if (newValue instanceof StringHandler) {
+			newValue = ((StringHandler) newValue).build();
+		}
 		value = value.replace(oldValue.toString(), newValue.toString());
 		return this;
 	}
 	
 	public StringHandler replaceAll(Object oldValue, Object newValue) {
+		if (newValue instanceof StringHandler) {
+			newValue = ((StringHandler) newValue).build();
+		}
 		value = value.replaceAll(Pattern.quote(oldValue.toString()), newValue.toString());
 		return this;
 	}
 	
 	public StringHandler setPrefix(Object prefix) {
+		if (prefix instanceof StringHandler) {
+			prefix = ((StringHandler) prefix).build();
+		}
 		this.prefix = prefix.toString();
 		return this;
 	}
 	
 	public StringHandler setSuffix(Object suffix) {
+		if (suffix instanceof StringHandler) {
+			suffix = ((StringHandler) suffix).build();
+		}
 		this.suffix = suffix.toString();
 		return this;
 	}
 	
 	public StringHandler addToStart(Object start) {
+		if (start instanceof StringHandler) {
+			start = ((StringHandler) start).build();
+		}
 		value = start.toString() + value;
 		return this;
 	}
 	
 	public StringHandler addToEnd(Object end) {
+		if (end instanceof StringHandler) {
+			end = ((StringHandler) end).build();
+		}
 		value = value + end.toString();
 		return this;
 	}
@@ -92,6 +114,10 @@ public class StringHandler {
 	
 	public void send(BasePlayer p) {
 		p.sendMessage(this.build());
+	}
+
+	public void broadcast() {
+		Bukkit.broadcastMessage(build());
 	}
 	
 }
