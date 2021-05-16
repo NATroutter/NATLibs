@@ -16,7 +16,9 @@ public class StringHandler {
 	String value;
 	String prefix = "";
 	String suffix = "";
-	
+
+	public StringHandler() {}
+
 	public StringHandler(Object value) {
 		this.value = value.toString();
 	}
@@ -48,6 +50,10 @@ public class StringHandler {
 		handler.setPrefix(OriginalHandler.prefix);
 		handler.setPrefix(OriginalHandler.suffix);
 		return handler;
+	}
+
+	public void setValue(Object value) {
+		this.value = value.toString();
 	}
 	
 	public StringHandler replace(Object oldValue, Object newValue) {
