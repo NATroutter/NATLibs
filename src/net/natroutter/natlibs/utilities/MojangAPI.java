@@ -40,8 +40,8 @@ public class MojangAPI {
             return player.getUUID();
 
         } catch (Exception e) {
-            console.sendMessage("§4["+pl.getName()+"] §cYour server has no connection to the mojang servers or is runnig slow.");
-            console.sendMessage("§4["+pl.getName()+"] §cTherefore the UUID cannot be parsed.");
+            console.sendMessage("§4["+pl.getName()+"] §cFailed to fletch data from mojang servers!");
+            e.printStackTrace();
             return null;
         }
     }
@@ -63,8 +63,8 @@ public class MojangAPI {
                 return Bukkit.getOfflinePlayer(uuid).getName();
             }
         } catch (Exception e) {
-            console.sendMessage("§4["+pl.getName()+"] §cYour server has no connection to the mojang servers or is runnig slow.");
-            console.sendMessage("§4["+pl.getName()+"] §cTherefore the UUID cannot be parsed.");
+            console.sendMessage("§4["+pl.getName()+"] §cFailed to fletch data from mojang servers!");
+            e.printStackTrace();
             return null;
         }
 
