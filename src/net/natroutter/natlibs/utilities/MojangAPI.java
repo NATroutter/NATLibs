@@ -3,6 +3,7 @@ package net.natroutter.natlibs.utilities;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.natroutter.natlibs.objects.MojangApiInfo;
+import net.natroutter.natlibs.objects.UUIDTypeAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,7 +16,7 @@ import java.util.UUID;
 
 public class MojangAPI {
 
-    private final Gson gson = new GsonBuilder().create();
+    private final Gson gson = new GsonBuilder().registerTypeAdapter(UUID.class, new UUIDTypeAdapter()).create();
 
     private final String UUID_URL = "https://api.mojang.com/users/profiles/minecraft/%s?at=%d";
     private final String NAME_URL = "https://api.mojang.com/user/profiles/%s/names";
@@ -50,7 +51,7 @@ public class MojangAPI {
 
         try {
             if (Bukkit.getOnlineMode()) {
-                URL url = new URL(String.format(NAME_URL, uuid.toString()));
+                URL url = new URL(String.format(NAME_URL, UUIDTypeAdapter.fromUUID(uuid)));
                 HttpURLConnection connection = (HttpURLConnection)url.openConnection();
                 connection.setReadTimeout(5000);
 
