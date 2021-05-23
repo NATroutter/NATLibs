@@ -1,9 +1,6 @@
 package net.natroutter.natlibs.utilities;
 
-import com.sun.tools.javac.Main;
-import net.natroutter.natlibs.NATLibs;
 import net.natroutter.natlibs.objects.BaseItem;
-import net.natroutter.natlibs.objects.BasePlayer;
 import net.natroutter.natlibs.objects.ParticleSettings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,7 +10,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.text.DecimalFormat;
@@ -97,7 +93,7 @@ public class Utilities {
         return !bool;
 	}
 	
-	public void spawnParticle(BasePlayer p, ParticleSettings settings) {
+	public void spawnParticle(Player p, ParticleSettings settings) {
 		p.spawnParticle(settings.getParticle(),
 			settings.getLoc().getX(),settings.getLoc().getY(),settings.getLoc().getZ(),
 			settings.getCount(),
@@ -112,7 +108,7 @@ public class Utilities {
 
 		for (Entity ent : world.getNearbyEntities(settings.getLoc(), radius, radius, radius)) {
 			if (ent instanceof Player) {
-				BasePlayer p = BasePlayer.from(ent);
+				Player p = (Player)ent;
 				spawnParticle(p, settings);
 			}
 		}

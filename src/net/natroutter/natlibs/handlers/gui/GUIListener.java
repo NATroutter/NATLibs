@@ -2,6 +2,7 @@ package net.natroutter.natlibs.handlers.gui;
 
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,33 +12,33 @@ import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 
-import net.natroutter.natlibs.objects.BasePlayer;
-
 public class GUIListener implements Listener {
 	
 	@EventHandler
 	public void onClick(InventoryClickEvent e) {
-		BasePlayer p = BasePlayer.from(e.getWhoClicked());
-		GUIWindow window = GUIWindow.getWindow(e.getView());
-		
-		if (p != null && window != null) {
-			GUIItem item = window.getItem(e.getSlot());
-			
-			e.setResult(Event.Result.DENY);
-			e.setCancelled(true);
-			
-			if (e.getClickedInventory() == null) { return; }
-			if (e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {return;}
-			if (item == null) { return; }
-			if (item.getItem() == null) { return; }
-			if (item.getItem().getType().equals(Material.AIR)) { return; }
-			
-			if (window.isClickSound()) {
-				p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 100, 1);
+		if (e.getWhoClicked() instanceof Player) {
+			Player p = (Player)e.getWhoClicked();
+			GUIWindow window = GUIWindow.getWindow(e.getView());
+
+			if (window != null) {
+				GUIItem item = window.getItem(e.getSlot());
+
+				e.setResult(Event.Result.DENY);
+				e.setCancelled(true);
+
+				if (e.getClickedInventory() == null) { return; }
+				if (e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {return;}
+				if (item == null) { return; }
+				if (item.getItem() == null) { return; }
+				if (item.getItem().getType().equals(Material.AIR)) { return; }
+
+				if (window.isClickSound()) {
+					p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 100, 1);
+				}
+
+				item.invClick(e);
+
 			}
-			
-			item.invClick(e);
-			
 		}
 	}
 

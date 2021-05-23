@@ -11,12 +11,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 
-import net.natroutter.natlibs.NATLibs;
 import net.natroutter.natlibs.handlers.gui.GUIItem;
 import net.natroutter.natlibs.handlers.gui.GUIWindow;
 import net.natroutter.natlibs.handlers.gui.GUIWindow.Rows;
 import net.natroutter.natlibs.objects.BaseItem;
-import net.natroutter.natlibs.objects.BasePlayer;
 import net.natroutter.natlibs.utilities.SkullCreator;
 
 public class SoundTester extends Command {
@@ -88,7 +86,7 @@ public class SoundTester extends Command {
 		}
 	}
 	
-	public Sound getLastSound(BasePlayer p) {
+	public Sound getLastSound(Player p) {
 		if (!LastSound.containsKey(p.getUniqueId())) {
 			Sound s = getSoundList(getCategory(p)).get(0);
 			LastSound.put(p.getUniqueId(), s);
@@ -96,7 +94,7 @@ public class SoundTester extends Command {
 		return LastSound.get(p.getUniqueId());
 	}
 	
-	public Integer getLastSoundIndex(BasePlayer p) {
+	public Integer getLastSoundIndex(Player p) {
 		int index = 0;
 		ArrayList<Sound> list = getSoundList(getCategory(p));
 		for (int i = 0; i < list.size(); i++) {
@@ -109,7 +107,7 @@ public class SoundTester extends Command {
 		return index;
 	}
 	
-	public void resetLastSound(BasePlayer p) {
+	public void resetLastSound(Player p) {
 		p.stopSound(getLastSound(p));
 		LastSound.remove(p.getUniqueId());
 	}
@@ -126,7 +124,7 @@ public class SoundTester extends Command {
 		}
 	}
 	
-	public GUIWindow getGUI(BasePlayer p) {
+	public GUIWindow getGUI(Player p) {
 		if (!GUI.containsKey(p.getUniqueId())) {
 			GUI.put(p.getUniqueId(), new GUIWindow("§4§lSoundTester", Rows.row3, true, false, false));
 		}
@@ -141,7 +139,7 @@ public class SoundTester extends Command {
 	}
 	
 	
-	public void PreviousSound(BasePlayer p) {
+	public void PreviousSound(Player p) {
 		if (!Category.containsKey(p.getUniqueId())) {
 			Category.put(p.getUniqueId(), SoundCategory.Ambient);
 		}
@@ -158,7 +156,7 @@ public class SoundTester extends Command {
 		PlaySound(p, nextSound, pitch);
 	}
 	
-	public void NextSound(BasePlayer p) {
+	public void NextSound(Player p) {
 		if (!Category.containsKey(p.getUniqueId())) {
 			Category.put(p.getUniqueId(), SoundCategory.Ambient);
 		}
@@ -175,7 +173,7 @@ public class SoundTester extends Command {
 		PlaySound(p, nextSound, pitch);
 	}
 	
-	public void PlaySound(BasePlayer p, Sound sound, Float pitch) {
+	public void PlaySound(Player p, Sound sound, Float pitch) {
 		Sound last = getLastSound(p);
 		p.stopSound(last);
 		
@@ -185,7 +183,7 @@ public class SoundTester extends Command {
 		updateInv(p);
 	}
 	
-	public void PitchUp(BasePlayer p) {
+	public void PitchUp(Player p) {
 		if (!Pitch.containsKey(p.getUniqueId())) {
 			Pitch.put(p.getUniqueId(), 1.0f);
 		}
@@ -200,7 +198,7 @@ public class SoundTester extends Command {
 		updateInv(p);
 	}
 	
-	public void PitchDown(BasePlayer p) {
+	public void PitchDown(Player p) {
 		if (!Pitch.containsKey(p.getUniqueId())) {
 			Pitch.put(p.getUniqueId(), 1.0f);
 		}
@@ -215,7 +213,7 @@ public class SoundTester extends Command {
 		updateInv(p);
 	}
 	
-	public Float getPitch(BasePlayer p) {
+	public Float getPitch(Player p) {
 		if (!Pitch.containsKey(p.getUniqueId())) {
 			Pitch.put(p.getUniqueId(), 1.0f);
 		}
@@ -226,7 +224,7 @@ public class SoundTester extends Command {
 		
 	}
 	
-	public void NextCategory(BasePlayer p) {
+	public void NextCategory(Player p) {
 		if (!Category.containsKey(p.getUniqueId())) {
 			Category.put(p.getUniqueId(), SoundCategory.Ambient);
 		}
@@ -236,7 +234,7 @@ public class SoundTester extends Command {
 		updateInv(p);
 	}
 	
-	public void PreviousCategory(BasePlayer p) {
+	public void PreviousCategory(Player p) {
 		if (!Category.containsKey(p.getUniqueId())) {
 			Category.put(p.getUniqueId(), SoundCategory.Ambient);
 		}
@@ -246,14 +244,14 @@ public class SoundTester extends Command {
 		updateInv(p);
 	}
 	
-	public SoundCategory getCategory(BasePlayer p) {
+	public SoundCategory getCategory(Player p) {
 		if (!Category.containsKey(p.getUniqueId())) {
 			Category.put(p.getUniqueId(), SoundCategory.Ambient);
 		}
 		return Category.get(p.getUniqueId());
 	}
 	
-	public BaseItem getCategoryItem(BasePlayer p) {
+	public BaseItem getCategoryItem(Player p) {
 		if (!Category.containsKey(p.getUniqueId())) {
 			Category.put(p.getUniqueId(), SoundCategory.Ambient);
 		}
@@ -275,17 +273,17 @@ public class SoundTester extends Command {
 	}
 	
 	
-	public void updateInv(BasePlayer p) {
+	public void updateInv(Player p) {
 		CreateGUI(p);
 	}
 	
-	public void show(BasePlayer p) {
+	public void show(Player p) {
 		ConstructSoundLists();
 		p.closeInventory();
 		CreateGUI(p).show(p, true);
 	}
 	
-	public GUIWindow CreateGUI(BasePlayer p) {
+	public GUIWindow CreateGUI(Player p) {
 		GUIWindow gui = getGUI(p);
 		
 		//Sounds controls
@@ -336,7 +334,7 @@ public class SoundTester extends Command {
 			sender.sendMessage(prefix + "§7This command can only be used ingame!");
 			return false;
 		}
-		BasePlayer p = BasePlayer.from(sender);
+		Player p = (Player)sender;
 		if (args.length == 0) {
 			show(p);
 		} else {

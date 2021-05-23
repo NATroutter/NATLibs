@@ -4,15 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import net.natroutter.natlibs.objects.BaseItem;
-import net.natroutter.natlibs.objects.BasePlayer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -121,11 +120,11 @@ public class GUIWindow {
 		}
     }
 
-    public void show(BasePlayer p) {
+    public void show(Player p) {
     	show(p, false);
     }
     
-	public void show(BasePlayer p, Boolean publicInv) {
+	public void show(Player p, Boolean publicInv) {
 		Inventory inv = getInventory();
 		
 		if (OpenSound) {

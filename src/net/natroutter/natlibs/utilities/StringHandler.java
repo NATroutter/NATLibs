@@ -8,8 +8,7 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-
-import net.natroutter.natlibs.objects.BasePlayer;
+import org.bukkit.entity.Player;
 
 public class StringHandler {
 
@@ -126,7 +125,7 @@ public class StringHandler {
 		return prefix + value + suffix;
 	}
 	
-	public void send(BasePlayer p) {
+	public void send(Player p) {
 		p.sendMessage(this.build());
 	}
 

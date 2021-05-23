@@ -2,10 +2,10 @@ package net.natroutter.natlibs.utilities.Bungeecord;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import net.natroutter.natlibs.objects.BasePlayer;
 import net.natroutter.natlibs.utilities.Bungeecord.objects.ServerData;
 import net.natroutter.natlibs.utilities.Bungeecord.objects.ServerStatus;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.InetSocketAddress;
@@ -108,7 +108,7 @@ public class BungeeHandler {
         return ServerStatus.OFFLINE;
     }
 
-    public void switchServer(BasePlayer p, String server) {
+    public void switchServer(Player p, String server) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(server);

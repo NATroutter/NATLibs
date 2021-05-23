@@ -4,10 +4,10 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import net.natroutter.natlibs.objects.BaseItem;
-import net.natroutter.natlibs.objects.BasePlayer;
 
 @SuppressWarnings("deprecation")
 public class SkullCreator {
@@ -19,7 +19,7 @@ public class SkullCreator {
 		return item;
 	}
 	
-	public BaseItem Create(BasePlayer p) {
+	public BaseItem Create(Player p) {
 		BaseItem item = new BaseItem(Material.PLAYER_HEAD);
 		SkullMeta meta = (SkullMeta) item.getItemMeta();
 		assert meta != null;

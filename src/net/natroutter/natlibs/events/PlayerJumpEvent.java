@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,19 +16,17 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import net.natroutter.natlibs.objects.BasePlayer;
-
 public class PlayerJumpEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
-    private BasePlayer p;
+    private Player p;
 
-    public PlayerJumpEvent(BasePlayer p) {
+    public PlayerJumpEvent(Player p) {
         this.p = p;
     }
 
-    public BasePlayer getPlayer() {
+    public Player getPlayer() {
         return p;
     }
 
@@ -56,7 +55,7 @@ public class PlayerJumpEvent extends Event {
 
         @EventHandler(priority = EventPriority.MONITOR)
         public void onPlayerMove(PlayerMoveEvent e) {
-            BasePlayer p = BasePlayer.from(e.getPlayer());
+            Player p = e.getPlayer();
 
             if(e.getFrom().getY() < e.getTo().getY()) {
                 int current = p.getStatistic(Statistic.JUMP);
