@@ -360,10 +360,30 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
      * @param x - The X co-ordinate
      * @param y - The Y co-ordinate
      * @param z - The Z co-ordinate
+     * @param method - The method what to use to do check
+     * @return true if the given point is within this Cuboid, false otherwise
+     */
+    public boolean contains(int x, int y, int z, CuboidCheckMethod method) {
+        if (method.equals(CuboidCheckMethod.BoundingBox)) {
+            Location corn1 = new Location(this.getWorld(), this.x1, this.y1, this.z1);
+            Location corn2 = new Location(this.getWorld(), this.x2, this.y2, this.z2);
+            BoundingBox box = BoundingBox.of(corn1, corn2);
+            return box.contains(x, y,z);
+        } else if (method.equals(CuboidCheckMethod.Math)) {
+            return x >= this.x1 && x <= this.x2 && y >= this.y1 && y <= this.y2 && z >= this.z1 && z <= this.z2;
+        }
+        return false;
+    }
+
+    /**
+     * Return true if the point at (x,y,z) is contained within this Cuboid.
+     *
+     * @param x - The X co-ordinate
+     * @param y - The Y co-ordinate
+     * @param z - The Z co-ordinate
      * @return true if the given point is within this Cuboid, false otherwise
      */
     public boolean contains(int x, int y, int z) {
-        //return x >= this.x1 && x <= this.x2 && y >= this.y1 && y <= this.y2 && z >= this.z1 && z <= this.z2; old shit :D
         Location corn1 = new Location(this.getWorld(), this.x1, this.y1, this.z1);
         Location corn2 = new Location(this.getWorld(), this.x2, this.y2, this.z2);
         BoundingBox box = BoundingBox.of(corn1, corn2);
