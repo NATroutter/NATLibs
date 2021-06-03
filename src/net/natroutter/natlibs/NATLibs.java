@@ -1,6 +1,7 @@
 package net.natroutter.natlibs;
 
 import net.natroutter.natlibs.commands.SoundTester;
+import net.natroutter.natlibs.handlers.CommonHandler;
 import net.natroutter.natlibs.handlers.Database.*;
 import net.natroutter.natlibs.handlers.Database.enums.DatabaseDriver;
 import net.natroutter.natlibs.handlers.Database.enums.FieldType;
@@ -55,6 +56,7 @@ public final class NATLibs {
 
 	public NATLibs enableSoundTester() {
 		evm.RegisterCommands(SoundTester.class);
+		evm.RegisterListeners(CommonHandler.class);
 		return this;
 	}
 }

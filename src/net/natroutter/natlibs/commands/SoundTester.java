@@ -54,10 +54,10 @@ public class SoundTester extends Command {
 	    }
 	}
 	
-	HashMap<UUID, SoundCategory> Category = new HashMap<UUID, SoundCategory>();
-	HashMap<UUID, Float> Pitch = new HashMap<UUID, Float>();
-	HashMap<UUID, GUIWindow> GUI = new HashMap<UUID, GUIWindow>();
-	HashMap<UUID, Sound> LastSound = new HashMap<UUID, Sound>();
+	public static HashMap<UUID, SoundCategory> Category = new HashMap<UUID, SoundCategory>();
+	public static HashMap<UUID, Float> Pitch = new HashMap<UUID, Float>();
+	public static HashMap<UUID, GUIWindow> GUI = new HashMap<UUID, GUIWindow>();
+	public static HashMap<UUID, Sound> LastSound = new HashMap<UUID, Sound>();
 	
 	ArrayList<Sound> AmbientSoundList = new ArrayList<Sound>();
 	ArrayList<Sound> BlockSoundList = new ArrayList<Sound>();

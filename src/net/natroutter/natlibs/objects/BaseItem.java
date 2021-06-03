@@ -87,13 +87,12 @@ public class BaseItem extends ItemStack implements Cloneable, ConfigurationSeria
 	}
 
 	public boolean matches(BaseItem item2) {
-		if (item2 != null) {
-			if (getItemMeta() != null && item2.getItemMeta() != null) {
-				if (getItemMeta().getDisplayName().equals(item2.getDisplayName())) {
-					if (getItemMeta().getLore().equals(item2.getLore())) {
-						return true;
-					}
-				}
+		if (item2.getItemMeta() == null || getItemMeta() == null) {return false;}
+		if (item2.getItemMeta().getDisplayName().equals(getItemMeta().getDisplayName())) {
+			if (getItemMeta().getLore() != null && item2.getItemMeta().getLore() != null) {
+				return item2.getItemMeta().getLore().equals(getItemMeta().getLore());
+			} else {
+				return true;
 			}
 		}
 		return false;
