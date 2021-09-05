@@ -12,6 +12,10 @@ public class ServerData {
         serverName = serverName;
     }
 
+    public String getServerName() {
+        return serverName;
+    }
+
     public ServerStatus getServerStatue() {
         return serverStatue;
     }
