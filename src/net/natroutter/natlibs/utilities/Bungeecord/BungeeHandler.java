@@ -48,18 +48,22 @@ public class BungeeHandler {
     private void init(){
         Bukkit.getScheduler().scheduleSyncRepeatingTask(pl, ()->{
             if (Bukkit.getOnlinePlayers().size() > 0) {
-                loadServers();
-                for (Map.Entry<String, ServerData> server : servers.entrySet()) {
-                    getServerAddress(server.getKey());
-                    ServerStatus statues = server.getValue().getServerStatue();
-                    if (statues != null) {
-                        if (server.getValue().getServerStatue().equals(ServerStatus.ONLINE)) {
-                            getPalyerCount(server.getKey());
-                        }
-                    }
-                }
+                update();
             }
         }, 0, updateIntervalTick);
+    }
+
+    public void update() {
+        loadServers();
+        for (Map.Entry<String, ServerData> server : servers.entrySet()) {
+            getServerAddress(server.getKey());
+            ServerStatus statues = server.getValue().getServerStatue();
+            if (statues != null) {
+                if (server.getValue().getServerStatue().equals(ServerStatus.ONLINE)) {
+                    getPalyerCount(server.getKey());
+                }
+            }
+        }
     }
 
     protected HashMap<String, ServerData> getMap() {return servers;}
