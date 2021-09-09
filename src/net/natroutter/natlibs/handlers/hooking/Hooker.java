@@ -9,8 +9,10 @@ import java.lang.reflect.InvocationTargetException;
 public class Hooker {
 
     private JavaPlugin pl;
-    private String HookedMessage;
-    private String HookingFailedMessage;
+    private String hookedMessage;
+    private String hookingFailedMessage;
+    private String disabledMessage;
+    private boolean disableWhenFailed;
 
     ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 
@@ -19,10 +21,16 @@ public class Hooker {
     public Hooker(JavaPlugin pl) {
         this.pl = pl;
     }
-    public Hooker(JavaPlugin pl, String HookedMessage, String HookingFailedMessage) {
+    public Hooker(JavaPlugin pl, boolean disableWhenFailed) {
         this.pl = pl;
-        this.HookedMessage = HookedMessage;
-        this.HookingFailedMessage = HookingFailedMessage;
+        this.disableWhenFailed = disableWhenFailed;
+    }
+    public Hooker(JavaPlugin pl, boolean disableWhenFailed, String HookedMessage, String HookingFailedMessage, String disabledMessage) {
+        this.pl = pl;
+        this.disableWhenFailed = disableWhenFailed;
+        this.hookedMessage = HookedMessage;
+        this.hookingFailedMessage = HookingFailedMessage;
+        this.disabledMessage = disabledMessage;
     }
 
     /**
@@ -30,7 +38,15 @@ public class Hooker {
      * @param message message to send, you can use {plugin} to display plugin name!
      */
     public Hooker setHookedMessage(String message) {
-        this.HookedMessage = message;
+        this.hookedMessage = message;
+        return this;
+    }
+
+    /**
+     * Call this method if you want plugin to be disabled when one of hooked plugins fails to hook
+     */
+    public Hooker disableWhenFailed() {
+        disableWhenFailed = true;
         return this;
     }
 
@@ -39,16 +55,8 @@ public class Hooker {
      * @param message message to send, you can use {plugin} to display plugin name!
      */
     public Hooker setHookingFailedMessage(String message) {
-        this.HookingFailedMessage = message;
+        this.hookingFailedMessage = message;
         return this;
-    }
-
-    protected String getHookedMessage() {
-        return HookedMessage;
-    }
-
-    protected String getHookingFailedMessage() {
-        return HookingFailedMessage;
     }
 
     /**
@@ -56,7 +64,15 @@ public class Hooker {
      * @param PluginName Plugin name what you want to hook into
      */
     public Hook create(String PluginName) {
-        return new Hook(PluginName, this);
+        Hook hook = new Hook(PluginName, this);
+        if (!hook.isHooked()) {
+            if (this.disableWhenFailed) {
+                console.sendMessage(getDisabledMessage());
+                Bukkit.getServer().getPluginManager().disablePlugin(pl);
+                return null;
+            }
+        }
+        return hook;
     }
 
     /**
@@ -66,19 +82,47 @@ public class Hooker {
      */
     public <T> T create(String PluginName, Class<T> clazz) {
         try {
+            T obj = clazz.getDeclaredConstructor(clazz).newInstance(PluginName, this);
+
             Class<?> extended = clazz.getSuperclass();
             if (!(extended.equals(Hook.class))) {
-
                 String plName = "UNKNOWN_PLUGIN";
                 if (pl != null) {plName = pl.getName();}
 
                 console.sendMessage("§4["+plName+"][Hooker] §cERROR! - " + clazz.getName() + " does not extend Hook");
                 return null;
             }
+            Hook hook = (Hook)obj;
+
+            if (!hook.isHooked()) {
+                if (this.disableWhenFailed) {
+                    console.sendMessage(getDisabledMessage());
+                    Bukkit.getServer().getPluginManager().disablePlugin(pl);
+                    return null;
+                }
+            }
+
             return clazz.getDeclaredConstructor(clazz).newInstance(PluginName, this);
+
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+
+
+    protected String getHookedMessage() {
+        return hookedMessage;
+    }
+
+    protected String getHookingFailedMessage() {
+        return hookingFailedMessage;
+    }
+
+    protected String getDisabledMessage() {
+        String plName = "UNKNOWN_PLUGIN";
+        if (pl != null) {plName = pl.getName();}
+        return "§4["+plName+"][Hooker] " + disabledMessage;
     }
 }
