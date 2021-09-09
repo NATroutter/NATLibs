@@ -10,8 +10,8 @@ public class Hook {
     private Plugin plugin;
     private boolean Hooked = false;
 
-    protected Plugin getPlugin() {return plugin;}
-    protected boolean isHooked() {return Hooked;}
+    public Plugin getPlugin() {return plugin;}
+    public boolean isHooked() {return Hooked;}
 
     protected Hook(String PluginName, Hooker hooker) {
         StringHandler successMessage = new StringHandler(hooker.getHookedMessage());
