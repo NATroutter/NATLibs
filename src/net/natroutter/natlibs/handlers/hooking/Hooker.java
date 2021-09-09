@@ -55,8 +55,8 @@ public class Hooker {
     }
 
     /**
-     * Set message what will be send when hooked succesfully
-     * @param message message to send, you can use {plugin} to display plugin name!
+     * Set message what will be sent when hooked succesfully
+     * @param message message to sent, you can use {plugin} to display plugin name!
      */
     public Hooker setHookedMessage(String message) {
         this.hookedMessage = message;
@@ -72,11 +72,20 @@ public class Hooker {
     }
 
     /**
-     * Set message what will be send when hooking fails
-     * @param message message to send, you can use {plugin} to display plugin name!
+     * Set message what will be sent when hooking fails
+     * @param message message to sent, you can use {plugin} to display plugin name!
      */
     public Hooker setHookingFailedMessage(String message) {
         this.hookingFailedMessage = message;
+        return this;
+    }
+
+    /**
+     * Set message what will be sent when hooking fails
+     * @param message message to sent, you can use {plugin} to display plugin name!
+     */
+    public Hooker setDisableMessage(String message) {
+        this.disabledMessage = message;
         return this;
     }
 
