@@ -9,22 +9,43 @@ import java.lang.reflect.InvocationTargetException;
 public class Hooker {
 
     private JavaPlugin pl;
-    private String hookedMessage;
-    private String hookingFailedMessage;
-    private String disabledMessage;
+    private String hookedMessage = " §a+ §7Plugin hooked succesfully!";
+    private String hookingFailedMessage = " §4- §7Plugin hooking failed!";
+    private String disabledMessage = "§7Disabling plugin because failed to hook plugin!";
     private boolean disableWhenFailed;
+    private boolean hookFail = false;
 
     ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 
     @Deprecated
     public Hooker() {}
+
+    /**
+     * Set message what will be send when hooked succesfully
+     * @param pl Plugin instance!
+     */
     public Hooker(JavaPlugin pl) {
         this.pl = pl;
     }
+
+    /**
+     * Set message what will be send when hooked succesfully
+     * @param pl Plugin instance!
+     * @param disableWhenFailed Determine do you want to disable plugin when hooking fails!
+     */
     public Hooker(JavaPlugin pl, boolean disableWhenFailed) {
         this.pl = pl;
         this.disableWhenFailed = disableWhenFailed;
     }
+
+    /**
+     * Set message what will be send when hooked succesfully
+     * @param pl Plugin instance!
+     * @param disableWhenFailed Determine do you want to disable plugin when hooking fails!
+     * @param HookedMessage Message that will be sent when plugin is hooked successfully!
+     * @param HookingFailedMessage Message that will be sent when plugin hooking fails!
+     * @param disabledMessage Message that will be sent when plugin is being disabled!
+     */
     public Hooker(JavaPlugin pl, boolean disableWhenFailed, String HookedMessage, String HookingFailedMessage, String disabledMessage) {
         this.pl = pl;
         this.disableWhenFailed = disableWhenFailed;
@@ -64,23 +85,43 @@ public class Hooker {
      * @param PluginName Plugin name what you want to hook into
      */
     public Hook create(String PluginName) {
+        return create(PluginName, false);
+    }
+    /**
+     * Create new plugin hooking
+     * @param PluginName Plugin name what you want to hook into
+     * @param softDepend determine if plugin is softdepended or not!
+     */
+    public Hook create(String PluginName, boolean softDepend) {
+
+        if (hookFail) {return null;}
         Hook hook = new Hook(PluginName, this);
-        if (!hook.isHooked()) {
-            if (this.disableWhenFailed) {
-                console.sendMessage(getDisabledMessage());
-                Bukkit.getServer().getPluginManager().disablePlugin(pl);
-                return null;
-            }
+
+        if (!hook.isHooked() && !softDepend) {
+            disablePlugin();
+            return null;
         }
+
         return hook;
     }
 
     /**
      * Create new custom hook with custom class (class needs to extend HooK)
-     * @param PluginName Plugin name what you want to hook into
-     * @param clazz class waht you want to use for custom hook
+     * @param PluginName Plugin name what you want to hook into!
+     * @param clazz class waht you want to use for custom hook!
      */
     public <T> T create(String PluginName, Class<T> clazz) {
+        return create(PluginName, clazz, false);
+    }
+
+    /**
+     * Create new custom hook with custom class (class needs to extend HooK)
+     * @param PluginName Plugin name what you want to hook into!
+     * @param clazz class waht you want to use for custom hook!
+     * @param softDepend determine if plugin is softdepended or not!
+     */
+    public <T> T create(String PluginName, Class<T> clazz, boolean softDepend) {
+        if (hookFail) {return null;}
         try {
             T obj = clazz.getDeclaredConstructor(clazz).newInstance(PluginName, this);
 
@@ -90,16 +131,14 @@ public class Hooker {
                 if (pl != null) {plName = pl.getName();}
 
                 console.sendMessage("§4["+plName+"][Hooker] §cERROR! - " + clazz.getName() + " does not extend Hook");
+                if (!softDepend) {hookFail = true;}
                 return null;
             }
             Hook hook = (Hook)obj;
 
-            if (!hook.isHooked()) {
-                if (this.disableWhenFailed) {
-                    console.sendMessage(getDisabledMessage());
-                    Bukkit.getServer().getPluginManager().disablePlugin(pl);
-                    return null;
-                }
+            if (!hook.isHooked() && !softDepend) {
+                disablePlugin();
+                return null;
             }
 
             return clazz.getDeclaredConstructor(clazz).newInstance(PluginName, this);
@@ -120,9 +159,14 @@ public class Hooker {
         return hookingFailedMessage;
     }
 
-    protected String getDisabledMessage() {
+    protected void disablePlugin() {
         String plName = "UNKNOWN_PLUGIN";
         if (pl != null) {plName = pl.getName();}
-        return "§4["+plName+"][Hooker] " + disabledMessage;
+
+        if (this.disableWhenFailed) {
+            console.sendMessage("§4["+plName+"][Hooker] " + disabledMessage);
+            Bukkit.getServer().getPluginManager().disablePlugin(pl);
+            hookFail = true;
+        }
     }
 }
