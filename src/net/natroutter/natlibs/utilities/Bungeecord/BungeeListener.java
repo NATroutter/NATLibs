@@ -30,7 +30,7 @@ public class BungeeListener implements PluginMessageListener {
                 try {
                     for (String server : in.readUTF().split(", ")) {
                         if (handler.getDebug()) {
-                            console.sendMessage(server);
+                            console.sendMessage("[NATLibs-DEBUG] " + server);
                         }
 
                         if (server == null) {continue;}
