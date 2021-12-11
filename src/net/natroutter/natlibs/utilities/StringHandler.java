@@ -19,7 +19,7 @@ public class StringHandler {
 	public StringHandler() {}
 
 	public StringHandler(Object value) {
-		this.value = Pattern.quote(value.toString());
+		this.value = value.toString();
 	}
 
 	public StringHandler(List<String> list, Character separator) {
@@ -52,14 +52,14 @@ public class StringHandler {
 	}
 
 	public void setValue(Object value) {
-		this.value = Pattern.quote(value.toString());
+		this.value = value.toString();
 	}
 	
 	public StringHandler replace(Object oldValue, Object newValue) {
 		if (newValue instanceof StringHandler) {
 			newValue = ((StringHandler) newValue).build();
 		}
-		value = value.replace(Pattern.quote(oldValue.toString()), Pattern.quote(newValue.toString()));
+		value = value.replace(oldValue.toString(), newValue.toString());
 		return this;
 	}
 	
@@ -67,7 +67,7 @@ public class StringHandler {
 		if (newValue instanceof StringHandler) {
 			newValue = ((StringHandler) newValue).build();
 		}
-		value = value.replaceAll(Pattern.quote(oldValue.toString()), Pattern.quote(newValue.toString()));
+		value = value.replaceAll(Pattern.quote(oldValue.toString()), newValue.toString());
 		return this;
 	}
 	
@@ -75,7 +75,7 @@ public class StringHandler {
 		if (prefix instanceof StringHandler) {
 			prefix = ((StringHandler) prefix).build();
 		}
-		this.prefix = Pattern.quote(prefix.toString());
+		this.prefix = prefix.toString();
 		return this;
 	}
 	
@@ -83,7 +83,7 @@ public class StringHandler {
 		if (suffix instanceof StringHandler) {
 			suffix = ((StringHandler) suffix).build();
 		}
-		this.suffix = Pattern.quote(suffix.toString());
+		this.suffix = suffix.toString();
 		return this;
 	}
 	
@@ -91,7 +91,7 @@ public class StringHandler {
 		if (start instanceof StringHandler) {
 			start = ((StringHandler) start).build();
 		}
-		value = Pattern.quote(start.toString()) + value;
+		value = start.toString() + value;
 		return this;
 	}
 	
@@ -99,7 +99,7 @@ public class StringHandler {
 		if (end instanceof StringHandler) {
 			end = ((StringHandler) end).build();
 		}
-		value = value + Pattern.quote(end.toString());
+		value = value + end.toString();
 		return this;
 	}
 	
@@ -132,5 +132,5 @@ public class StringHandler {
 	public void broadcast() {
 		Bukkit.broadcastMessage(build());
 	}
-	
+
 }
