@@ -37,7 +37,7 @@ public class StringHandler {
 	}
 
 	public StringHandler(Collection<?> list, Character separator) {
-		List<String> strList = new ArrayList<String>();
+		List<String> strList = new ArrayList<>();
 		for (Object ob : list) {
 			strList.add(ob.toString());
 		}
@@ -67,7 +67,7 @@ public class StringHandler {
 		if (newValue instanceof StringHandler) {
 			newValue = ((StringHandler) newValue).build();
 		}
-		value = value.replaceAll(Pattern.quote(oldValue.toString()), Pattern.quote(newValue.toString()));
+		value = value.replaceAll(oldValue.toString(), newValue.toString());
 		return this;
 	}
 	
