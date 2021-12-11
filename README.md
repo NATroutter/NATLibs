@@ -20,16 +20,22 @@ Documentation: [here](https://hub.nat.gs/javadoc/NATLibs/latest.php)
 Old version documentation can be found in [ProjectHub](https://hub.nat.gs/) for limited time
 
 ##Getting Started
+
 ````java
+import net.natroutter.natlibs.NATLibs;
+
 @Override
-public class ExamplePlugin extends JavaPlugin {
-    
+public class ExamplePlugin extends JavaPlugin implements NATLibs {
+
     @Override
     public void onEnable() {
         //This is needed for being available to use some features
-        NATLibs lib = new NATLibs(this);
+        registerLibrary(this);
+        
+        //This is only needed if you want to use bungeecord functionality
+        createBungeecordHandler(this);
     }
-    
+
 }
 ````
 
@@ -37,7 +43,7 @@ public class ExamplePlugin extends JavaPlugin {
 ###Maven Repository:
 ````xml
 <repository>
-    <id>natlibs</id>
+    <id>NATLibs</id>
     <url>https://hub.nat.gs/nexus/repository/natlibs/</url>
 </repository>
 ````
@@ -56,7 +62,7 @@ public class ExamplePlugin extends JavaPlugin {
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-shade-plugin</artifactId>
-    <version>3.2.4</version> <!-- Check if there are newer versions available-->
+    <version>3.2.4</version>
     <executions>
         <execution>
             <phase>package</phase>
@@ -64,13 +70,14 @@ public class ExamplePlugin extends JavaPlugin {
                 <goal>shade</goal>
             </goals>
             <configuration>
+                <minimizeJar>true</minimizeJar>
                 <createDependencyReducedPom>false</createDependencyReducedPom>
-                <relocations> <!-- This is the must have part that you need (START) -->
+                <relocations>
                     <relocation>
                         <pattern>net.natroutter.natlibs</pattern>
                         <shadedPattern>${project.groupId}.natlibs</shadedPattern>
                     </relocation>
-                </relocations> <!-- This is the must have part that you need (END) -->
+                </relocations>
             </configuration>
         </execution>
     </executions>

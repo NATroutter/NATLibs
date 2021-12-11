@@ -9,24 +9,23 @@ import net.natroutter.natlibs.handlers.EventManager;
 import net.natroutter.natlibs.handlers.gui.GUIListener;
 import org.bukkit.plugin.messaging.Messenger;
 
+public interface NATLibs {
 
-public final class NATLibs {
-
-	private EventManager evm;
-	private JavaPlugin plugin;
-
-	public NATLibs(JavaPlugin plugin) {
-		this.plugin = plugin;
-		evm = new EventManager(plugin);
+	default void registerLibrary(JavaPlugin plugin) {
+		EventManager evm = new EventManager(plugin);
 		evm.RegisterListeners(
 				GUIListener.class,
 				PlayerJumpEventListener.class
 		);
 	}
 
-	public BungeeHandler createBungeecordHandler() {return createBungeecordHandler(null, false);}
-	public BungeeHandler createBungeecordHandler(Integer updateIntervalTick) {return createBungeecordHandler(updateIntervalTick, false);}
-	public BungeeHandler createBungeecordHandler(Integer updateIntervalTick, boolean debug) {
+	default BungeeHandler createBungeecordHandler(JavaPlugin plugin) {
+		return createBungeecordHandler(plugin, null, false);
+	}
+	default BungeeHandler createBungeecordHandler(JavaPlugin plugin, Integer updateIntervalTick) {
+		return createBungeecordHandler(plugin, updateIntervalTick, false);
+	}
+	default BungeeHandler createBungeecordHandler(JavaPlugin plugin, Integer updateIntervalTick, boolean debug) {
 		BungeeHandler handler = new BungeeHandler(plugin, updateIntervalTick);
 		Messenger messanger = plugin.getServer().getMessenger();
 		messanger.registerOutgoingPluginChannel(plugin, "BungeeCord");
