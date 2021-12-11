@@ -3,11 +3,10 @@
 <div align="center">
 <h1 style="margin: 0px;font-weight: 700;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji">NATLibs</h1>
 
-![licence](https://img.shields.io/badge/License-MIT-brightgreen)
+![GitHub](https://img.shields.io/github/license/NATroutter/NATLibs?style=for-the-badge)
 
-![Jenkins](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fhub.nat.gs%2Fjenkins%2Fjob%2Fnatlibs%2520-%2520Dev%2F&label=Last%20dev%20Build&style=flat-square)
-
-![Sonatype Nexus (Repository)](https://img.shields.io/nexus/natlibs/net.natroutter/NATLibs?label=nexus%20-%20dev&server=https%3A%2F%2Fhub.nat.gs%2Fnexus%2F&style=flat-square)
+![Jenkins](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fhub.nat.gs%2Fjenkins%2Fjob%2FNATLibs%2F&style=for-the-badge)
+![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/net.natroutter/NATLibs?server=https%3A%2F%2Fhub.nat.gs%2Fnexus%2F&style=for-the-badge)
 
 NATLibs is simple and powerful spigot plugin library that provides  
 easier and faster way to do things in code i have made this library mainly  

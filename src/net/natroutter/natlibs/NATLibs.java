@@ -1,8 +1,5 @@
 package net.natroutter.natlibs;
 
-import net.natroutter.natlibs.commands.SoundTester;
-import net.natroutter.natlibs.handlers.CommonHandler;
-
 import net.natroutter.natlibs.utilities.Bungeecord.BungeeHandler;
 import net.natroutter.natlibs.utilities.Bungeecord.BungeeListener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,11 +32,5 @@ public final class NATLibs {
 		messanger.registerOutgoingPluginChannel(plugin, "BungeeCord");
 		messanger.registerIncomingPluginChannel(plugin, "BungeeCord", new BungeeListener(handler));
 		return handler;
-	}
-
-	public NATLibs enableSoundTester() {
-		evm.RegisterCommands(SoundTester.class);
-		evm.RegisterListeners(CommonHandler.class);
-		return this;
 	}
 }
