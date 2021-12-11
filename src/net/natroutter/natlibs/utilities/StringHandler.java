@@ -19,7 +19,7 @@ public class StringHandler {
 	public StringHandler() {}
 
 	public StringHandler(Object value) {
-		this.value = value.toString();
+		this.value = Pattern.quote(value.toString());
 	}
 
 	public StringHandler(List<String> list, Character separator) {
@@ -52,14 +52,14 @@ public class StringHandler {
 	}
 
 	public void setValue(Object value) {
-		this.value = value.toString();
+		this.value = Pattern.quote(value.toString());
 	}
 	
 	public StringHandler replace(Object oldValue, Object newValue) {
 		if (newValue instanceof StringHandler) {
 			newValue = ((StringHandler) newValue).build();
 		}
-		value = value.replace(oldValue.toString(), newValue.toString());
+		value = value.replace(Pattern.quote(oldValue.toString()), Pattern.quote(newValue.toString()));
 		return this;
 	}
 	
@@ -67,7 +67,7 @@ public class StringHandler {
 		if (newValue instanceof StringHandler) {
 			newValue = ((StringHandler) newValue).build();
 		}
-		value = value.replaceAll(Pattern.quote(oldValue.toString()), newValue.toString());
+		value = value.replaceAll(Pattern.quote(oldValue.toString()), Pattern.quote(newValue.toString()));
 		return this;
 	}
 	
@@ -75,7 +75,7 @@ public class StringHandler {
 		if (prefix instanceof StringHandler) {
 			prefix = ((StringHandler) prefix).build();
 		}
-		this.prefix = prefix.toString();
+		this.prefix = Pattern.quote(prefix.toString());
 		return this;
 	}
 	
@@ -83,7 +83,7 @@ public class StringHandler {
 		if (suffix instanceof StringHandler) {
 			suffix = ((StringHandler) suffix).build();
 		}
-		this.suffix = suffix.toString();
+		this.suffix = Pattern.quote(suffix.toString());
 		return this;
 	}
 	
@@ -91,7 +91,7 @@ public class StringHandler {
 		if (start instanceof StringHandler) {
 			start = ((StringHandler) start).build();
 		}
-		value = start.toString() + value;
+		value = Pattern.quote(start.toString()) + value;
 		return this;
 	}
 	
@@ -99,7 +99,7 @@ public class StringHandler {
 		if (end instanceof StringHandler) {
 			end = ((StringHandler) end).build();
 		}
-		value = value + end.toString();
+		value = value + Pattern.quote(end.toString());
 		return this;
 	}
 	
