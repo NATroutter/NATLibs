@@ -5,11 +5,9 @@
 
 ![licence](https://img.shields.io/badge/License-MIT-brightgreen)
 
-![Jenkins](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fhub.nat.gs%2Fjenkins%2Fjob%2FNATLibs%2520-%2520Dev%2F&label=Last%20dev%20Build&style=flat-square)
-![Jenkins](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fhub.nat.gs%2Fjenkins%2Fjob%2FNATLibs%2520-%2520stable%2F&label=Last%20stable%20Build&style=flat-square)
+![Jenkins](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fhub.nat.gs%2Fjenkins%2Fjob%2Fnatlibs%2520-%2520Dev%2F&label=Last%20dev%20Build&style=flat-square)
 
-![Sonatype Nexus (Repository)](https://img.shields.io/nexus/NATLibs-dev/net.natroutter/NATLibs?label=nexus%20-%20dev&server=https%3A%2F%2Fhub.nat.gs%2Fnexus%2F&style=flat-square)
-![Sonatype Nexus (Repository)](https://img.shields.io/nexus/NATLibs-stable/net.natroutter/NATLibs?label=nexus%20-%20stable&server=https%3A%2F%2Fhub.nat.gs%2Fnexus%2F&style=flat-square)
+![Sonatype Nexus (Repository)](https://img.shields.io/nexus/natlibs/net.natroutter/NATLibs?label=nexus%20-%20dev&server=https%3A%2F%2Fhub.nat.gs%2Fnexus%2F&style=flat-square)
 
 NATLibs is simple and powerful spigot plugin library that provides  
 easier and faster way to do things in code i have made this library mainly  
@@ -19,8 +17,7 @@ for my personal use but if you want to use it feel free to do so
 
 
 ## Documentation
-Documentation (stable): [here](https://hub.nat.gs/javadoc/NATLibs/latest.php?branch=stable)  
-Documentation (dev): [here](https://hub.nat.gs/javadoc/NATLibs/latest.php?branch=dev)  
+Documentation: [here](https://hub.nat.gs/javadoc/NATLibs/latest.php)  
 Old version documentation can be found in [ProjectHub](https://hub.nat.gs/) for limited time
 
 ##Getting Started
@@ -38,21 +35,15 @@ public class ExamplePlugin extends JavaPlugin {
 ````
 
 ## Api
-Maven Repository (Stable):
+###Maven Repository:
 ````xml
 <repository>
-    <id>NATLibs-stable</id>
-    <url>https://hub.nat.gs/nexus/repository/NATLibs-stable/</url>
+    <id>natlibs</id>
+    <url>https://hub.nat.gs/nexus/repository/natlibs/</url>
 </repository>
 ````
-Maven Repository (Dev):
-````xml
-<repository>
-    <id>NATLibs-dev</id>
-    <url>https://hub.nat.gs/nexus/repository/NATLibs-dev/</url>
-</repository>
-````
-Maven Dependency:
+
+###Maven Dependency:
 ````xml
 <dependency>
     <groupId>net.natroutter</groupId>
@@ -61,7 +52,7 @@ Maven Dependency:
 </dependency>
 ````
 
-Needed maven plugins with configuration
+###Needed maven plugins with configuration
 `````xml
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
@@ -75,12 +66,12 @@ Needed maven plugins with configuration
             </goals>
             <configuration>
                 <createDependencyReducedPom>false</createDependencyReducedPom>
-                <relocations>
+                <relocations> <!-- This is the must have part that you need (START) -->
                     <relocation>
                         <pattern>net.natroutter.natlibs</pattern>
                         <shadedPattern>${project.groupId}.natlibs</shadedPattern>
                     </relocation>
-                </relocations>
+                </relocations> <!-- This is the must have part that you need (END) -->
             </configuration>
         </execution>
     </executions>
