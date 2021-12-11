@@ -67,7 +67,7 @@ public class StringHandler {
 		if (newValue instanceof StringHandler) {
 			newValue = ((StringHandler) newValue).build();
 		}
-		value = value.replaceAll(Pattern.quote(oldValue.toString()), newValue.toString());
+		value = value.replaceAll(Pattern.quote(oldValue.toString()), Pattern.quote(newValue.toString()));
 		return this;
 	}
 	
