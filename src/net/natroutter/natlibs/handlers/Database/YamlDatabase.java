@@ -1,16 +1,19 @@
 package net.natroutter.natlibs.handlers.Database;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import net.natroutter.natlibs.utilities.libs.FileHandler;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.common.reflection.qual.ClassValBottom;
 
 public class YamlDatabase {
 
@@ -36,6 +39,10 @@ public class YamlDatabase {
         data.copyDefaults(true).save();
     }
 
+    public YamlConfiguration get() {
+        return data.get();
+    }
+
     public void reload() {
         data.reload();
     }
@@ -52,6 +59,9 @@ public class YamlDatabase {
     }
 
     //Get config keys
+    public Set<String> getKeys(Object Identifier, Object key) {
+        return getKeys(Identifier + "." + key);
+    }
     public Set<String> getKeys(String key) {
         ConfigurationSection sect = data.get().getConfigurationSection(key);
         if (sect != null) {
@@ -140,10 +150,61 @@ public class YamlDatabase {
 
     }
 
-    //Get List from configs
+    //Get String List from configs
+    public List<String> getStringList(Object Identifier, String key) {
+        return data.get().getStringList(Identifier + "." + key);
+    }
+
+    //Get Boolean List from configs
+    public List<Boolean> getBooleanList(Object Identifier, String key) {
+        return data.get().getBooleanList(Identifier + "." + key);
+    }
+
+    //Get Byte List from configs
+    public List<Byte> getByteList(Object Identifier, String key) {
+        return data.get().getByteList(Identifier + "." + key);
+    }
+
+    //Get Character List from configs
+    public List<Character> getCharacterList(Object Identifier, String key) {
+        return data.get().getCharacterList(Identifier + "." + key);
+    }
+
+    //Get Double List from configs
+    public List<Double> getDoubleList(Object Identifier, String key) {
+        return data.get().getDoubleList(Identifier + "." + key);
+    }
+
+    //Get Float List from configs
+    public List<Float> getFloatList(Object Identifier, String key) {
+        return data.get().getFloatList(Identifier + "." + key);
+    }
+
+    //Get Integer List from configs
+    public List<Integer> getIntegerList(Object Identifier, String key) {
+        return data.get().getIntegerList(Identifier + "." + key);
+    }
+
+    //Get Long List from configs
+    public List<Long> getLongList(Object Identifier, String key) {
+        return data.get().getLongList(Identifier + "." + key);
+    }
+
+    //Get Map<?, ?> List from configs
+    public List<Map<?,?>> getMapList(Object Identifier, String key) {
+        return data.get().getMapList(Identifier + "." + key);
+    }
+
+    //Get Short List from configs
+    public List<Short> getShortList(Object Identifier, String key) {
+        return data.get().getShortList(Identifier + "." + key);
+    }
+
+    //Get ? List from configs
     public List<?> getList(Object Identifier, String key) {
         return data.get().getList(Identifier + "." + key);
     }
+
 
     //Get String from configs
     public String getString(Object Identifier, String key) {
