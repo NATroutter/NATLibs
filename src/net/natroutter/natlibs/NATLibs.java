@@ -11,12 +11,13 @@ import org.bukkit.plugin.messaging.Messenger;
 
 public interface NATLibs {
 
-	default void registerLibrary(JavaPlugin plugin) {
+	default NATLibs registerLibrary(JavaPlugin plugin) {
 		EventManager evm = new EventManager(plugin);
 		evm.RegisterListeners(
 				GUIListener.class,
 				PlayerJumpEventListener.class
 		);
+		return this;
 	}
 
 	default BungeeHandler createBungeecordHandler(JavaPlugin plugin) {
