@@ -43,8 +43,8 @@ public class ExamplePlugin extends JavaPlugin implements NATLibs {
 ###Maven Repository:
 ````xml
 <repository>
-    <id>NATLibs</id>
-    <url>https://hub.nat.gs/nexus/repository/natlibs/</url>
+    <id>NAT-Software</id>
+    <url>https://hub.nat.gs/nexus/repository/NAT-Software/</url>
 </repository>
 ````
 
