@@ -16,7 +16,7 @@ for my personal use but if you want to use it feel free to do so
 
 
 ## Documentation
-Documentation: [here](https://hub.nat.gs/javadoc/NATLibs/latest.php)  
+Documentation: [here](https://hub.nat.gs/javadoc/latest.php?project=natlibs)  
 Old version documentation can be found in [ProjectHub](https://hub.nat.gs/) for limited time
 
 ##Getting Started
