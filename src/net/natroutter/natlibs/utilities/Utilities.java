@@ -92,7 +92,18 @@ public class Utilities {
 	public Boolean flipBool(Boolean bool) {
         return !bool;
 	}
-	
+
+	public void spawnParticleWorld(ParticleSettings settings) {
+		World world = settings.getLoc().getWorld();
+		if (world == null) {return;}
+		world.spawnParticle(settings.getParticle(),
+				settings.getLoc().getX(),settings.getLoc().getY(),settings.getLoc().getZ(),
+				settings.getCount(),
+				settings.getOffsetX(),settings.getOffsetY(),settings.getOffsetZ(),
+				settings.getSpeed()
+		);
+	}
+
 	public void spawnParticle(Player p, ParticleSettings settings) {
 		p.spawnParticle(settings.getParticle(),
 			settings.getLoc().getX(),settings.getLoc().getY(),settings.getLoc().getZ(),
