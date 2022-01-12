@@ -7,6 +7,7 @@
 
 ![Jenkins](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fhub.nat.gs%2Fjenkins%2Fjob%2FNATLibs%2F&style=for-the-badge)
 ![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/net.natroutter/NATLibs?server=https%3A%2F%2Fhub.nat.gs%2Fnexus%2F&style=for-the-badge)
+![Custom badge](https://img.shields.io/endpoint?color=%2303fc4e&style=for-the-badge&url=https%3A%2F%2Fhub.nat.gs%2Fjavadoc%2Fversion.php%3Fproject%3Dnatlibs)
 
 NATLibs is simple and powerful spigot plugin library that provides  
 easier and faster way to do things in code i have made this library mainly  
@@ -17,27 +18,7 @@ for my personal use but if you want to use it feel free to do so
 
 ## Documentation
 Documentation: [here](https://hub.nat.gs/javadoc/latest.php?project=natlibs)  
-Old version documentation can be found in [ProjectHub](https://hub.nat.gs/) for limited time
-
-##Getting Started
-
-````java
-import net.natroutter.natlibs.NATLibs;
-
-@Override
-public class ExamplePlugin extends JavaPlugin implements NATLibs {
-
-    @Override
-    public void onEnable() {
-        //This is needed for being available to use some features
-        registerLibrary(this);
-        
-        //This is only needed if you want to use bungeecord functionality
-        createBungeecordHandler(this);
-    }
-
-}
-````
+Old version documentation can be found in [ProjectHub](https://hub.nat.gs/index.php?project=NATLibs) for limited time
 
 ## Api
 ###Maven Repository:
@@ -83,3 +64,23 @@ public class ExamplePlugin extends JavaPlugin implements NATLibs {
     </executions>
 </plugin>
 `````
+
+##Getting started with library
+
+````java
+import net.natroutter.natlibs.NATLibs;
+
+@Override
+public class ExamplePlugin extends JavaPlugin implements NATLibs {
+
+    @Override
+    public void onEnable() {
+        //This is needed for being available to use some features
+        registerLibrary(this);
+        
+        //This is only needed if you want to use bungeecord functionality
+        createBungeecordHandler(this);
+    }
+
+}
+````
