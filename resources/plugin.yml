@@ -1,0 +1,7 @@
+name: NATLibs
+version: '${project.version}'
+main: net.natroutter.natlibs.NATLibs
+api-version: 1.18
+authors: [NATroutter]
+description: ${project.description}
+website: ${project.url}

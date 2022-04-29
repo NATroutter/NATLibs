@@ -56,20 +56,11 @@ public class Utilities {
 	public float pitchToFloat(Player p) {
         return 2 - (p.getLocation().getPitch() + 90) / 90;
     }
-	
-	public String getRegExMatch(String pattern, String data) {
-		Matcher matcher = Pattern.compile(pattern).matcher(data);
-		if (matcher.find()){
-		    return matcher.group(1);
-		}
-		return null;
-	}
-	
+
 	public String locString(Location loc) {
-		return loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ();
+		return loc.getWorld().getName() + ", " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ();
 	}
 
-	
 	public boolean isBetween(int Check, int start, int end) {
 		return Check >= start && Check <= end;
 	}
@@ -88,43 +79,7 @@ public class Utilities {
 	    float ratio = (speed - 1.0F) / 9.0F * (maxSpeed - defaultSpeed);
 	    return ratio + defaultSpeed;
 	}
-	
-	public Boolean flipBool(Boolean bool) {
-        return !bool;
-	}
 
-	public void spawnParticleWorld(ParticleSettings settings) {
-		World world = settings.getLoc().getWorld();
-		if (world == null) {return;}
-		world.spawnParticle(settings.getParticle(),
-				settings.getLoc().getX(),settings.getLoc().getY(),settings.getLoc().getZ(),
-				settings.getCount(),
-				settings.getOffsetX(),settings.getOffsetY(),settings.getOffsetZ(),
-				settings.getSpeed()
-		);
-	}
-
-	public void spawnParticle(Player p, ParticleSettings settings) {
-		p.spawnParticle(settings.getParticle(),
-			settings.getLoc().getX(),settings.getLoc().getY(),settings.getLoc().getZ(),
-			settings.getCount(),
-			settings.getOffsetX(),settings.getOffsetY(),settings.getOffsetZ(),
-			settings.getSpeed()
-		);
-	}
-	 
-	public void spawnParticleInRadius(ParticleSettings settings, int radius) {
-		World world = settings.getLoc().getWorld();
-		if (world == null) {return;}
-
-		for (Entity ent : world.getNearbyEntities(settings.getLoc(), radius, radius, radius)) {
-			if (ent instanceof Player) {
-				Player p = (Player)ent;
-				spawnParticle(p, settings);
-			}
-		}
-	}
-	
 	public Integer distanceToGround(Location start) {
 		int amount = 0;
 		while (!start.subtract(0, 1, 0).getBlock().getType().isSolid()) {
@@ -132,18 +87,6 @@ public class Utilities {
 		}
 		return amount;
 	}
-	
-	public boolean itemsMatch(BaseItem item1, BaseItem item2) {
-		if (item1.getDisplayName().equals(item2.getDisplayName())) {
-			return item1.getLore().equals(item2.getLore());
-		}
-		return false;
-	}
-	
-	public boolean nameMatch(BaseItem item1, BaseItem item2) {
-		return item1.getDisplayName().equals(item2.getDisplayName());
-	}
-
 
 	public String serializeLocation(Location loc, Character separator) {
 		String sep = separator.toString();

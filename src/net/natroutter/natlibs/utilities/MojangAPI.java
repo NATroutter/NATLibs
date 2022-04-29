@@ -6,6 +6,7 @@ import net.natroutter.natlibs.objects.MojangApiInfo;
 import net.natroutter.natlibs.objects.UUIDTypeAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;

@@ -122,8 +122,8 @@ public class BaseItem extends ItemStack implements Cloneable, ConfigurationSeria
 		return setToMeta(meta -> meta.setDisplayName(displayName));
 	}
 
-	public BaseItem addItemFlags(ItemFlag... flags) {
-		return setToMeta(meta -> meta.addItemFlags(flags));
+	public void addItemFlags(ItemFlag... flags) {
+		setToMeta(meta -> meta.addItemFlags(flags));
 	}
 
 	public BaseItem removeItemFlags() {
@@ -155,8 +155,8 @@ public class BaseItem extends ItemStack implements Cloneable, ConfigurationSeria
 		return setToMeta(meta -> meta.setLore(Arrays.asList(lores)));
 	}
 
-	public BaseItem setLore(List<String> lores) {
-		return setLore(lores.toArray(new String[0]));
+	public void setLore(List<String> lores) {
+		setLore(lores.toArray(new String[0]));
 	}
 
 	public BaseItem setLore(int row, String lore) {

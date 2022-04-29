@@ -34,7 +34,7 @@ public class YamlDatabase {
         this.pl = pl;
         this.fileName = fileName;
         this.fileManager = new FileHandler(pl);
-        this.data = fileManager.getConfig(fileName);;
+        this.data = fileManager.getConfig(fileName);
 
         data.copyDefaults(true).save();
     }

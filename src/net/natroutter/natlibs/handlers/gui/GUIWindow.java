@@ -15,6 +15,7 @@ import net.natroutter.natlibs.objects.BaseItem;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class GUIWindow {
@@ -123,7 +124,7 @@ public class GUIWindow {
     public void show(Player p) {
     	show(p, false);
     }
-    
+
 	public void show(Player p, Boolean publicInv) {
 		Inventory inv = getInventory();
 		
