@@ -1,5 +1,6 @@
 package net.natroutter.natlibs.handlers.LangHandler.language;
 
+import net.natroutter.natlibs.NATLibs;
 import net.natroutter.natlibs.handlers.LangHandler.TranslationTemplate;
 import net.natroutter.natlibs.handlers.LangHandler.language.translation.Translation;
 import net.natroutter.natlibs.handlers.gui.Consumer;
@@ -57,7 +58,11 @@ public class LangManager {
                     if (!messages) {return;}
                     console.sendMessage("§4["+plugin.getName()+"][Lang] §cGenerated " + language.getKey().getCode() + ".yml");
                 });
-            } catch (IllegalArgumentException ignored) { }
+            } catch (IllegalArgumentException e) {
+                if (NATLibs.getConf().debug) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         this.translator = Translator.of(plugin);

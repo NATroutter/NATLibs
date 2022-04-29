@@ -5,6 +5,7 @@ import net.natroutter.natlibs.handlers.configuration.configExtension;
 public class Config {
 
     public boolean checkUpdates = true;
+    public boolean debug = false;
 
     public String test0 = "test0";
 

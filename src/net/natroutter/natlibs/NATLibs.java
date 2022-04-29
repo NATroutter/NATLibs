@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.natroutter.natlibs.events.PlayerJumpEvent.PlayerJumpEventListener;
 import net.natroutter.natlibs.handlers.gui.GUIListener;
+import org.jetbrains.annotations.NotNull;
 
 public class NATLibs extends JavaPlugin {
 
@@ -20,11 +21,14 @@ public class NATLibs extends JavaPlugin {
 	//TODO
 	// add new database handler
 
+	private static Config config;
+	public static Config getConf() {return config;}
+
 	@Override
 	public void onEnable() {
 
 		ConsoleCommandSender console = Bukkit.getConsoleSender();
-		Config config = new ConfigManager(this).load(Config.class);
+		config = new ConfigManager(this).load(Config.class);
 
 		if (config.checkUpdates) {
 			VersionChecker checker = new VersionChecker(this);
