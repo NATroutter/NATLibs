@@ -25,15 +25,17 @@ public class LangManager {
     public void send(CommandSender sender, TranslationTemplate... trans) {
         StringBuilder message = new StringBuilder();
         for (TranslationTemplate temp : trans) {
-            List<String> msg = getTranslation(temp).colour();
-            if (msg.size() > 1) {
-                for(String line : msg) {
-                    message.append(line).append("\n");
-                }
-            }
-            message.append(msg.get(0));
+            message.append(get(temp));
         }
         sender.sendMessage(message.toString());
+    }
+
+    public void sendList(CommandSender sender, TranslationTemplate trans) {
+        sender.sendMessage(String.join("\n", getList(trans)));
+    }
+
+    public List<String> getList(TranslationTemplate trans) {
+        return getTranslation(trans).colour();
     }
 
     public String get(TranslationTemplate trans) {
