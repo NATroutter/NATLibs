@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
+import java.util.List;
 import java.util.logging.Level;
 
 public class LangManager {
@@ -24,7 +25,13 @@ public class LangManager {
     public void send(CommandSender sender, TranslationTemplate... trans) {
         StringBuilder message = new StringBuilder();
         for (TranslationTemplate temp : trans) {
-            sender.sendMessage(String.join("\n", getTranslation(temp).colour()));
+            List<String> msg = getTranslation(temp).colour();
+            if (msg.size() > 1) {
+                for(String line : msg) {
+                    message.append(line).append("\n");
+                }
+            }
+            message.append(msg.get(0));
         }
         sender.sendMessage(message.toString());
     }
