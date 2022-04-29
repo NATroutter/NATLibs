@@ -23,7 +23,9 @@ public class LangManager {
     public void send(CommandSender sender, TranslationTemplate... trans) {
         StringBuilder message = new StringBuilder();
         for (TranslationTemplate temp : trans) {
-            message.append(getTranslation(temp).colour().get(0));
+            for (String line : getTranslation(temp).colour()) {
+                message.append(line);
+            }
         }
         sender.sendMessage(message.toString());
     }
