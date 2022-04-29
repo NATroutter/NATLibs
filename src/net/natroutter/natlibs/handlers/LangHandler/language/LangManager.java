@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.*;
 import java.util.logging.Level;
 
-public class langManager {
+public class LangManager {
 
     private ConsoleCommandSender console;
     private JavaPlugin plugin;
@@ -40,7 +40,7 @@ public class langManager {
         this.messages = messages;
     }
 
-    public langManager(JavaPlugin plugin, Language lang) {
+    public LangManager(JavaPlugin plugin, Language lang) {
         this.plugin = plugin;
         this.language = lang;
         this.console = Bukkit.getConsoleSender();
