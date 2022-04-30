@@ -29,25 +29,25 @@ public class GUIWindow {
 	private String name;
 	private String StripedName;
 	private Boolean FillEmpty = false;
-	private Rows row;
+	private GUIRow row;
 	private BaseItem FillerItem = null;
 	private Boolean ClickSounds = true;
 	private Boolean OpenSound = true;
 	
-    public GUIWindow(String name, Rows row) {
+    public GUIWindow(String name, GUIRow row) {
 		this.name = name;
 		this.row = row;
 		init();
     }
 
-    public GUIWindow(String name, Rows row, Boolean FillEmpty) {
+    public GUIWindow(String name, GUIRow row, Boolean FillEmpty) {
     	this.name = name;
 		this.row = row;
     	this.FillEmpty = FillEmpty;
     	init();
 	}
     
-    public GUIWindow(String name, Rows row, Boolean FillEmpty, Boolean ClickSounds) {
+    public GUIWindow(String name, GUIRow row, Boolean FillEmpty, Boolean ClickSounds) {
     	this.name = name;
 		this.row = row;
     	this.FillEmpty = FillEmpty;
@@ -55,7 +55,7 @@ public class GUIWindow {
     	init();
 	}
     
-    public GUIWindow(String name, Rows row, Boolean FillEmpty, Boolean ClickSounds, Boolean OpenSound) {
+    public GUIWindow(String name, GUIRow row, Boolean FillEmpty, Boolean ClickSounds, Boolean OpenSound) {
     	this.name = name;
 		this.row = row;
     	this.FillEmpty = FillEmpty;
@@ -86,7 +86,7 @@ public class GUIWindow {
         inv.setItem(slot, item.getItem());
     }
     
-    public void setItem(GUIItem item, Rows row, Integer slot) {
+    public void setItem(GUIItem item, GUIRow row, Integer slot) {
 		setItem(item, slot + row.getRow());
 	}
     
@@ -159,17 +159,7 @@ public class GUIWindow {
 	public static GUIWindow getWindow(InventoryView view) {
 		return windows.get(ChatColor.stripColor(view.getTitle()));
 	}
-	
-	public enum Rows {
-		row1(1), row2(2), row3(3),
-		row4(4), row5(5), row6(6);
-		
-		private int row;
-		Rows(Integer row) { this.row = row; }
-		public int getRow() { return (row - 1) * 9; }
-		public int getInvRow() { return row* 9; }
-	}
-	
+
 	private BaseItem Filler() {
 		BaseItem item = new BaseItem(Material.BLACK_STAINED_GLASS_PANE);
 		item.addItemFlags(ItemFlag.values());
