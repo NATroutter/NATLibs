@@ -2,12 +2,12 @@ package net.natroutter.natlibs.handlers.gui;
 
 public enum GUIRow {
 
-    GUIRow1(1),
-    GUIRow2(2),
-    GUIRow3(3),
-    GUIRow4(4),
-    GUIRow5(5),
-    GUIRow6(6);
+    row1(1),
+    row2(2),
+    row3(3),
+    row4(4),
+    row5(5),
+    row6(6);
 
     private int row;
     GUIRow(Integer row) { this.row = row; }
