@@ -27,8 +27,8 @@ public class Licencing {
             case PAGE_ERROR -> {console.sendMessage("§4["+plugin.getName()+"][Licencing] §cConnecting error : Internal url error, contact developer! (code:2)");}
             case WRONG_RESPONSE -> {console.sendMessage("§4["+plugin.getName()+"][Licencing] §cConnecting error : Internal url error, contact developer! (code:3)");}
             case KEY_OUTDATED -> {console.sendMessage("§4["+plugin.getName()+"][Licencing] §cYour licence key is not valid anymore!");}
-            case KEY_NOT_FOUND -> {console.sendMessage("§4["+plugin.getName()+"][Licencing] §cYour key doesn't exists!");}
-            case NOT_VALID_IP -> {console.sendMessage("§4["+plugin.getName()+"][Licencing] §cInvalid ip address!");}
+            case KEY_NOT_FOUND -> {console.sendMessage("§4["+plugin.getName()+"][Licencing] §cYour Licnce key doesn't exists!");}
+            case NOT_VALID_IP -> {console.sendMessage("§4["+plugin.getName()+"][Licencing] §cThis Licence key is already use for maximium amount of ip:s!");}
             case INVALID_PLUGIN -> {console.sendMessage("§4["+plugin.getName()+"][Licencing] §cThis licence cant not be used in this plugin!");}
             case VALID -> {return true;}
         }

@@ -1,5 +1,6 @@
 package net.natroutter.natlibs.handlers.Database;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,7 +28,12 @@ public class YamlDatabase {
         this.fileManager = new FileHandler(pl);
         this.data = fileManager.getConfig(fileName);
 
-        data.copyDefaults(true).save();
+        File file = new File(pl.getDataFolder(), fileName);
+        if (!file.exists()) {
+            data.copyDefaults(true).save();
+            data.saveDefaultConfig();
+        }
+
     }
 
     public YamlDatabase(JavaPlugin pl, String fileName) {
@@ -36,7 +42,11 @@ public class YamlDatabase {
         this.fileManager = new FileHandler(pl);
         this.data = fileManager.getConfig(fileName);
 
-        data.copyDefaults(true).save();
+        File file = new File(pl.getDataFolder(), fileName);
+        if (!file.exists()) {
+            data.copyDefaults(true).save();
+            data.saveDefaultConfig();
+        }
     }
 
     public YamlConfiguration get() {
