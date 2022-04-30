@@ -1,5 +1,7 @@
 package net.natroutter.natlibs.handlers.gui;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -7,9 +9,8 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemFlag;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.*;
 
 import net.natroutter.natlibs.objects.BaseItem;
 
@@ -124,7 +125,6 @@ public class GUIWindow {
     public void show(Player p) {
     	show(p, false);
     }
-
 	public void show(Player p, Boolean publicInv) {
 		Inventory inv = getInventory();
 		
@@ -145,8 +145,8 @@ public class GUIWindow {
 			return;
 		}
 		
-		Inventory privateInv = Bukkit.createInventory(p, inv.getSize(), this.name);
-		privateInv.setContents(inv.getContents());
+		Inventory privateInv = Bukkit.createInventory(p.getInventory().getHolder(), inv.getSize(), Component.text(this.name));
+		privateInv.setContents(inv.getContents().clone());
 		p.openInventory(privateInv);
 		
 	}
