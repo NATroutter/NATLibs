@@ -63,6 +63,8 @@ public class YamlDatabase {
         return getKeys(Identifier + "." + key);
     }
     public Set<String> getKeys(String key) {
+        if (data == null) {return null;}
+        if (data.get() == null) {return null;}
         ConfigurationSection sect = data.get().getConfigurationSection(key);
         if (sect != null) {
             return sect.getKeys(false);
