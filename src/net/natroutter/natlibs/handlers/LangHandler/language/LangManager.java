@@ -31,7 +31,9 @@ public class LangManager {
     }
 
     public void sendList(CommandSender sender, TranslationTemplate trans) {
-        sender.sendMessage(String.join("\n", getList(trans)));
+        for (String line : getList(trans)) {
+            sender.sendMessage(line);
+        }
     }
 
     public List<String> getList(TranslationTemplate trans) {
