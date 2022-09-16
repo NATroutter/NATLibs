@@ -1,4 +1,4 @@
-package net.natroutter.natlibs.utilities.libs.NATlogger;
+package net.natroutter.natlibs.utilities.libs.natlogger;
 
 public class LoggerSettings {
 

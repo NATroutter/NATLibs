@@ -1,13 +1,12 @@
-package net.natroutter.natlibs.handlers.LangHandler.language;
+package net.natroutter.natlibs.handlers.langHandler.language;
 
 import net.natroutter.natlibs.NATLibs;
-import net.natroutter.natlibs.handlers.LangHandler.TranslationTemplate;
-import net.natroutter.natlibs.handlers.LangHandler.language.translation.Translation;
+import net.natroutter.natlibs.handlers.langHandler.TranslationTemplate;
+import net.natroutter.natlibs.handlers.langHandler.language.translation.Translation;
 import net.natroutter.natlibs.handlers.gui.Consumer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -16,10 +15,10 @@ import java.util.logging.Level;
 
 public class LangManager {
 
-    private ConsoleCommandSender console;
-    private JavaPlugin plugin;
-    private Translator translator;
-    private Language language;
+    private final ConsoleCommandSender console;
+    private final JavaPlugin plugin;
+    private final Translator translator;
+    private final Language language;
     private boolean messages = true;
 
     public void send(CommandSender sender, TranslationTemplate... trans) {

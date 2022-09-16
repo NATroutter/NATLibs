@@ -1,7 +1,7 @@
-package net.natroutter.natlibs.handlers.LangHandler.language.translation;
+package net.natroutter.natlibs.handlers.langHandler.language.translation;
 
 import com.google.common.collect.Lists;
-import net.natroutter.natlibs.handlers.LangHandler.language.Language;
+import net.natroutter.natlibs.handlers.langHandler.language.Language;
 import org.bukkit.ChatColor;
 
 import java.util.List;
@@ -11,7 +11,7 @@ public class Translation {
 
     private final Language language;
     private final List<String> translations;
-    private boolean found;
+    private final boolean found;
 
     private Translation(final Language language, final List<String> translations, boolean found) {
         this.language = language;

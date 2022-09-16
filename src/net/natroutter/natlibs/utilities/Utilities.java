@@ -1,13 +1,10 @@
 package net.natroutter.natlibs.utilities;
 
 import net.natroutter.natlibs.objects.BaseItem;
-import net.natroutter.natlibs.objects.ParticleSettings;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,14 +14,13 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 @SuppressWarnings({"unused"})
 public class Utilities {
 
-	JavaPlugin pl;
+	final JavaPlugin pl;
 
 	public Utilities(JavaPlugin pl) {
 		this.pl = pl;
@@ -71,7 +67,7 @@ public class Utilities {
 		float defaultSpeed = isFly ? 0.1F : 0.2F;
 	    float maxSpeed = 1.0F;
 	    if (bypassLimits) {
-	        maxSpeed = (isFly ? 10 : 10);
+	        maxSpeed = (10);
 	    }
 	    if (speed < 1.0F) {
 	    	return defaultSpeed * speed;
@@ -131,11 +127,7 @@ public class Utilities {
 		double y2 = loc2.getY();
 		double z2 = loc2.getZ();
 
-		if((loc.getX() > x1) && (loc.getY() > y1) && (loc.getZ() > z1) && (loc.getX() < x2) && (loc.getY() < y2) && (loc.getZ() < z2)) {
-			return true;
-		} else {
-			return false;
-		}
+		return (loc.getX() > x1) && (loc.getY() > y1) && (loc.getZ() > z1) && (loc.getX() < x2) && (loc.getY() < y2) && (loc.getZ() < z2);
 	}
 
 } 

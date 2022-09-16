@@ -1,6 +1,6 @@
-package net.natroutter.natlibs.handlers.LangHandler.language;
+package net.natroutter.natlibs.handlers.langHandler.language;
 
-import net.natroutter.natlibs.handlers.LangHandler.language.key.LanguageKey;
+import net.natroutter.natlibs.handlers.langHandler.language.key.LanguageKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;

@@ -14,9 +14,9 @@ public class Serializer {
 	private final Gson gson;
 	private Object Instance;
 	private final ConsoleCommandSender console;
-	private Class<?> clazz;
+	private final Class<?> clazz;
 
-	ExclusionStrategy strategy = new ExclusionStrategy() {
+	final ExclusionStrategy strategy = new ExclusionStrategy() {
 		@Override
 		public boolean shouldSkipClass(Class<?> clazz) {
 			return false;

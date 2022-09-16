@@ -1,4 +1,4 @@
-package net.natroutter.natlibs.handlers.Database;
+package net.natroutter.natlibs.handlers.database;
 
 import java.io.File;
 import java.util.List;
@@ -10,18 +10,16 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
 import net.natroutter.natlibs.utilities.libs.FileHandler;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.common.reflection.qual.ClassValBottom;
 
 public class YamlDatabase {
 
-    JavaPlugin pl;
+    final JavaPlugin pl;
     String fileName = "Database.yml";
-    FileHandler fileManager;
-    FileHandler.Config data;
+    final FileHandler fileManager;
+    final FileHandler.Config data;
 
     public YamlDatabase(JavaPlugin pl) {
         this.pl = pl;
@@ -84,11 +82,7 @@ public class YamlDatabase {
 
     //Check if contains value
     public boolean valueExits(String value) {
-        if (data.get().contains(value)) {
-            return true;
-        } else {
-            return false;
-        }
+        return data.get().contains(value);
     }
 
     //Save location to config
@@ -143,8 +137,7 @@ public class YamlDatabase {
                 double Z = data.get().getDouble("PlayerData." + p.getUniqueId().toString() + "." + key + ".Z");
                 float Pitch = Float.parseFloat(data.get().getString("PlayerData." + p.getUniqueId().toString() + "." + key + ".Pitch"));
                 float Yaw = Float.parseFloat(data.get().getString("PlayerData." + p.getUniqueId().toString() + "." + key + ".Yaw"));
-                Location getloc = new Location(Bukkit.getWorld(world), X, Y, Z, Yaw, Pitch);
-                return getloc;
+                return new Location(Bukkit.getWorld(world), X, Y, Z, Yaw, Pitch);
 
             } else {
                 String world = data.get().getString(Identifier + "." + key + ".World");
@@ -153,8 +146,7 @@ public class YamlDatabase {
                 double Z = data.get().getDouble(Identifier + "." + key + ".Z");
                 float Pitch = Float.parseFloat(data.get().getString(Identifier + "." + key + ".Pitch"));
                 float Yaw = Float.parseFloat(data.get().getString(Identifier + "." + key + ".Yaw"));
-                Location getloc = new Location(Bukkit.getWorld(world), X, Y, Z, Yaw, Pitch);
-                return getloc;
+                return new Location(Bukkit.getWorld(world), X, Y, Z, Yaw, Pitch);
             }
         } catch (Exception e) {
             return null;

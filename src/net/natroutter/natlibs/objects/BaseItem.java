@@ -24,7 +24,7 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.persistence.PersistentDataContainer;
 
 @SuppressWarnings("deprecation")
-public class BaseItem extends ItemStack implements Cloneable, ConfigurationSerializable {
+public class BaseItem extends ItemStack {
 
 	ItemStack ogStack;
 

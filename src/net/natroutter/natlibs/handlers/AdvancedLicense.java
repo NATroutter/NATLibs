@@ -12,9 +12,9 @@ import java.util.UUID;
 
 public class AdvancedLicense {
 
-	private String licenseKey;
-	private Plugin plugin;
-	private String validationServer;
+	private final String licenseKey;
+	private final Plugin plugin;
+	private final String validationServer;
 	private LogType logType = LogType.NORMAL;
 	private String securityKey = "YecoF0I6M05thxLeokoHuW8iUhTdIUInjkfF";
 	private boolean debug = false;
