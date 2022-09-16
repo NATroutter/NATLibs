@@ -21,8 +21,8 @@ public class NATlogger {
 	String path;
 	Integer interval;
 	Integer pruneInterval;
-	Boolean silent;
-	Boolean SaveMode;
+	boolean silent;
+	boolean SaveMode;
 	
 	//Variables
 	Timer timer;
