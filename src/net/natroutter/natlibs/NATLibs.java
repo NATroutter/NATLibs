@@ -18,7 +18,7 @@ import org.bukkit.plugin.java.annotation.plugin.Plugin;
 import org.bukkit.plugin.java.annotation.plugin.Website;
 import org.bukkit.plugin.java.annotation.plugin.author.Author;
 
-@Plugin(name = "NATLibs", version = "2.0.12")
+@Plugin(name = "NATLibs", version = "2.0.13")
 @Description("NATroutter's library for plugin Developement")
 @Author("NATroutter")
 @Website("https://plugins.nat.gg/plugin/natlibs/")

@@ -4,7 +4,7 @@
 
     <groupId>net.natroutter</groupId>
     <artifactId>NATLibs</artifactId>
-    <version>2.0.12</version>
+    <version>2.0.13</version>
     <packaging>jar</packaging>
 
     <name>NATLibs</name>
@@ -16,13 +16,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spigot.annotations.version>1.2.3-SNAPSHOT</spigot.annotations.version>
     </properties>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>apache.snapshots</id>
-            <url>https://repository.apache.org/snapshots/</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <build>
         <sourceDirectory>src</sourceDirectory>
@@ -74,7 +67,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0-SNAPSHOT</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -151,6 +144,7 @@
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>3.0.0</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

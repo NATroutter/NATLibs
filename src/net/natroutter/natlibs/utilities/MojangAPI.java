@@ -18,8 +18,8 @@ public class MojangAPI {
 
     private final Gson gson = new GsonBuilder().registerTypeAdapter(UUID.class, new UUIDTypeAdapter()).create();
 
-    private final String UUID_URL = "https://api.mojang.com/users/profiles/minecraft/%s?at=%d";
-    private final String NAME_URL = "https://api.mojang.com/user/profiles/%s/names";
+    private final String UUID_URL = "https://api.mojang.com/users/profiles/minecraft/%s";
+    private final String NAME_URL = "https://api.mojang.com/user/profile/%s";
 
     private final JavaPlugin pl;
     private final ConsoleCommandSender console;
