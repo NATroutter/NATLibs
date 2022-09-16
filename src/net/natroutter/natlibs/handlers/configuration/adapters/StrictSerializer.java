@@ -2,25 +2,19 @@ package net.natroutter.natlibs.handlers.configuration.adapters;
 
 import com.google.common.reflect.ClassPath;
 import com.google.gson.*;
-import com.google.gson.annotations.SerializedName;
 import net.natroutter.natlibs.handlers.configuration.configExtension;
-import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class StrictSerializer< T > implements JsonDeserializer<T> {
 
-    private JavaPlugin plugin;
-    private ConsoleCommandSender console;
+    private final JavaPlugin plugin;
+    private final ConsoleCommandSender console;
 
     public StrictSerializer(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -29,9 +23,8 @@ public class StrictSerializer< T > implements JsonDeserializer<T> {
 
     @Override
     public T deserialize(JsonElement je, Type type, JsonDeserializationContext jdc) throws JsonParseException {
-        T pojo = new Gson().fromJson(je, type);
         //System.out.println("test: " + new Gson().toJson(pojo));
-        return pojo;
+        return new Gson().fromJson(je, type);
     }
 
     public static void checkConfig(Object obj) {
@@ -63,7 +56,7 @@ public class StrictSerializer< T > implements JsonDeserializer<T> {
         }
     }
 
-    List<String> list = new ArrayList<>();
+    final List<String> list = new ArrayList<>();
     private void process(Object pojo) {
         String packageName = pojo.getClass().getPackageName();
         for (Field field : pojo.getClass().getDeclaredFields()) {

@@ -1,7 +1,6 @@
 package net.natroutter.natlibs.handlers.gui;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -9,28 +8,26 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.*;
 
 import net.natroutter.natlibs.objects.BaseItem;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @SuppressWarnings("unused")
 public class GUIWindow {
-    private static Map<String, GUIWindow> windows = new HashMap<>();
+    private static final Map<String, GUIWindow> windows = new HashMap<>();
  
     private Inventory inv;
     private Map<Integer, GUIItem> items;
 	private Consumer<InventoryOpenEvent> onOpen = null;
 	private Consumer<InventoryCloseEvent> onClose = null;
 
-	private String name;
+	private final String name;
 	private String StripedName;
 	private Boolean FillEmpty = false;
-	private GUIRow row;
+	private final GUIRow row;
 	private BaseItem FillerItem = null;
 	private Boolean ClickSounds = true;
 	private Boolean OpenSound = true;

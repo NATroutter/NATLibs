@@ -1,4 +1,4 @@
-package net.natroutter.natlibs.handlers.Database;
+package net.natroutter.natlibs.handlers.database;
 
 import java.io.File;
 import java.util.List;
@@ -10,18 +10,16 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
 import net.natroutter.natlibs.utilities.libs.FileHandler;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.common.reflection.qual.ClassValBottom;
 
 public class YamlDatabase {
 
-    JavaPlugin pl;
+    final JavaPlugin pl;
     String fileName = "Database.yml";
-    FileHandler fileManager;
-    FileHandler.Config data;
+    final FileHandler fileManager;
+    final FileHandler.Config data;
 
     public YamlDatabase(JavaPlugin pl) {
         this.pl = pl;
@@ -61,7 +59,7 @@ public class YamlDatabase {
     public void save(Object Identifier, String key, Object Value) {
         if (Identifier instanceof OfflinePlayer) {
             OfflinePlayer p = (OfflinePlayer)Identifier;
-            data.get().set("PlayerData." + p.getUniqueId().toString() + "." + key, Value);
+            data.get().set("PlayerData." + p.getUniqueId() + "." + key, Value);
         } else {
             data.get().set(Identifier + "." + key, Value);
         }
@@ -84,11 +82,7 @@ public class YamlDatabase {
 
     //Check if contains value
     public boolean valueExits(String value) {
-        if (data.get().contains(value)) {
-            return true;
-        } else {
-            return false;
-        }
+        return data.get().contains(value);
     }
 
     //Save location to config
@@ -96,19 +90,19 @@ public class YamlDatabase {
         if (Identifier instanceof OfflinePlayer) {
             OfflinePlayer p = (OfflinePlayer)Identifier;
             if (loc == null) {
-                data.get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".World", null);
-                data.get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".X", null);
-                data.get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".Y", null);
-                data.get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".Z", null);
-                data.get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".Pitch", null);
-                data.get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".Yaw", null);
+                data.get().set("PlayerData." + p.getUniqueId() + "." + key + ".World", null);
+                data.get().set("PlayerData." + p.getUniqueId() + "." + key + ".X", null);
+                data.get().set("PlayerData." + p.getUniqueId() + "." + key + ".Y", null);
+                data.get().set("PlayerData." + p.getUniqueId() + "." + key + ".Z", null);
+                data.get().set("PlayerData." + p.getUniqueId() + "." + key + ".Pitch", null);
+                data.get().set("PlayerData." + p.getUniqueId() + "." + key + ".Yaw", null);
             } else {
-                data.get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".World", loc.getWorld().getName());
-                data.get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".X", loc.getX());
-                data.get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".Y", loc.getY());
-                data.get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".Z", loc.getZ());
-                data.get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".Pitch", loc.getPitch());
-                data.get().set("PlayerData." + p.getUniqueId().toString() + "." + key + ".Yaw", loc.getYaw());
+                data.get().set("PlayerData." + p.getUniqueId() + "." + key + ".World", loc.getWorld().getName());
+                data.get().set("PlayerData." + p.getUniqueId() + "." + key + ".X", loc.getX());
+                data.get().set("PlayerData." + p.getUniqueId() + "." + key + ".Y", loc.getY());
+                data.get().set("PlayerData." + p.getUniqueId() + "." + key + ".Z", loc.getZ());
+                data.get().set("PlayerData." + p.getUniqueId() + "." + key + ".Pitch", loc.getPitch());
+                data.get().set("PlayerData." + p.getUniqueId() + "." + key + ".Yaw", loc.getYaw());
             }
             data.save();
         } else {
@@ -137,14 +131,13 @@ public class YamlDatabase {
         try {
             if (Identifier instanceof OfflinePlayer) {
                 OfflinePlayer p = (OfflinePlayer)Identifier;
-                String world = data.get().getString("PlayerData." + p.getUniqueId().toString() + "." + key + ".World");
-                double X = data.get().getDouble("PlayerData." + p.getUniqueId().toString() + "." + key + ".X");
-                double Y = data.get().getDouble("PlayerData." + p.getUniqueId().toString() + "." + key + ".Y");
-                double Z = data.get().getDouble("PlayerData." + p.getUniqueId().toString() + "." + key + ".Z");
-                float Pitch = Float.parseFloat(data.get().getString("PlayerData." + p.getUniqueId().toString() + "." + key + ".Pitch"));
-                float Yaw = Float.parseFloat(data.get().getString("PlayerData." + p.getUniqueId().toString() + "." + key + ".Yaw"));
-                Location getloc = new Location(Bukkit.getWorld(world), X, Y, Z, Yaw, Pitch);
-                return getloc;
+                String world = data.get().getString("PlayerData." + p.getUniqueId() + "." + key + ".World");
+                double X = data.get().getDouble("PlayerData." + p.getUniqueId() + "." + key + ".X");
+                double Y = data.get().getDouble("PlayerData." + p.getUniqueId() + "." + key + ".Y");
+                double Z = data.get().getDouble("PlayerData." + p.getUniqueId() + "." + key + ".Z");
+                float Pitch = Float.parseFloat(data.get().getString("PlayerData." + p.getUniqueId() + "." + key + ".Pitch"));
+                float Yaw = Float.parseFloat(data.get().getString("PlayerData." + p.getUniqueId() + "." + key + ".Yaw"));
+                return new Location(Bukkit.getWorld(world), X, Y, Z, Yaw, Pitch);
 
             } else {
                 String world = data.get().getString(Identifier + "." + key + ".World");
@@ -153,8 +146,7 @@ public class YamlDatabase {
                 double Z = data.get().getDouble(Identifier + "." + key + ".Z");
                 float Pitch = Float.parseFloat(data.get().getString(Identifier + "." + key + ".Pitch"));
                 float Yaw = Float.parseFloat(data.get().getString(Identifier + "." + key + ".Yaw"));
-                Location getloc = new Location(Bukkit.getWorld(world), X, Y, Z, Yaw, Pitch);
-                return getloc;
+                return new Location(Bukkit.getWorld(world), X, Y, Z, Yaw, Pitch);
             }
         } catch (Exception e) {
             return null;
@@ -223,7 +215,7 @@ public class YamlDatabase {
 
         if (Identifier instanceof OfflinePlayer) {
             OfflinePlayer p = (OfflinePlayer)Identifier;
-            return data.get().getString("PlayerData." + p.getUniqueId().toString() + "." + key);
+            return data.get().getString("PlayerData." + p.getUniqueId() + "." + key);
         } else {
             return data.get().getString(Identifier + "." + key);
         }
@@ -235,7 +227,7 @@ public class YamlDatabase {
 
         if (Identifier instanceof OfflinePlayer) {
             OfflinePlayer p = (OfflinePlayer)Identifier;
-            return data.get().getBoolean("PlayerData." + p.getUniqueId().toString() + "." + key);
+            return data.get().getBoolean("PlayerData." + p.getUniqueId() + "." + key);
         } else {
             return data.get().getBoolean(Identifier + "." + key);
         }
@@ -245,7 +237,7 @@ public class YamlDatabase {
     public Integer getInt(Object Identifier, String key) {
         if (Identifier instanceof OfflinePlayer) {
             OfflinePlayer p = (OfflinePlayer)Identifier;
-            return data.get().getInt("PlayerData." + p.getUniqueId().toString() + "." + key);
+            return data.get().getInt("PlayerData." + p.getUniqueId() + "." + key);
         } else {
             return data.get().getInt(Identifier + "." + key);
         }
@@ -255,7 +247,7 @@ public class YamlDatabase {
     public Double getDouble(Object Identifier, String key) {
         if (Identifier instanceof OfflinePlayer) {
             OfflinePlayer p = (OfflinePlayer)Identifier;
-            return data.get().getDouble("PlayerData." + p.getUniqueId().toString() + "." + key);
+            return data.get().getDouble("PlayerData." + p.getUniqueId() + "." + key);
         } else {
             return data.get().getDouble(Identifier + "." + key);
         }
@@ -264,7 +256,7 @@ public class YamlDatabase {
     public Long getLong(Object Identifier, String key) {
         if (Identifier instanceof OfflinePlayer) {
             OfflinePlayer p = (OfflinePlayer)Identifier;
-            return data.get().getLong("PlayerData." + p.getUniqueId().toString() + "." + key);
+            return data.get().getLong("PlayerData." + p.getUniqueId() + "." + key);
         } else {
             return data.get().getLong(Identifier + "." + key);
         }

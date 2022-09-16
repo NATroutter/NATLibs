@@ -9,7 +9,7 @@ public enum GUIRow {
     row5(5),
     row6(6);
 
-    private int row;
+    private final int row;
     GUIRow(Integer row) { this.row = row; }
     public int getRow() { return (row - 1) * 9; }
     public int getInvRow() { return row* 9; }

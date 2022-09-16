@@ -1,12 +1,12 @@
-package net.natroutter.natlibs.utilities.libs.NATlogger;
+package net.natroutter.natlibs.utilities.libs.natlogger;
 
 import java.util.Date;
 
 public class LogEntry {
 
-	String info;
-	Date date;
-	NATlogger.Type type;
+	final String info;
+	final Date date;
+	final NATlogger.Type type;
 	
 	public LogEntry(String info, Date date, NATlogger.Type type) {
 		this.info = info;

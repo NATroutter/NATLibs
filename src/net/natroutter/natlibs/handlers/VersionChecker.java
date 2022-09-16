@@ -8,12 +8,12 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 public class VersionChecker {
-    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private String server = "https://plugins.nat.gg/version.php?plugin=%s&version=%s";
     private final String plugin;
     private final String version;
-    private VersionData data;
+    private final VersionData data;
 
     public VersionChecker(JavaPlugin plugin) {
         this.plugin = plugin.getName();

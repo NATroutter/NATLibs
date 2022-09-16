@@ -8,14 +8,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Hook {
 
-    private JavaPlugin instance;
-    private HookSettings settings;
+    private final JavaPlugin instance;
+    private final HookSettings settings;
 
     private Plugin plugin;
     private boolean Hooked = false;
 
 
-    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+    final ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 
     /**
      * @return returns hooked plugin instance

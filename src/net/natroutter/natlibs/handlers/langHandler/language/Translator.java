@@ -1,9 +1,9 @@
-package net.natroutter.natlibs.handlers.LangHandler.language;
+package net.natroutter.natlibs.handlers.langHandler.language;
 
 
-import net.natroutter.natlibs.handlers.LangHandler.HookedPlugin;
-import net.natroutter.natlibs.handlers.LangHandler.language.key.TranslationKey;
-import net.natroutter.natlibs.handlers.LangHandler.language.translation.Translation;
+import net.natroutter.natlibs.handlers.langHandler.HookedPlugin;
+import net.natroutter.natlibs.handlers.langHandler.language.key.TranslationKey;
+import net.natroutter.natlibs.handlers.langHandler.language.translation.Translation;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,7 +19,7 @@ public class Translator {
 
     private File fallback;
     private boolean debug;
-    private HookedPlugin hook;
+    private final HookedPlugin hook;
 
     private Translator(@NotNull Plugin plugin, @NotNull String folderName, @NotNull Language defaultLanguage) {
 

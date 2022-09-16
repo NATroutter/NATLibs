@@ -1,11 +1,11 @@
 package net.natroutter.natlibs.objects;
 
 public class VersionData {
-    private boolean success;
-    private boolean update;
-    private String error;
-    private String version;
-    private String updateURL;
+    private final boolean success;
+    private final boolean update;
+    private final String error;
+    private final String version;
+    private final String updateURL;
 
     public VersionData(boolean success,boolean update,String error,String version, String updateURL){
         this.success = success;

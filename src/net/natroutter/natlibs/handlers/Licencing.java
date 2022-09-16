@@ -6,10 +6,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Licencing {
 
-    private JavaPlugin plugin;
-    private String CheckURL;
-    private String licenceKey;
-    private String securityKey;
+    private final JavaPlugin plugin;
+    private final String CheckURL;
+    private final String licenceKey;
+    private final String securityKey;
 
     public Licencing(JavaPlugin plugin, String CheckURL, String licenceKey, String securityKey) {
         this.plugin = plugin;

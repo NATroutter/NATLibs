@@ -1,6 +1,6 @@
-package net.natroutter.natlibs.handlers.LangHandler;
+package net.natroutter.natlibs.handlers.langHandler;
 
-import net.natroutter.natlibs.handlers.LangHandler.language.Language;
+import net.natroutter.natlibs.handlers.langHandler.language.Language;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 

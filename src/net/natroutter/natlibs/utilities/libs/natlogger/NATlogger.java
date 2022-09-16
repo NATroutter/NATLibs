@@ -1,4 +1,4 @@
-package net.natroutter.natlibs.utilities.libs.NATlogger;
+package net.natroutter.natlibs.utilities.libs.natlogger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,8 +21,8 @@ public class NATlogger {
 	String path;
 	Integer interval;
 	Integer pruneInterval;
-	Boolean silent;
-	Boolean SaveMode = false;
+	boolean silent;
+	boolean SaveMode;
 	
 	//Variables
 	Timer timer;
@@ -65,7 +65,7 @@ public class NATlogger {
 	
 	
 	//Log saving timer
-	private TimerTask LogSaveTask = new TimerTask() {
+	private final TimerTask LogSaveTask = new TimerTask() {
 	    @Override
 	    public void run() {
 	       prune();

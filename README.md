@@ -1,7 +1,7 @@
 ![banner](https://cdn.nat.gg/img/NATLibs_Banner.png)
 
 <div align="center">
-<h1 style="margin: 0px;font-weight: 700;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji">NATLibs</h1>
+<h1 style="margin: 0;font-weight: 700;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji">NATLibs</h1>
 
 ![GitHub](https://img.shields.io/github/license/NATroutter/NATLibs?style=for-the-badge)
 

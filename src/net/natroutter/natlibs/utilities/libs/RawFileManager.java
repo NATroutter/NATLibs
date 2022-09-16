@@ -7,10 +7,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class RawFileManager {
     
-    private File rawFile;
-    private File Directory;
+    private final File rawFile;
+    private final File Directory;
     private Boolean FileCreated = false;
-    private JavaPlugin pl;
+    private final JavaPlugin pl;
     
     public RawFileManager(JavaPlugin pl, String fileName) {
     	this.pl = pl;

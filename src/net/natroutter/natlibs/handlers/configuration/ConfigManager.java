@@ -9,8 +9,8 @@ public class ConfigManager {
 
 	private final JavaPlugin pl;
 	private final String fileName = "config.json";
-	private RawFileManager rfm;
-	private String rawContent;
+	private final RawFileManager rfm;
+	private final String rawContent;
 
 
 	public ConfigManager(JavaPlugin pl) {
@@ -22,8 +22,8 @@ public class ConfigManager {
 
 	public <T> T load(Class<T> type) {
 		Serializer ser = new Serializer(pl, type);
-		Object obj = null;
-		Object instance = null;
+		Object obj;
+		Object instance;
 		try {
 			instance = type.getDeclaredConstructor().newInstance();
 			if (rfm.getFileCreated()) {

@@ -8,7 +8,7 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 public class ItemStackAdapter implements JsonSerializer<ItemStack>, JsonDeserializer<ItemStack> {
-    private Gson gson;
+    private final Gson gson;
 
     public ItemStackAdapter() {
         gson = new GsonBuilder().create();

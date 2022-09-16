@@ -1,4 +1,4 @@
-package net.natroutter.natlibs.handlers.LangHandler.language.key;
+package net.natroutter.natlibs.handlers.langHandler.language.key;
 
 import org.jetbrains.annotations.NotNull;
 

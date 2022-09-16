@@ -12,9 +12,9 @@ import java.util.UUID;
 
 public class AdvancedLicense {
 
-	private String licenseKey;
-	private Plugin plugin;
-	private String validationServer;
+	private final String licenseKey;
+	private final Plugin plugin;
+	private final String validationServer;
 	private LogType logType = LogType.NORMAL;
 	private String securityKey = "YecoF0I6M05thxLeokoHuW8iUhTdIUInjkfF";
 	private boolean debug = false;
@@ -138,11 +138,11 @@ public class AdvancedLicense {
 	//
 
 	public enum LogType {
-		NORMAL, LOW, NONE;
+		NORMAL, LOW, NONE
 	}
 
 	public enum ValidationType {
-		WRONG_RESPONSE, PAGE_ERROR, URL_ERROR, KEY_OUTDATED, KEY_NOT_FOUND, NOT_VALID_IP, INVALID_PLUGIN, VALID;
+		WRONG_RESPONSE, PAGE_ERROR, URL_ERROR, KEY_OUTDATED, KEY_NOT_FOUND, NOT_VALID_IP, INVALID_PLUGIN, VALID
 	}
 
 	//

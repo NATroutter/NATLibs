@@ -20,7 +20,7 @@ public class PlayerJumpEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
-    private Player p;
+    private final Player p;
 
     public PlayerJumpEvent(Player p) {
         this.p = p;
@@ -41,7 +41,7 @@ public class PlayerJumpEvent extends Event {
 
    public static class PlayerJumpEventListener implements Listener {
 
-        private Map<UUID, Integer> jumps = new HashMap<>();
+        private final Map<UUID, Integer> jumps = new HashMap<>();
 
         @EventHandler(priority = EventPriority.MONITOR)
         public void onPlayerJoin(PlayerJoinEvent e) {
