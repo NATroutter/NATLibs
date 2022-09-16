@@ -56,10 +56,9 @@ public class MojangAPI {
                 connection.setReadTimeout(5000);
 
                 BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                MojangApiInfo[] allUserNames = gson.fromJson(br, MojangApiInfo[].class);
-                MojangApiInfo currentName = allUserNames[allUserNames.length - 1];
+                MojangApiInfo player = gson.fromJson(br, MojangApiInfo.class);
+                return player.getName();
 
-                return currentName.getName();
             } else {
                 return Bukkit.getOfflinePlayer(uuid).getName();
             }
