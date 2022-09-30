@@ -2,7 +2,7 @@ package net.natroutter.natlibs.utilities;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.natroutter.natlibs.objects.MojangApiInfo;
+import net.natroutter.natlibs.objects.PlayerInfo;
 import net.natroutter.natlibs.objects.UUIDTypeAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
@@ -24,9 +24,15 @@ public class MojangAPI {
     private final JavaPlugin pl;
     private final ConsoleCommandSender console;
 
+    private boolean logging = false;
+
     public MojangAPI(JavaPlugin pl) {
+        this(pl, false);
+    }
+    public MojangAPI(JavaPlugin pl, boolean logging) {
         this.pl = pl;
         console = pl.getServer().getConsoleSender();
+        this.logging = logging;
     }
 
     public UUID getUUID(String name) {
@@ -37,8 +43,10 @@ public class MojangAPI {
             connection.setReadTimeout(5000);
 
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            MojangApiInfo player = gson.fromJson(br, MojangApiInfo.class);
-            return player.getUUID();
+
+            if (logging) {console.sendMessage("§4["+pl.getName()+"] §cUser ("+name+") loaded from MojangAPI");}
+
+            return gson.fromJson(br, PlayerInfo.class).getUUID();
 
         } catch (Exception e) {
             console.sendMessage("§4["+pl.getName()+"] §cFailed to fletch data from mojang servers!");
@@ -48,7 +56,6 @@ public class MojangAPI {
     }
 
     public String getName(UUID uuid) {
-
         try {
             if (Bukkit.getOnlineMode()) {
                 URL url = new URL(String.format(NAME_URL, UUIDTypeAdapter.fromUUID(uuid)));
@@ -56,7 +63,10 @@ public class MojangAPI {
                 connection.setReadTimeout(5000);
 
                 BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                MojangApiInfo player = gson.fromJson(br, MojangApiInfo.class);
+                PlayerInfo player = gson.fromJson(br, PlayerInfo.class);
+
+                if (logging) {console.sendMessage("§4["+pl.getName()+"] §cUser ("+uuid+") loaded from MojangAPI");}
+
                 return player.getName();
 
             } else {
