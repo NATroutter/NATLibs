@@ -6,7 +6,7 @@
 ![GitHub](https://img.shields.io/github/license/NATroutter/NATLibs?style=for-the-badge)
 
 ![Jenkins](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fhub.nat.gg%2Fjenkins%2Fjob%2FNATLibs%2F&style=for-the-badge)
-![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/net.natroutter/NATLibs?server=https%3A%2F%2Fhub.nat.gg%2Fnexus%2F&style=for-the-badge&label=Version)
+![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/fi.natroutter/natlibs?server=https%3A%2F%2Fhub.nat.gg%2Fnexus%2F&style=for-the-badge&label=Version)
 ![Custom badge](https://img.shields.io/endpoint?color=%2303fc4e&style=for-the-badge&url=https%3A%2F%2Fhub.nat.gg%2Fjavadoc%2Fversion.php%3Fproject%3Dnatlibs)
 
 NATLibs is simple and powerful spigot plugin library that provides  
@@ -25,10 +25,10 @@ Old version documentation can be found in [ProjectHub](https://hub.nat.gg/index.
 
 
 ## Support
-- [Discord](https://dc.natroutter.net/)
+- [Discord](https://discord.nat.gg/)
 - [Issue Tracker](https://github.com/NATroutter/NATLibs/issues)
 
-##Quick Links
+## Quick Links
 - [Plugin Statistics](https://bstats.org/plugin/bukkit/NATLibs/15070)
 - [Jenkins](https://hub.nat.gg/jenkins/job/NATLibs/)
 

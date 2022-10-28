@@ -19,7 +19,7 @@
 
     <build>
         <sourceDirectory>src</sourceDirectory>
-        <finalName>${project.name}-${project.version}</finalName>
+        <finalName>${project.artifactId}-${project.version}</finalName>
         <plugins>
             <!-- Maven source plugin -->
             <plugin>
