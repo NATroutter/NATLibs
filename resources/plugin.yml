@@ -1,7 +1,10 @@
 name: NATLibs
 version: '${project.version}'
-main: net.natroutter.natlibs.NATLibs
+main: fi.natroutter.natlibs.NATLibs
 api-version: 1.18
 authors: [NATroutter]
 description: ${project.description}
 website: ${project.url}
+prefix: NATLibs
+libraries:
+   - org.jsoup:jsoup:1.15.3

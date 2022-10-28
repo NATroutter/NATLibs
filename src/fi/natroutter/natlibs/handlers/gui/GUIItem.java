@@ -1,0 +1,22 @@
+package fi.natroutter.natlibs.handlers.gui;
+
+import fi.natroutter.natlibs.objects.BaseItem;
+import org.bukkit.event.inventory.InventoryClickEvent;
+
+public class GUIItem {
+	private final Consumer<InventoryClickEvent> invClick;
+    private final BaseItem item;
+
+    public GUIItem(BaseItem item, Consumer<InventoryClickEvent> toRun) {
+        this.invClick = toRun;
+        this.item = item;
+    }
+
+    public BaseItem getItem() {
+        return this.item;
+    }
+
+    public void invClick(InventoryClickEvent e) {
+        this.invClick.accept(e);
+    }
+}
