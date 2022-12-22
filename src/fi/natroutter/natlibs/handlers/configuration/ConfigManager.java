@@ -1,6 +1,6 @@
 package fi.natroutter.natlibs.handlers.configuration;
 
-import fi.natroutter.natlibs.utilities.libs.RawFileManager;
+import fi.natroutter.natlibs.utilities.RawFileManager;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 

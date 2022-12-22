@@ -1,4 +1,4 @@
-package fi.natroutter.natlibs.utilities.libs.natlogger;
+package fi.natroutter.natlibs.utilities.natlogger;
 
 import java.util.Date;
 
@@ -6,9 +6,9 @@ public class LogEntry {
 
 	final String info;
 	final Date date;
-	final NATlogger.Type type;
+	final NATlogger.TYPE type;
 	
-	public LogEntry(String info, Date date, NATlogger.Type type) {
+	public LogEntry(String info, Date date, NATlogger.TYPE type) {
 		this.info = info;
 		this.type = type;
 		this.date = date;
@@ -19,7 +19,7 @@ public class LogEntry {
 		return info;
 	}
 	
-	public NATlogger.Type getType() {
+	public NATlogger.TYPE getType() {
 		return type;
 	}
 	

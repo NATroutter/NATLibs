@@ -1,4 +1,4 @@
-package fi.natroutter.natlibs.utilities.libs;
+package fi.natroutter.natlibs.utilities;
 
 
 import java.io.File;

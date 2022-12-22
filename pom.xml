@@ -4,7 +4,7 @@
 
     <groupId>fi.natroutter</groupId>
     <artifactId>natlibs</artifactId>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
     <packaging>jar</packaging>
 
     <name>NATLibs</name>
@@ -142,6 +142,12 @@
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>3.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
 

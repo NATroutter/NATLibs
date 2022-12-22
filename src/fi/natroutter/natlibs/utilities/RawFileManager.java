@@ -1,4 +1,4 @@
-package fi.natroutter.natlibs.utilities.libs;
+package fi.natroutter.natlibs.utilities;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
