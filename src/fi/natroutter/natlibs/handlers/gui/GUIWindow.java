@@ -2,6 +2,7 @@ package fi.natroutter.natlibs.handlers.gui;
 
 import fi.natroutter.natlibs.objects.BaseItem;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,7 +24,7 @@ public class GUIWindow {
 	private Consumer<InventoryOpenEvent> onOpen = null;
 	private Consumer<InventoryCloseEvent> onClose = null;
 
-	private final String name;
+	private final Component name;
 	private String StripedName;
 	private Boolean FillEmpty = false;
 	private final GUIRow row;
@@ -31,20 +32,20 @@ public class GUIWindow {
 	private Boolean ClickSounds = true;
 	private Boolean OpenSound = true;
 	
-    public GUIWindow(String name, GUIRow row) {
+    public GUIWindow(Component name, GUIRow row) {
 		this.name = name;
 		this.row = row;
 		init();
     }
 
-    public GUIWindow(String name, GUIRow row, Boolean FillEmpty) {
+    public GUIWindow(Component name, GUIRow row, Boolean FillEmpty) {
     	this.name = name;
 		this.row = row;
     	this.FillEmpty = FillEmpty;
     	init();
 	}
     
-    public GUIWindow(String name, GUIRow row, Boolean FillEmpty, Boolean ClickSounds) {
+    public GUIWindow(Component name, GUIRow row, Boolean FillEmpty, Boolean ClickSounds) {
     	this.name = name;
 		this.row = row;
     	this.FillEmpty = FillEmpty;
@@ -52,7 +53,7 @@ public class GUIWindow {
     	init();
 	}
     
-    public GUIWindow(String name, GUIRow row, Boolean FillEmpty, Boolean ClickSounds, Boolean OpenSound) {
+    public GUIWindow(Component name, GUIRow row, Boolean FillEmpty, Boolean ClickSounds, Boolean OpenSound) {
     	this.name = name;
 		this.row = row;
     	this.FillEmpty = FillEmpty;
@@ -62,9 +63,9 @@ public class GUIWindow {
 	}
     
     private void init() {
-    	this.StripedName = ChatColor.stripColor(name);
+    	this.StripedName = PlainTextComponentSerializer.plainText().serialize(name);
    	
-    	inv = Bukkit.createInventory(null, row.getInvRow() ,name);
+    	inv = Bukkit.createInventory(null, row.getInvRow(), name);
         items = new HashMap<>(row.getRow());
 
 		windows.put(StripedName, this);
@@ -107,7 +108,7 @@ public class GUIWindow {
 
 	public GUIItem getItem(int slot) { return this.items.get(slot); }
     public Inventory getInventory() { return this.inv; }
-    public String getName() { return this.name; }
+    public Component getName() { return this.name; }
     public String getStripedName() { return StripedName; }
     
     public BaseItem getFillerItem() {
@@ -141,7 +142,7 @@ public class GUIWindow {
 			return;
 		}
 		
-		Inventory privateInv = Bukkit.createInventory(p.getInventory().getHolder(), inv.getSize(), Component.text(this.name));
+		Inventory privateInv = Bukkit.createInventory(p.getInventory().getHolder(), inv.getSize(), this.name);
 		privateInv.setContents(inv.getContents().clone());
 		p.openInventory(privateInv);
 		
