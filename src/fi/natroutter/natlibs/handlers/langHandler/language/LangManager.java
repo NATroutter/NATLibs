@@ -4,6 +4,8 @@ import fi.natroutter.natlibs.handlers.gui.Consumer;
 import fi.natroutter.natlibs.handlers.langHandler.language.translation.Translation;
 import fi.natroutter.natlibs.NATLibs;
 import fi.natroutter.natlibs.handlers.langHandler.TranslationTemplate;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -41,6 +43,11 @@ public class LangManager {
 
     public String get(TranslationTemplate trans) {
         return getTranslation(trans).colour().get(0);
+    }
+
+    public Component getAsComponent(TranslationTemplate trans) {
+        LegacyComponentSerializer lcs = LegacyComponentSerializer.legacySection();
+        return lcs.deserialize(getTranslation(trans).colour().get(0));
     }
 
     public Translation getTranslation(TranslationTemplate trans) {
