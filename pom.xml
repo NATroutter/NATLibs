@@ -4,7 +4,7 @@
 
     <groupId>fi.natroutter</groupId>
     <artifactId>natlibs</artifactId>
-    <version>3.0.3</version>
+    <version>3.0.4</version>
     <packaging>jar</packaging>
 
     <name>NATLibs</name>
@@ -122,7 +122,7 @@
         <dependency>
             <groupId>net.wesjd</groupId>
             <artifactId>anvilgui</artifactId>
-            <version>1.5.3-SNAPSHOT</version>
+            <version>1.6.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>io.papermc.paper</groupId>
