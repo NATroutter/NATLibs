@@ -39,11 +39,20 @@ public class MojangAPI {
         }
         try {
             String json = Jsoup.connect(api).ignoreContentType(true).userAgent("MotiPiste/1.0").execute().body();
-            return new Gson().fromJson(json, MinecraftData.class);
+            MinecraftData data = new Gson().fromJson(json, MinecraftData.class);
+            data = new MinecraftData(data.name(), toUUIDv4(data.id()));
+            return data;
         } catch (Exception e) {
             console.sendMessage("§4["+pl.getName()+"] §cFailed to retrieve miencraft user data : Invalid name or uuid? >> " + nameOrUUID);
         }
         return new MinecraftData("Unknown", "Unknown");
+    }
+
+    public static String toUUIDv4(String uuid) {
+        String[] parts = {uuid.substring(0, 8), uuid.substring(8, 12), uuid.substring(12, 16),
+                uuid.substring(16, 20), uuid.substring(20, 32)};
+        String formatted = String.join("-", parts);
+        return UUID.fromString(formatted).toString();
     }
 
     public record MinecraftData(String name, String id) {

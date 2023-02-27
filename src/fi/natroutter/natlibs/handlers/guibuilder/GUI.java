@@ -5,6 +5,7 @@ import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import java.util.List;
@@ -22,6 +23,8 @@ public class GUI {
     private Inventory inv;
     private int page = 1;
 
+    protected boolean closing;
+
     private ConcurrentHashMap<Integer, Button> buttons = new ConcurrentHashMap<>();
     private ConcurrentHashMap<Integer, DisplayItem> items = new ConcurrentHashMap<>();
 
@@ -29,6 +32,11 @@ public class GUI {
         this.frame = frame;
         this.title = frame.getTitle();
         this.inv = Bukkit.createInventory(null, frame.getRows().getRow()*9, frame.getTitle());
+    }
+
+    public void close(Player p) {
+        closing = true;
+        p.closeInventory();
     }
 
     public int getPage() {
@@ -90,7 +98,8 @@ public class GUI {
         return fullPages + (remainingItems > 0 ? 1 : 0);
     }
 
-    public void paginateButtons(int startSlot, int endSlot, List<Button> items) {
+    public void paginateButtons(List<Button> items) {paginateButtons(items,0,44);}
+    public void paginateButtons(List<Button> items, int startSlot, int endSlot) {
         endSlot = endSlot + 1;
         int pageCount = getPageCount(items.size(), endSlot - startSlot);
         List<Button> pageItems = getPageContent(items, this.getPage(), endSlot - startSlot);
@@ -101,7 +110,8 @@ public class GUI {
         }
     }
 
-    public void paginateItems(int startSlot, int endSlot, List<DisplayItem> items) {
+    public void paginateItems(List<DisplayItem> items) {paginateItems(items,0,44);}
+    public void paginateItems(List<DisplayItem> items, int startSlot, int endSlot) {
         endSlot = endSlot + 1;
         int pageCount = getPageCount(items.size(), endSlot - startSlot);
         List<DisplayItem> pageItems = getPageContent(items, this.getPage(), endSlot - startSlot);

@@ -26,17 +26,17 @@ public class SimpleYml extends YamlConfiguration {
      * @param name of the file
      */
     public SimpleYml(JavaPlugin plugin, String name) {
-        init(plugin, name);
+        this(plugin, new File(plugin.getDataFolder(), name));
     }
 
-    public SimpleYml(JavaPlugin plugin, CfgType file) {
-        init(plugin, file.getName());
-    }
-
-    private void init(JavaPlugin plugin, String name) {
+    /**
+     * @param plugin of the plugin
+     * @param file of the file
+     */
+    protected SimpleYml(JavaPlugin plugin, File file) {
         this.plugin = plugin;
         this.name = name;
-        this.file = new File(plugin.getDataFolder(), name);
+        this.file = file;
         options().parseComments(true);
         options().copyDefaults(true);
         options().copyHeader(true);

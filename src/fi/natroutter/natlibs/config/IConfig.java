@@ -4,21 +4,34 @@ import fi.natroutter.natlibs.objects.Placeholder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Arrays;
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public interface IConfig {
     MiniMessage mm = MiniMessage.miniMessage();
 
+    HashMap<Class<? extends IConfig>, SimpleYml> saved = new HashMap<>();
+
     String getPath();
     JavaPlugin getPlugin();
 
+    default File file() {
+        return new File(getPlugin().getDataFolder(), getClass().getSimpleName().toLowerCase() + ".yml");
+    }
+
     default SimpleYml yml() {
-        return new SimpleYml(getPlugin(), getClass().getSimpleName().toLowerCase() + ".yml");
+        if (!saved.containsKey(this.getClass())) {
+            saved.put(this.getClass(), new SimpleYml(getPlugin(), file()));
+        }
+        return saved.get(this.getClass());
+        //return new SimpleYml(getPlugin(), file());
+    }
+
+    default void reload() {
+        saved.put(this.getClass(), new SimpleYml(getPlugin(), file()));
     }
 
     default String asString() {return yml().getString(getPath());}
@@ -43,10 +56,13 @@ public interface IConfig {
 
     default Component asComponent(List<Placeholder> placeholders){
         String value = yml().getString(getPath());
-        if (placeholders != null && placeholders.size() >0) {
-            return mm.deserialize(value, placeholders.stream().map(Placeholder::getResolver).toArray(TagResolver[]::new));
+        if (value != null) {
+            if (placeholders != null && placeholders.size() >0) {
+                return mm.deserialize(value, placeholders.stream().map(Placeholder::getResolver).toArray(TagResolver[]::new));
+            }
+            return mm.deserialize(value);
         }
-        return mm.deserialize(value);
+        return Component.text("Invalid value in config: " + this.getPath());
     }
 
 }

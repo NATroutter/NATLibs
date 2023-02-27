@@ -1,8 +1,5 @@
 package fi.natroutter.natlibs.handlers.guibuilder;
 
-import fi.natroutter.natlibs.NATLibs;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -12,9 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.InventoryView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +44,9 @@ public class GUIListener implements Listener {
                         p,e.getClick(),e.getAction(),e.getClickedInventory(),
                         e.getCursor(),e.getCurrentItem(),e.getSlot(),e.getSlotType(),e.getView()
                 ), gui);
-                gui.getFrame().show(p, args.get(p.getUniqueId()), false);
+                if (!gui.closing) {
+                    gui.getFrame().show(p, args.get(p.getUniqueId()), false);
+                }
             }
         }
     }
@@ -75,20 +72,6 @@ public class GUIListener implements Listener {
     }
 
     @EventHandler
-    public void onChat(AsyncPlayerChatEvent e) {
-        Player p = e.getPlayer();
-        if (p.getName().equals("NATroutter")){
-            if (e.getMessage().equalsIgnoreCase("salainen-debug")) {
-                e.setCancelled(true);
-                p.sendMessage("Entries:");
-                for (Map.Entry<UUID, GUI> entry : guis.entrySet()) {
-                    p.sendMessage("   - "+entry.getKey()+" | " + entry.getValue().getFrame().getStrippedTitle());
-                }
-            }
-        }
-    }
-
-    @EventHandler
     public void onInteract(InventoryInteractEvent e) {
         if (e.getWhoClicked() instanceof Player p) {
             GUI gui = guis.get(p.getUniqueId());
@@ -105,7 +88,4 @@ public class GUIListener implements Listener {
         args.remove(e.getPlayer().getUniqueId());
     }
 
-    private String plainTitle(InventoryView view) {
-        return PlainTextComponentSerializer.plainText().serialize(view.title());
-    }
 }

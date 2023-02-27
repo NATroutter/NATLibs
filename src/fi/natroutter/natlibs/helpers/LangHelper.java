@@ -17,13 +17,19 @@ public class LangHelper {
     private MiniMessage mm = MiniMessage.miniMessage();
     private LegacyComponentSerializer lcs = LegacyComponentSerializer.legacyAmpersand();
 
-    private IConfig prefix;
+    private final IConfig prefix;
+    private final boolean supportLegacy;
 
     public LangHelper(IConfig prefix) {
         this.prefix = prefix;
+        this.supportLegacy = false;
     }
 
-    public LangHelper() {}
+    public LangHelper(IConfig prefix, boolean supportLegacy) {
+        this.prefix = prefix;
+        this.supportLegacy = supportLegacy;
+    }
+
 
     public void prefix(CommandSender sender, IConfig... langs){prefix(sender,null,langs);}
     public void prefix(CommandSender sender, List<Placeholder> placeholders, IConfig... langs){
@@ -44,12 +50,21 @@ public class LangHelper {
     }
 
     private void sendMsg(CommandSender sender, List<Placeholder> placeholders, String msg) {
-        if (placeholders != null && placeholders.size() >0) {
-            Component comp = mm.deserialize(msg, placeholders.stream().map(Placeholder::getResolver).toArray(TagResolver[]::new));
-            sender.sendMessage(lcs.deserialize(lcs.serialize(comp)));
-            return;
+        if (supportLegacy) {
+            if (placeholders != null && placeholders.size() >0) {
+                Component comp = mm.deserialize(msg, placeholders.stream().map(Placeholder::getResolver).toArray(TagResolver[]::new));
+                sender.sendMessage(lcs.deserialize(lcs.serialize(comp)));
+                return;
+            }
+            sender.sendMessage(lcs.deserialize(lcs.serialize(mm.deserialize(msg))));
+        } else {
+            if (placeholders != null && placeholders.size() >0) {
+                Component comp = mm.deserialize(msg, placeholders.stream().map(Placeholder::getResolver).toArray(TagResolver[]::new));
+                sender.sendMessage(comp);
+                return;
+            }
+            sender.sendMessage(mm.deserialize(msg));
         }
-        sender.sendMessage(lcs.deserialize(lcs.serialize(mm.deserialize(msg))));
     }
 
     private <T> T[] addItemToFrontOfArray(T[] originalArray, T itemToAdd) {
