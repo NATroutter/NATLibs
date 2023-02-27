@@ -17,23 +17,12 @@ import java.util.UUID;
 
 public class MojangAPI {
 
-    private final Gson gson = new GsonBuilder().registerTypeAdapter(UUID.class, new UUIDTypeAdapter()).create();
-
-    private final String UUID_URL = "https://api.mojang.com/users/profiles/minecraft/%s";
-    private final String NAME_URL = "https://api.mojang.com/user/profile/%s";
-
     private final JavaPlugin pl;
     private final ConsoleCommandSender console;
 
-    private boolean logging = false;
-
     public MojangAPI(JavaPlugin pl) {
-        this(pl, false);
-    }
-    public MojangAPI(JavaPlugin pl, boolean logging) {
         this.pl = pl;
         console = pl.getServer().getConsoleSender();
-        this.logging = logging;
     }
 
     public UUID getUUID(String name) {
