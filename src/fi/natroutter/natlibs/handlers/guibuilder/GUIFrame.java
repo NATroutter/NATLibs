@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
 public abstract class GUIFrame {
 
     @Getter
@@ -43,7 +45,7 @@ public abstract class GUIFrame {
         this.strippedTitle = PlainTextComponentSerializer.plainText().serialize(title);
     }
 
-    public abstract boolean onShow(Player player, GUI gui);
+    protected abstract boolean onShow(Player player, GUI gui, List<Object> args);
     public void onClose(Player player, GUI gui){}
 
     public void setCloseSound(Sound sound, float volume, float pitch) {
@@ -56,10 +58,15 @@ public abstract class GUIFrame {
         this.clickSound = new SoundSettings(sound, volume, pitch);
     }
 
-    public void show(Player p) {show(p,true);}
+    public boolean hasOpen(Player p) {
+        return GUIListener.guis.containsKey(p.getUniqueId());
+    }
 
-    protected void show(Player p, boolean sound) {
-        //Gui gui = GuiListener.guis.get(strippedTitle);
+    public void show(Player p) {show(p,null,true);}
+    public void show(Player p, List<Object> args) {show(p,args,true);}
+
+    protected void show(Player p, List<Object> args, boolean sound) {
+        GUIListener.args.put(p.getUniqueId(), args);
         GUI gui = GUIListener.guis.get(p.getUniqueId());
         if (gui == null) {
             gui = new GUI(this);
@@ -69,7 +76,7 @@ public abstract class GUIFrame {
 
         inv.clear();
 
-        if (!onShow(p, gui)) {
+        if (!onShow(p, gui, args)) {
             return;
         }
 
@@ -80,6 +87,7 @@ public abstract class GUIFrame {
         }
 
         GUIListener.guis.put(p.getUniqueId(), gui);
+        GUIListener.args.put(p.getUniqueId(), args);
         Inventory privInv = Bukkit.createInventory(p.getInventory().getHolder(), inv.getSize(), gui.getTitle());
 
         if (filler != null) {

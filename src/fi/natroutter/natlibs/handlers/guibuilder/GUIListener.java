@@ -1,6 +1,8 @@
 package fi.natroutter.natlibs.handlers.guibuilder;
 
+import fi.natroutter.natlibs.NATLibs;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -15,12 +17,14 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.InventoryView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public class GUIListener implements Listener {
 
     protected static final Map<UUID, GUI> guis = new HashMap<>();
+    protected static final Map<UUID, List<Object>> args = new HashMap<>();
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
@@ -45,7 +49,7 @@ public class GUIListener implements Listener {
                         p,e.getClick(),e.getAction(),e.getClickedInventory(),
                         e.getCursor(),e.getCurrentItem(),e.getSlot(),e.getSlotType(),e.getView()
                 ), gui);
-                gui.getFrame().show(p,false);
+                gui.getFrame().show(p, args.get(p.getUniqueId()), false);
             }
         }
     }
@@ -53,6 +57,7 @@ public class GUIListener implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent e) {
         if(e.getReason().equals(InventoryCloseEvent.Reason.OPEN_NEW))return;
+        if(e.getReason().equals(InventoryCloseEvent.Reason.PLUGIN))return;
         if (e.getPlayer() instanceof Player p) {
 
             GUI gui = guis.get(p.getUniqueId());
@@ -64,6 +69,7 @@ public class GUIListener implements Listener {
                 }
                 frame.onClose(p, gui);
                 guis.remove(p.getUniqueId());
+                args.remove(p.getUniqueId());
             }
         }
     }
@@ -96,6 +102,7 @@ public class GUIListener implements Listener {
     @EventHandler
     public void onLeave(PlayerQuitEvent e) {
         guis.remove(e.getPlayer().getUniqueId());
+        args.remove(e.getPlayer().getUniqueId());
     }
 
     private String plainTitle(InventoryView view) {

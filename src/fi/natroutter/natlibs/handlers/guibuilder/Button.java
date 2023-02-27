@@ -7,6 +7,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -31,7 +32,10 @@ public class Button {
 
     public Button setGlow(boolean value) {
         if (value) {
-            setMeta(meta-> meta.addEnchant(Enchantment.DURABILITY, 1, true));
+            setMeta(meta-> {
+                meta.addEnchant(Enchantment.DURABILITY, 1, true);
+                meta.addItemFlags(ItemFlag.values());
+            });
         } else {
             item.removeEnchantment(Enchantment.DURABILITY);
         }
@@ -75,4 +79,5 @@ public class Button {
         meta.accept(iMeta);
         item.setItemMeta(iMeta);
     }
+
 }

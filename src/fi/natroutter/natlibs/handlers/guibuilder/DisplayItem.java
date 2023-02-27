@@ -30,7 +30,7 @@ public class DisplayItem {
         if (value) {
             setMeta(meta-> {
                 meta.addEnchant(Enchantment.DURABILITY, 1, true);
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                meta.addItemFlags(ItemFlag.values());
             });
         } else {
             item.removeEnchantment(Enchantment.DURABILITY);

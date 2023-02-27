@@ -1,6 +1,7 @@
 package fi.natroutter.natlibs.utilities;
 
 import fi.natroutter.natlibs.objects.BaseItem;
+import fi.natroutter.natlibs.objects.Complete;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
@@ -10,17 +11,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.StringUtil;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 
 @SuppressWarnings({"unused"})
@@ -47,6 +53,20 @@ public class Utilities {
 		sym.setGroupingSeparator('.');
 		formatter.setDecimalFormatSymbols(sym);
 		return formatter.format(balance);
+	}
+
+	public List<String> completesWithPerms(CommandSender sender, String arg, List<Complete> list) {
+		List<String> newList = list.stream()
+				.filter(c -> sender.hasPermission(c.permission()))
+				.map(Complete::arg)
+				.collect(Collectors.toList());
+		return completes(sender, arg, newList);
+	}
+	public List<String> completes(CommandSender sender, String arg, List<String> list) {
+		List<String> shorted = new ArrayList<>();
+		StringUtil.copyPartialMatches(arg, list, shorted);
+		Collections.sort(shorted);
+		return shorted;
 	}
 
 	public void glint(BaseItem item, boolean state) {
