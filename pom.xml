@@ -4,7 +4,7 @@
 
     <groupId>fi.natroutter</groupId>
     <artifactId>natlibs</artifactId>
-    <version>3.0.4</version>
+    <version>4.0.0</version>
     <packaging>jar</packaging>
 
     <name>NATLibs</name>
@@ -98,6 +98,10 @@
             <resource>
                 <directory>${project.basedir}/resources</directory>
                 <filtering>true</filtering>
+                <includes>
+                    <include>plugin.yml</include>
+                    <include>config.yml</include>
+                </includes>
             </resource>
         </resources>
 
@@ -116,9 +120,19 @@
             <id>codemc-snapshots</id>
             <url>https://repo.codemc.io/repository/maven-snapshots/</url>
         </repository>
+        <repository>
+            <id>NAT-Software</id>
+            <url>https://hub.nat.gg/nexus/repository/NAT-Software/</url>
+        </repository>
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>fi.natroutter</groupId>
+            <artifactId>foxlib</artifactId>
+            <version>1.0.5</version>
+        </dependency>
+
         <dependency>
             <groupId>net.wesjd</groupId>
             <artifactId>anvilgui</artifactId>

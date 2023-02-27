@@ -30,7 +30,7 @@ public class VersionChecker {
     public VersionData get() {
         VersionData data = new VersionData(false, false, "Failed to get data from server", "error", "Unknown");
         Connection con = Jsoup.connect(String.format(server, plugin, version));
-        con.userAgent("NATLibs-VersionChecker");
+        con.userAgent("NATLibs-VersionChecker("+plugin+")");
         con.header("Content-Type", "application/json; charset=utf-8");
         con.header("Accept", "application/json");
         con.ignoreContentType(true);

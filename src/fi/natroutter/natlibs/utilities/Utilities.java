@@ -1,7 +1,13 @@
 package fi.natroutter.natlibs.utilities;
 
 import fi.natroutter.natlibs.objects.BaseItem;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -19,6 +25,9 @@ import java.util.regex.Pattern;
 
 @SuppressWarnings({"unused"})
 public class Utilities {
+
+	private MiniMessage mm = MiniMessage.builder().build();
+	private LegacyComponentSerializer lcs = LegacyComponentSerializer.legacyAmpersand();
 
 	final JavaPlugin pl;
 
@@ -47,6 +56,16 @@ public class Utilities {
 		} else {
 			item.removeEnchantment(Enchantment.DURABILITY);
 		}
+	}
+
+	public String plain(Component comp) {
+		return PlainTextComponentSerializer.plainText().serialize(comp);
+	}
+
+	public Component translateColors(String str) {
+		Component comp = mm.deserialize(str);
+		String s = lcs.serialize(comp);
+		return lcs.deserialize(s);
 	}
 
 	public float pitchToFloat(Player p) {

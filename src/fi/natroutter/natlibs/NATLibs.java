@@ -3,9 +3,9 @@ package fi.natroutter.natlibs;
 import fi.natroutter.natlibs.events.PlayerJumpEvent;
 import fi.natroutter.natlibs.files.Config;
 import fi.natroutter.natlibs.handlers.VersionChecker;
-import fi.natroutter.natlibs.handlers.gui.GUIListener;
-import fi.natroutter.natlibs.handlers.configuration.ConfigManager;
 
+import fi.natroutter.natlibs.handlers.guibuilder.GUIListener;
+import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
@@ -41,29 +41,27 @@ public class NATLibs extends JavaPlugin {
 	*/
 
 
-	private static Config config;
-	public static Config getConf() {return config;}
+	@Getter
+	private static NATLibs instance;
 
 	@Override
 	public void onEnable() {
+		instance = this;
 
 		ConsoleCommandSender console = Bukkit.getConsoleSender();
-		config = new ConfigManager(this).load(Config.class);
 
-		if (config.checkUpdates) {
+		if (Config.CHECK_UPDATES.asBoolean()) {
 			VersionChecker checker = new VersionChecker(this);
-			if (checker.isSuccess()) {
-				if (checker.hasUpdate()) {
-					console.sendMessage("§4["+this.getName()+"][Updater] §7New update aviable §c" + checker.getNewVersion() + " §8(§7You are using§8: §c"+checker.getCurrentVersion()+"§8)");
-					console.sendMessage("§4["+this.getName()+"][Updater] §7Grap the newest version from§8: §c" + checker.getURL());
-				}
+			if (checker.isSuccess() && checker.hasUpdate()) {
+				console.sendMessage("§4["+this.getName()+"][Updater] §7New update aviable §c" + checker.getNewVersion() + " §8(§7You are using§8: §c"+checker.getCurrentVersion()+"§8)");
+				console.sendMessage("§4["+this.getName()+"][Updater] §7Grap the newest version from§8: §c" + checker.getURL());
 			}
 		}
 
 		PluginManager pm = Bukkit.getPluginManager();
 
-		pm.registerEvents(new GUIListener(), this);
 		pm.registerEvents(new PlayerJumpEvent.PlayerJumpEventListener(), this);
+		pm.registerEvents(new GUIListener(), this);
 
 		new Metrics(this, 15070);
 	}

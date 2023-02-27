@@ -1,4 +1,4 @@
-package fi.natroutter.natlibs.handlers;
+package fi.natroutter.natlibs.handlers.licencing;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -19,28 +19,28 @@ public class AdvancedLicense {
 	private String securityKey = "YecoF0I6M05thxLeokoHuW8iUhTdIUInjkfF";
 	private boolean debug = false;
 
-	public AdvancedLicense(String licenseKey, String validationServer, Plugin plugin) {
+	protected AdvancedLicense(String licenseKey, String validationServer, Plugin plugin) {
 		this.licenseKey = licenseKey;
 		this.plugin = plugin;
 		this.validationServer = validationServer;
 	}
 
-	public AdvancedLicense setSecurityKey(String securityKey) {
+	protected AdvancedLicense setSecurityKey(String securityKey) {
 		this.securityKey = securityKey;
 		return this;
 	}
 
-	public AdvancedLicense setConsoleLog(LogType logType) {
+	protected AdvancedLicense setConsoleLog(LogType logType) {
 		this.logType = logType;
 		return this;
 	}
 
-	public AdvancedLicense debug() {
+	protected AdvancedLicense debug() {
 		debug = true;
 		return this;
 	}
 
-	public boolean register() {
+	protected boolean register() {
 		log(0, "[]==========[License-System]==========[]");
 		log(0, "Connecting to License-Server...");
 		ValidationType vt = isValid();
@@ -60,11 +60,11 @@ public class AdvancedLicense {
 		}
 	}
 
-	public boolean isValidSimple() {
+	protected boolean isValidSimple() {
 		return (isValid() == ValidationType.VALID);
 	}
 
-	private String requestServer(String v1, String v2) throws IOException {
+	protected String requestServer(String v1, String v2) throws IOException {
 		URL url = new URL(validationServer + "?v1=" + v1 + "&v2=" + v2 + "&pl=" + plugin.getName());
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod("GET");
@@ -88,7 +88,7 @@ public class AdvancedLicense {
 		}
 	}
 
-	public ValidationType isValid() {
+	protected ValidationType isValid() {
 		String rand = toBinary(UUID.randomUUID().toString());
 		String sKey = toBinary(securityKey);
 		String key = toBinary(licenseKey);
@@ -137,11 +137,11 @@ public class AdvancedLicense {
 	// Enums
 	//
 
-	public enum LogType {
+	protected enum LogType {
 		NORMAL, LOW, NONE
 	}
 
-	public enum ValidationType {
+	protected enum ValidationType {
 		WRONG_RESPONSE, PAGE_ERROR, URL_ERROR, KEY_OUTDATED, KEY_NOT_FOUND, NOT_VALID_IP, INVALID_PLUGIN, VALID
 	}
 

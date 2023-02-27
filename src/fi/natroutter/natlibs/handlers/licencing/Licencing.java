@@ -1,4 +1,4 @@
-package fi.natroutter.natlibs.handlers;
+package fi.natroutter.natlibs.handlers.licencing;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
