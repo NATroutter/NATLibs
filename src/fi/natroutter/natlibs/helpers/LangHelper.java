@@ -1,20 +1,24 @@
 package fi.natroutter.natlibs.helpers;
 
 import fi.natroutter.natlibs.config.IConfig;
-import fi.natroutter.natlibs.objects.Placeholder;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class LangHelper {
 
-    private MiniMessage mm = MiniMessage.miniMessage();
+    private MiniMessage mm = MiniMessage.builder().build();
     private LegacyComponentSerializer lcs = LegacyComponentSerializer.legacyAmpersand();
 
     private final IConfig prefix;
@@ -22,7 +26,7 @@ public class LangHelper {
 
     public LangHelper(IConfig prefix) {
         this.prefix = prefix;
-        this.supportLegacy = false;
+        this.supportLegacy = true;
     }
 
     public LangHelper(IConfig prefix, boolean supportLegacy) {
@@ -32,39 +36,38 @@ public class LangHelper {
 
 
     public void prefix(CommandSender sender, IConfig... langs){prefix(sender,null,langs);}
-    public void prefix(CommandSender sender, List<Placeholder> placeholders, IConfig... langs){
+    public void prefix(CommandSender sender, List<TagResolver> placeholders, IConfig... langs){
         langs = addItemToFrontOfArray(langs, prefix);
         send(sender, placeholders, langs);
     }
 
-    public void send(CommandSender sender, IConfig... items){send(sender, null, items);}
-    public void send(CommandSender sender, List<Placeholder> placeholders, IConfig... langs){
-        String msg = Arrays.stream(langs).map(IConfig::asString).collect(Collectors.joining());
-        sendMsg(sender, placeholders, msg);
-    }
-
     public void sendList(CommandSender sender, IConfig... items){sendList(sender, null, items);}
-    public void sendList(CommandSender sender, List<Placeholder> placeholders, IConfig... langs){
-        String msg = Arrays.stream(langs).map(IConfig::asStringList).map(l->String.join("\n",l)).collect(Collectors.joining());
-        sendMsg(sender, placeholders, msg);
+    public void sendList(CommandSender sender, List<TagResolver> tagResolvers, IConfig... langs){
+        Component comp = Arrays.stream(langs)
+                .map(IConfig::asStringList)
+                .flatMap(Collection::stream)
+                .map(i-> tagResolvers != null ? mm.deserialize(i, tagResolvers.toArray(TagResolver[]::new)) : mm.deserialize(i))
+                .reduce(Component.empty(), (c1, c2) -> c1.append(c2).append(Component.newline()));
+
+        if (supportLegacy) {
+            sender.sendMessage(lcs.deserialize(lcs.serialize(comp)));
+            return;
+        }
+        sender.sendMessage(comp);
     }
 
-    private void sendMsg(CommandSender sender, List<Placeholder> placeholders, String msg) {
+    public void send(CommandSender sender, IConfig... items){send(sender, null, items);}
+    private void send(CommandSender sender, List<TagResolver> tagResolvers, IConfig... langs) {
+        Component comp = Arrays.stream(langs)
+                .map(IConfig::asString)
+                .map(i-> tagResolvers != null ? mm.deserialize(i, tagResolvers.toArray(TagResolver[]::new)) : mm.deserialize(i))
+                .reduce(Component.empty(), Component::append);
+
         if (supportLegacy) {
-            if (placeholders != null && placeholders.size() >0) {
-                Component comp = mm.deserialize(msg, placeholders.stream().map(Placeholder::getResolver).toArray(TagResolver[]::new));
-                sender.sendMessage(lcs.deserialize(lcs.serialize(comp)));
-                return;
-            }
-            sender.sendMessage(lcs.deserialize(lcs.serialize(mm.deserialize(msg))));
-        } else {
-            if (placeholders != null && placeholders.size() >0) {
-                Component comp = mm.deserialize(msg, placeholders.stream().map(Placeholder::getResolver).toArray(TagResolver[]::new));
-                sender.sendMessage(comp);
-                return;
-            }
-            sender.sendMessage(mm.deserialize(msg));
+            sender.sendMessage(lcs.deserialize(lcs.serialize(comp)));
+            return;
         }
+        sender.sendMessage(comp);
     }
 
     private <T> T[] addItemToFrontOfArray(T[] originalArray, T itemToAdd) {

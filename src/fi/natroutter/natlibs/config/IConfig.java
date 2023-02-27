@@ -1,8 +1,8 @@
 package fi.natroutter.natlibs.config;
 
-import fi.natroutter.natlibs.objects.Placeholder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -44,21 +44,21 @@ public interface IConfig {
     default Component asComponent(){return asComponent(null);}
     default List<Component> asComponentList(){return asComponentList(null);}
 
-    default List<Component> asComponentList(List<Placeholder> placeholders) {
+    default List<Component> asComponentList(List<TagResolver> tagResolvers) {
         List<String> values = yml().getStringList(getPath());
         return values.stream().map(value -> {
-            if (placeholders != null && placeholders.size() >0) {
-                return mm.deserialize(value, placeholders.stream().map(Placeholder::getResolver).toArray(TagResolver[]::new));
+            if (tagResolvers != null && tagResolvers.size() >0) {
+                return mm.deserialize(value, tagResolvers.toArray(TagResolver[]::new));
             }
             return mm.deserialize(value);
         }).toList();
     }
 
-    default Component asComponent(List<Placeholder> placeholders){
+    default Component asComponent(List<TagResolver> tagResolvers){
         String value = yml().getString(getPath());
         if (value != null) {
-            if (placeholders != null && placeholders.size() >0) {
-                return mm.deserialize(value, placeholders.stream().map(Placeholder::getResolver).toArray(TagResolver[]::new));
+            if (tagResolvers != null && tagResolvers.size() >0) {
+                return mm.deserialize(value, tagResolvers.toArray(TagResolver[]::new));
             }
             return mm.deserialize(value);
         }
