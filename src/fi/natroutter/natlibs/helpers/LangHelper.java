@@ -57,7 +57,7 @@ public class LangHelper {
     }
 
     public void send(CommandSender sender, IConfig... items){send(sender, null, items);}
-    private void send(CommandSender sender, List<TagResolver> tagResolvers, IConfig... langs) {
+    public void send(CommandSender sender, List<TagResolver> tagResolvers, IConfig... langs) {
         Component comp = Arrays.stream(langs)
                 .map(IConfig::asString)
                 .map(i-> tagResolvers != null ? mm.deserialize(i, tagResolvers.toArray(TagResolver[]::new)) : mm.deserialize(i))
@@ -71,7 +71,7 @@ public class LangHelper {
     }
 
     public void sendStringPrefix(CommandSender sender, String value){sendStringPrefix(sender, null, value);}
-    private void sendStringPrefix(CommandSender sender, List<TagResolver> tagResolvers, String value) {
+    public void sendStringPrefix(CommandSender sender, List<TagResolver> tagResolvers, String value) {
         Component comp = tagResolvers != null ? mm.deserialize(value, tagResolvers.toArray(TagResolver[]::new)) : mm.deserialize(value);
         if (supportLegacy) {
             sender.sendMessage(lcs.deserialize(lcs.serialize(prefix.asComponent().append(comp))));
@@ -81,7 +81,7 @@ public class LangHelper {
     }
 
     public void sendString(CommandSender sender, String value){sendString(sender, null, value);}
-    private void sendString(CommandSender sender, List<TagResolver> tagResolvers, String value) {
+    public void sendString(CommandSender sender, List<TagResolver> tagResolvers, String value) {
         Component comp = tagResolvers != null ? mm.deserialize(value, tagResolvers.toArray(TagResolver[]::new)) : mm.deserialize(value);
         if (supportLegacy) {
             sender.sendMessage(lcs.deserialize(lcs.serialize(comp)));
