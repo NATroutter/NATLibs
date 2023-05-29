@@ -5,6 +5,7 @@ import fi.natroutter.natlibs.files.Config;
 import fi.natroutter.natlibs.handlers.VersionChecker;
 
 import fi.natroutter.natlibs.handlers.guibuilder.GUIListener;
+import fi.natroutter.natlibs.utilities.Utilities;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;

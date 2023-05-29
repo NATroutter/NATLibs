@@ -1,8 +1,10 @@
 package fi.natroutter.natlibs.handlers.guibuilder;
 
+import fi.natroutter.natlibs.objects.BaseItem;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -26,12 +28,12 @@ public class GUI {
     protected boolean closing;
 
     private ConcurrentHashMap<Integer, Button> buttons = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<Integer, DisplayItem> items = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Integer, BaseItem> items = new ConcurrentHashMap<>();
 
     public GUI(GUIFrame frame){
         this.frame = frame;
         this.title = frame.getTitle();
-        this.inv = Bukkit.createInventory(null, frame.getRows().getRow()*9, frame.getTitle());
+        this.inv = Bukkit.createInventory(null, frame.getRows().getSize(), frame.getTitle());
     }
 
     public void close(Player p) {
@@ -61,10 +63,10 @@ public class GUI {
         return buttons.get(slot);
     }
 
-    public DisplayItem getItem(Rows rows, int slot) {
+    public BaseItem getItem(Rows rows, int slot) {
         return getItem(rows.getSlots()+slot);
     }
-    public DisplayItem getItem(int slot) {
+    public BaseItem getItem(int slot) {
         return items.get(slot);
     }
 
@@ -74,16 +76,16 @@ public class GUI {
 
     public void setButton(Button button, int slot) {
         buttons.put(slot, button);
-        inv.setItem(slot, button.getItem());
+        inv.setItem(slot, button);
     }
 
-    public void setItem(DisplayItem item, Rows rows, int slot) {
+    public void setItem(BaseItem item, Rows rows, int slot) {
         setItem(item, rows.getSlots()+slot);
     }
 
-    public void setItem(DisplayItem item, int slot) {
+    public void setItem(BaseItem item, int slot) {
         items.put(slot, item);
-        inv.setItem(slot, item.getItem());
+        inv.setItem(slot, item);
     }
 
     private <T> List<T> getPageContent(List<T> items, int page, int pageSize) {
@@ -110,11 +112,11 @@ public class GUI {
         }
     }
 
-    public void paginateItems(List<DisplayItem> items) {paginateItems(items,0,44);}
-    public void paginateItems(List<DisplayItem> items, int startSlot, int endSlot) {
+    public void paginateItems(List<BaseItem> items) {paginateItems(items,0,44);}
+    public void paginateItems(List<BaseItem> items, int startSlot, int endSlot) {
         endSlot = endSlot + 1;
         int pageCount = getPageCount(items.size(), endSlot - startSlot);
-        List<DisplayItem> pageItems = getPageContent(items, this.getPage(), endSlot - startSlot);
+        List<BaseItem> pageItems = getPageContent(items, this.getPage(), endSlot - startSlot);
 
         this.getFrame().setMaxPages(pageCount);
         for(int i = startSlot ; i < pageItems.size() + startSlot; i++) {

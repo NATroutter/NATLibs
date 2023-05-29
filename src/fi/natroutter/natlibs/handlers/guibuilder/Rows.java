@@ -1,5 +1,9 @@
 package fi.natroutter.natlibs.handlers.guibuilder;
 
+import org.bukkit.Material;
+
+import java.util.Arrays;
+
 public enum Rows {
 
     row1(1),
@@ -18,8 +22,17 @@ public enum Rows {
         return this.rows;
     }
 
+
+    public int getSize() {
+        return (rows * 9);
+    }
+
     public int getSlots() {
         return (rows - 1) * 9;
+    }
+
+    public static Rows fromString(String value) {
+        return Arrays.stream(values()).filter(v->v.name().equalsIgnoreCase(value)).findFirst().orElse(null);
     }
 
 }

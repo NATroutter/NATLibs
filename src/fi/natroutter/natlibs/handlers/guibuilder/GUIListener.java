@@ -1,5 +1,6 @@
 package fi.natroutter.natlibs.handlers.guibuilder;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -35,7 +36,7 @@ public class GUIListener implements Listener {
                 if (e.getClickedInventory() == null) { return; }
                 if (e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {return;}
                 if (item == null) { return; }
-                if (item.getItem().getType().equals(Material.AIR)) { return; }
+                if (item.getType().equals(Material.AIR)) { return; }
 
                 if (frame.getClickSound() != null) {
                     p.playSound(p.getLocation(), frame.getClickSound().sound(), frame.getClickSound().volume(), frame.getClickSound().pitch());
@@ -45,7 +46,7 @@ public class GUIListener implements Listener {
                         e.getCursor(),e.getCurrentItem(),e.getSlot(),e.getSlotType(),e.getView()
                 ), gui);
                 if (!gui.closing) {
-                    gui.getFrame().show(p, args.get(p.getUniqueId()), false);
+                    gui.getFrame().update(p, args.get(p.getUniqueId()), false);
                 }
             }
         }

@@ -70,6 +70,26 @@ public class LangHelper {
         sender.sendMessage(comp);
     }
 
+    public void sendStringPrefix(CommandSender sender, String value){sendStringPrefix(sender, null, value);}
+    private void sendStringPrefix(CommandSender sender, List<TagResolver> tagResolvers, String value) {
+        Component comp = tagResolvers != null ? mm.deserialize(value, tagResolvers.toArray(TagResolver[]::new)) : mm.deserialize(value);
+        if (supportLegacy) {
+            sender.sendMessage(lcs.deserialize(lcs.serialize(prefix.asComponent().append(comp))));
+            return;
+        }
+        sender.sendMessage(prefix.asComponent().append(comp));
+    }
+
+    public void sendString(CommandSender sender, String value){sendString(sender, null, value);}
+    private void sendString(CommandSender sender, List<TagResolver> tagResolvers, String value) {
+        Component comp = tagResolvers != null ? mm.deserialize(value, tagResolvers.toArray(TagResolver[]::new)) : mm.deserialize(value);
+        if (supportLegacy) {
+            sender.sendMessage(lcs.deserialize(lcs.serialize(comp)));
+            return;
+        }
+        sender.sendMessage(comp);
+    }
+
     private <T> T[] addItemToFrontOfArray(T[] originalArray, T itemToAdd) {
         T[] newArray = Arrays.copyOf(originalArray, originalArray.length + 1);
         System.arraycopy(originalArray, 0, newArray, 1, originalArray.length);

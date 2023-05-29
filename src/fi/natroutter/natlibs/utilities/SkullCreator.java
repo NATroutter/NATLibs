@@ -2,7 +2,9 @@ package fi.natroutter.natlibs.utilities;
 
 import java.util.UUID;
 
+import fi.natroutter.natlibs.config.IConfig;
 import fi.natroutter.natlibs.objects.BaseItem;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -14,7 +16,19 @@ public class SkullCreator {
 	
 	public BaseItem Create(String name, String base64) {
 		BaseItem item = itemWithBase64(new BaseItem(Material.PLAYER_HEAD), base64);
-		item.setDisplayName(name);
+		item.name(name);
+		return item;
+	}
+
+	public BaseItem Create(Component name, String base64) {
+		BaseItem item = itemWithBase64(new BaseItem(Material.PLAYER_HEAD), base64);
+		item.name(name);
+		return item;
+	}
+
+	public BaseItem Create(IConfig name, String base64) {
+		BaseItem item = itemWithBase64(new BaseItem(Material.PLAYER_HEAD), base64);
+		item.name(name);
 		return item;
 	}
 	
