@@ -22,7 +22,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
-import org.jetbrains.annotations.Nullable;
 
 public class BaseItem extends ItemStack {
 
@@ -58,24 +57,24 @@ public class BaseItem extends ItemStack {
 
 
 	public BaseItem lore(String... line) {
-		lore(Arrays.stream(line).map(Utilities::translate).toList());
+		lore(Arrays.stream(line).map(Utilities::translateColors).toList());
 		return this;
 	}
-	public BaseItem lore(List<String> lines, List<TagResolver> placeholders) {
-		lore(lines.stream().map(entry->Utilities.translate(entry,placeholders)).toList());
+	public BaseItem lore(List<String> lines, TagResolver... placeholders) {
+		lore(lines.stream().map(entry->Utilities.translateColors(entry,placeholders)).toList());
 		return this;
 	}
 	public BaseItem lore(IConfig lore) {
 		lore(lore.asComponentList());
 		return this;
 	}
-	public BaseItem lore(IConfig lore, List<TagResolver> placeholders) {
+	public BaseItem lore(IConfig lore, TagResolver... placeholders) {
 		lore(lore.asComponentList(placeholders));
 		return this;
 	}
 
 	public BaseItem name(String name) {
-		setMeta(meta-> meta.displayName(Utilities.translate(name)));
+		setMeta(meta-> meta.displayName(Utilities.translateColors(name)));
 		return this;
 	}
 	public BaseItem name(Component component) {
@@ -86,7 +85,7 @@ public class BaseItem extends ItemStack {
 		setMeta(meta-> meta.displayName(name.asComponent()));
 		return this;
 	}
-	public BaseItem name(IConfig name, List<TagResolver> placeholders) {
+	public BaseItem name(IConfig name, TagResolver... placeholders) {
 		setMeta(meta-> meta.displayName(name.asComponent(placeholders)));
 		return this;
 	}

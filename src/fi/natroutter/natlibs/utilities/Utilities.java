@@ -6,22 +6,18 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.StringUtil;
 
+import javax.annotation.Nullable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -36,7 +32,7 @@ public class Utilities {
 	private static MiniMessage mm = MiniMessage.builder().build();
 	private static LegacyComponentSerializer lcs = LegacyComponentSerializer.legacyAmpersand();
 
-	public static String CurrencyFormat(double balance) {
+	public static String currencyFormat(double balance) {
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.ENGLISH);
 		DecimalFormatSymbols sym = formatter.getDecimalFormatSymbols();
 		sym.setCurrencySymbol("");
@@ -46,14 +42,14 @@ public class Utilities {
 		return formatter.format(balance);
 	}
 
-	public static List<String> completesWithPerms(CommandSender sender, String arg, List<Complete> list) {
+	public static List<String> getCompletesWithPerms(CommandSender sender, String arg, List<Complete> list) {
 		List<String> newList = list.stream()
 				.filter(c -> sender.hasPermission(c.permission()))
 				.map(Complete::arg)
 				.collect(Collectors.toList());
-		return completes(sender, arg, newList);
+		return getCompletes(sender, arg, newList);
 	}
-	public static List<String> completes(CommandSender sender, String arg, List<String> list) {
+	public static List<String> getCompletes(CommandSender sender, String arg, List<String> list) {
 		List<String> shorted = new ArrayList<>();
 		StringUtil.copyPartialMatches(arg, list, shorted);
 		Collections.sort(shorted);
@@ -77,23 +73,15 @@ public class Utilities {
 		return lcs.serialize(comp);
 	}
 
-	public static Component translate(String str) {
-		return translate(str,null);
+	public static Component translateColors(String str, List<TagResolver> placeholders) {
+		return translateColors(str, placeholders.toArray(new TagResolver[0]));
+	}
+	public static Component translateColors(String str, @Nullable TagResolver... placeholders) {
+		TextComponent deserialize = lcs.deserialize(str.replace("§", "&"));
+		String serialize = mm.serialize(deserialize).replace("\\<", "<");
+		return placeholders == null ? mm.deserialize(serialize) : mm.deserialize(serialize, placeholders);
 	}
 
-	public static Component translate(String str, List<TagResolver> tagResolvers) {
-		str = str.replace("§", "&");
-		Component deserialize = lcs.deserialize(str);
-		String format;
-		if (tagResolvers != null && !tagResolvers.isEmpty()) {
-			Component resolved = mm.deserialize(mm.serialize(deserialize), tagResolvers.toArray(TagResolver[]::new));
-			format = mm.serialize(resolved);
-		} else {
-			format = mm.serialize(deserialize);
-		}
-		String replace = format.replace("\\<", "<");
-		return mm.deserialize(replace);
-	}
 
 	public static float pitchToFloat(Player p) {
         return 2 - (p.getLocation().getPitch() + 90) / 90;
@@ -103,12 +91,17 @@ public class Utilities {
 		return loc.getWorld().getName() + ", " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ();
 	}
 
-	public static boolean isBetween(int Check, int start, int end) {
-		return Check >= start && Check <= end;
+	public static boolean isBetween(int value, int start, int end) {
+		return value >= start && value <= end;
 	}
-	
-	public static Float parseSpeed(Integer val, boolean isFly) {return parseSpeed(val,isFly,false);}
-	public static Float parseSpeed(Integer val, boolean isFly, boolean bypassLimits) {
+
+	public static float parseWalkingSpeed(Integer val) {return parseSpeed(val, false, false);}
+	public static float parseWalkingSpeed(Integer val, boolean bypassLimits) {return parseSpeed(val, false, bypassLimits);}
+
+	public static float parseFlyingSpeed(Integer val) {return parseSpeed(val, true, false);}
+	public static float parseFlyingSpeed(Integer val, boolean bypassLimits) {return parseSpeed(val, true, bypassLimits);}
+
+	public static float parseSpeed(Integer val, boolean isFly, boolean bypassLimits) {
 		float speed = val.floatValue();
 		float defaultSpeed = isFly ? 0.1F : 0.2F;
 	    float maxSpeed = 1.0F;
@@ -122,12 +115,17 @@ public class Utilities {
 	    return ratio + defaultSpeed;
 	}
 
-	public static Integer distanceToGround(Location start) {
+	public static float distanceToGround(Location start) {
 		int amount = 0;
 		while (!start.subtract(0, 1, 0).getBlock().getType().isSolid()) {
 		    amount++;
 		}
 		return amount;
+	}
+
+	public static Double distanceTo(Location loc1, Location loc2) {
+		if (loc1 == null || loc2 == null) {return null;}
+		return Math.sqrt((loc2.getX() - loc1.getX()) * (loc2.getX() - loc1.getX()) + (loc2.getZ() - loc1.getZ()) * (loc2.getZ() - loc1.getZ()));
 	}
 
 	public static String serializeLocation(Location loc, Character separator) {
@@ -152,12 +150,12 @@ public class Utilities {
 		return null;
 	}
 
-	public static ArrayList<Block> getBlocks(Location start, int radius){
+	public static ArrayList<Block> getBlocksInRadius(Location center, int radius){
 		ArrayList<Block> blocks = new ArrayList<Block>();
-		for(double x = start.getX() - radius; x <= start.getX() + radius; x++){
-			for(double y = start.getY() - radius; y <= start.getY() + radius; y++){
-				for(double z = start.getZ() - radius; z <= start.getZ() + radius; z++){
-					Location loc = new Location(start.getWorld(), x, y, z);
+		for(double x = center.getX() - radius; x <= center.getX() + radius; x++){
+			for(double y = center.getY() - radius; y <= center.getY() + radius; y++){
+				for(double z = center.getZ() - radius; z <= center.getZ() + radius; z++){
+					Location loc = new Location(center.getWorld(), x, y, z);
 					blocks.add(loc.getBlock());
 				}
 			}
@@ -165,16 +163,16 @@ public class Utilities {
 		return blocks;
 	}
 
-	public static boolean inRegion(Location loc, Location loc1, Location loc2) {
-		double x1 = loc1.getX();
-		double y1 = loc1.getY();
-		double z1 = loc1.getZ();
+	public static boolean isInside(Location pos, Location corner1, Location corner2) {
+		double x1 = corner1.getX();
+		double y1 = corner1.getY();
+		double z1 = corner1.getZ();
 
-		double x2 = loc2.getX();
-		double y2 = loc2.getY();
-		double z2 = loc2.getZ();
+		double x2 = corner2.getX();
+		double y2 = corner2.getY();
+		double z2 = corner2.getZ();
 
-		return (loc.getX() > x1) && (loc.getY() > y1) && (loc.getZ() > z1) && (loc.getX() < x2) && (loc.getY() < y2) && (loc.getZ() < z2);
+		return (pos.getX() > x1) && (pos.getY() > y1) && (pos.getZ() > z1) && (pos.getX() < x2) && (pos.getY() < y2) && (pos.getZ() < z2);
 	}
 
 } 

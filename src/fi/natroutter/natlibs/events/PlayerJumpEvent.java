@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
@@ -20,23 +21,15 @@ public class PlayerJumpEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
+    @Override
+    public HandlerList getHandlers() {return handlers;}
+    public static HandlerList getHandlerList() {return handlers;}
+
+    @Getter
     private final Player p;
 
     public PlayerJumpEvent(Player p) {
         this.p = p;
-    }
-
-    public Player getPlayer() {
-        return p;
-    }
-
-    @Override
-    public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return handlers;
     }
 
    public static class PlayerJumpEventListener implements Listener {

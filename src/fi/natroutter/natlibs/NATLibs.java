@@ -5,7 +5,7 @@ import fi.natroutter.natlibs.files.Config;
 import fi.natroutter.natlibs.handlers.VersionChecker;
 
 import fi.natroutter.natlibs.handlers.guibuilder.GUIListener;
-import fi.natroutter.natlibs.utilities.Utilities;
+import fi.natroutter.natlibs.handlers.wandmanager.WandSelectEvent;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -17,26 +17,6 @@ public class NATLibs extends JavaPlugin {
 
 	/*
 	TODO
-	 1. lisäää wandin teko class jota voi käyttää missävaan pluginissa eri wandit tunnistaa idllä joka määritetään kun uus wandi luodaan kun wandilla selectaa niin se call onwandselect event!
-
-	 	WandManager manager = NATLibs.getWandManager();
-		Wand wand = new wand(new UUID(), "name", material.wooden_shovel);
-		manager.register(plugin, wand);
-
-		public onWandSelect(WandSelectEvent e) {
-			Player p = e.getPlayer();
-			Wand wand = e.getWand();
-			Side side = e.getSide();
-			Selection area = e.getSelection();
-
-			if (side.equals(Side.LEFT)) {
-
-			} else if (side.equals(Side.RIGHT)) {
-
-			}
-
-		}
-
 	 2. add new SQL database handler
 	 3. add sqlite database mojangAPI:n
 	*/
@@ -62,9 +42,14 @@ public class NATLibs extends JavaPlugin {
 		PluginManager pm = Bukkit.getPluginManager();
 
 		pm.registerEvents(new PlayerJumpEvent.PlayerJumpEventListener(), this);
+		pm.registerEvents(new WandSelectEvent.WandSelectEventListener(), this);
 		pm.registerEvents(new GUIListener(), this);
 
 		new Metrics(this, 15070);
+
+		if (Demo.demo) Bukkit.getCommandMap().register("natlibs", new Demo());
+
 	}
+
 
 }

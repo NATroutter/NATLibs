@@ -4,17 +4,15 @@ import fi.natroutter.natlibs.handlers.guibuilder.Rows;
 import fi.natroutter.natlibs.utilities.Utilities;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -89,36 +87,35 @@ public interface IConfig {
     default String asLegacy(){return asLegacy(null);}
     default List<String> asLegacyList(){return asLegacyList(null);}
 
-    default List<Component> asComponentList(List<TagResolver> tagResolvers) {
+    default List<Component> asComponentList(TagResolver... tagResolvers) {
         List<String> values = yml().getStringList(getPath());
 
-        return values.stream().map(entry-> {
-            if (tagResolvers != null && !tagResolvers.isEmpty()) {
-                return Utilities.translate(entry, tagResolvers);
-            }
-            return Utilities.translate(entry);
-        }).toList();
+        return values.stream().map(entry-> Utilities.translateColors(entry,tagResolvers)).toList();
     }
 
-    default Component asComponent(List<TagResolver> tagResolvers){
+    default Component asSingleComponent(TagResolver... tagResolvers) {
+        return Component.join(JoinConfiguration.newlines(),asComponentList(tagResolvers));
+    }
+
+    default Component asComponent(TagResolver... tagResolvers){
         String entry = yml().getString(getPath());
         if (entry != null) {
-            return Utilities.translate(entry, tagResolvers);
+            return Utilities.translateColors(entry, tagResolvers);
         }
         return Component.text(" [Invalid value in config: " + this.getPath() + "] ");
     }
 
-    default String asLegacy(List<TagResolver> tagResolvers){
+    default String asLegacy(TagResolver... tagResolvers){
         String entry = yml().getString(getPath());
         if (entry != null) {
-            return Utilities.legacy(Utilities.translate(entry, tagResolvers));
+            return Utilities.legacy(Utilities.translateColors(entry, tagResolvers));
         }
         return " [Invalid value in config: " + this.getPath() + "] ";
     }
 
-    default List<String> asLegacyList(List<TagResolver> tagResolvers){
+    default List<String> asLegacyList(TagResolver... tagResolvers){
         List<String> values = yml().getStringList(getPath());
-        return values.stream().map(entry -> Utilities.legacy(Utilities.translate(entry, tagResolvers))).toList();
+        return values.stream().map(entry -> Utilities.legacy(Utilities.translateColors(entry, tagResolvers))).toList();
     }
 
 }

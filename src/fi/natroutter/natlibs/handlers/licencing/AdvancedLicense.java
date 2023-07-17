@@ -25,7 +25,7 @@ public class AdvancedLicense {
 		this.validationServer = validationServer;
 	}
 
-	protected AdvancedLicense setSecurityKey(String securityKey) {
+	public AdvancedLicense setSecurityKey(String securityKey) {
 		this.securityKey = securityKey;
 		return this;
 	}

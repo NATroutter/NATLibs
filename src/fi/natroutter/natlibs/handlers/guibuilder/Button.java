@@ -35,4 +35,14 @@ public class Button extends BaseItem {
         super(display);
         this.clickEvent = clickEvent;
     }
+
+    public Button setGlow(boolean value) {
+        if (value) {
+            this.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            this.addUnsafeEnchantment(Enchantment.DURABILITY, 3);
+        } else {
+            this.removeEnchantment(Enchantment.DURABILITY);
+        }
+        return this;
+    }
 }
