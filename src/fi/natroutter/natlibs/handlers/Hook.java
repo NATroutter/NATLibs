@@ -17,7 +17,7 @@ public class Hook {
     /**
      * Builder class for creating a Hook instance.
      */
-    public class Builder {
+    public static class Builder {
         private JavaPlugin instance;
         private String PluginName;
         private boolean isSoftDepend;
@@ -77,6 +77,14 @@ public class Hook {
         public Builder setDisableWhenFailed(boolean value) {
             this.disableWhenFailed = value;
             return this;
+        }
+
+        /**
+         * Builds the Hook instance.
+         * @return the Hook instance
+         */
+        public Hook build() {
+            return new Hook(this);
         }
 
     }

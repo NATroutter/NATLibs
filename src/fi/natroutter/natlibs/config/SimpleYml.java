@@ -19,6 +19,7 @@ public class SimpleYml extends YamlConfiguration {
     private String name;
     private JavaPlugin plugin;
     private File file;
+    private String resourceLocation;
     private YamlConfiguration defaults;
 
     /**
@@ -37,6 +38,24 @@ public class SimpleYml extends YamlConfiguration {
         this.plugin = plugin;
         this.name = name;
         this.file = file;
+        this.resourceLocation = file.getName();
+        options().parseComments(true);
+        options().copyDefaults(true);
+        options().copyHeader(true);
+        reload();
+        save();
+    }
+
+    /**
+     * @param plugin of the plugin
+     * @param file of the file
+     * @param resourceLocation of the file
+     */
+    protected SimpleYml(JavaPlugin plugin, File file, String resourceLocation) {
+        this.plugin = plugin;
+        this.name = name;
+        this.file = file;
+        this.resourceLocation = resourceLocation;
         options().parseComments(true);
         options().copyDefaults(true);
         options().copyHeader(true);
@@ -89,7 +108,7 @@ public class SimpleYml extends YamlConfiguration {
             //noinspection ResultOfMethodCallIgnored
             file.createNewFile();
             load(file);
-            InputStream defaultStream = plugin.getResource(file.getName());
+            InputStream defaultStream = plugin.getResource(resourceLocation);
             if (defaultStream != null) {
                 //todo switch to use Files.bufferedreader
                 defaults = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream, Charsets.UTF_8));

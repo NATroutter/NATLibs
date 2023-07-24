@@ -1,9 +1,19 @@
 package fi.natroutter.natlibs;
 
+import fi.natroutter.natlibs.commands.MiniMessageViewer;
 import fi.natroutter.natlibs.events.PlayerJumpEvent;
 import fi.natroutter.natlibs.files.Config;
+import fi.natroutter.natlibs.handlers.CustomResolver;
+import fi.natroutter.natlibs.handlers.Hook;
 import fi.natroutter.natlibs.handlers.VersionChecker;
 
+import fi.natroutter.natlibs.handlers.database.YamlDatabase;
+import fi.natroutter.natlibs.handlers.fancyfont.FancyChar;
+import fi.natroutter.natlibs.handlers.fancyfont.FancyFont;
+import fi.natroutter.natlibs.handlers.fancyfont.FontRegistery;
+import fi.natroutter.natlibs.handlers.fancyfont.fonts.BlockyFont;
+import fi.natroutter.natlibs.handlers.fancyfont.fonts.EmptyCircle;
+import fi.natroutter.natlibs.handlers.fancyfont.fonts.FilledCircle;
 import fi.natroutter.natlibs.handlers.guibuilder.GUIListener;
 import fi.natroutter.natlibs.handlers.wandmanager.WandSelectEvent;
 import lombok.Getter;
@@ -18,16 +28,28 @@ public class NATLibs extends JavaPlugin {
 	/*
 	TODO
 	 2. add new SQL database handler
-	 3. add sqlite database mojangAPI:n
 	*/
 
+	@Getter
+	private static YamlDatabase database;
 
 	@Getter
 	private static NATLibs instance;
 
+	@Getter
+	private static Hook papiHook;
+
 	@Override
 	public void onEnable() {
 		instance = this;
+		database = new YamlDatabase(this);
+
+		new CustomResolver();
+
+		papiHook = new Hook.Builder(this, "PlaceholderAPI", true)
+				.setHookedMessage(" §a+ §7<plugin> hooked succesfully!")
+				.setHookingFailedMessage(" §4- §7<plugin> hooking failed!")
+				.build();
 
 		ConsoleCommandSender console = Bukkit.getConsoleSender();
 
@@ -45,10 +67,19 @@ public class NATLibs extends JavaPlugin {
 		pm.registerEvents(new WandSelectEvent.WandSelectEventListener(), this);
 		pm.registerEvents(new GUIListener(), this);
 
-		new Metrics(this, 15070);
+		FancyFont.register(FontRegistery.BLOCKY, new BlockyFont());
+		FancyFont.register(FontRegistery.FILLED_CIRCLE, new FilledCircle());
+		FancyFont.register(FontRegistery.EMPTY_CIRCLE, new EmptyCircle());
+
+		if (Config.USE_INTERNAL_TOOLS.asBoolean()) {
+			MiniMessageViewer mmv = new MiniMessageViewer();
+			Bukkit.getCommandMap().register("natlibs", mmv);
+			pm.registerEvents(mmv, this);
+		}
 
 		if (Demo.demo) Bukkit.getCommandMap().register("natlibs", new Demo());
 
+		new Metrics(this, 15070);
 	}
 
 

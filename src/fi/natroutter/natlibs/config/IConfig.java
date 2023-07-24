@@ -39,17 +39,20 @@ public interface IConfig {
     }
 
     default void reloadFile() {
-        saved.put(identifier(), new SimpleYml(getPlugin(), file()));
+        if (resourceLocation() != null) {
+            saved.put(identifier(), new SimpleYml(getPlugin(), file(), resourceLocation()));
+        } else {
+            saved.put(identifier(), new SimpleYml(getPlugin(), file()));
+        }
     }
+
+    default String resourceLocation() { return null; }
 
     default SimpleYml yml() {
         if (!saved.containsKey(identifier())) {
-            saved.put(identifier(), new SimpleYml(getPlugin(), file()));
+            reloadFile();
         }
         return saved.get(identifier());
-
-//        Bukkit.broadcastMessage("§dTest: " +fileName() + " - " + file().getName());
-//        return new SimpleYml(getPlugin(), file());
     }
 
     @SneakyThrows
@@ -102,7 +105,7 @@ public interface IConfig {
         if (entry != null) {
             return Utilities.translateColors(entry, tagResolvers);
         }
-        return Component.text(" [Invalid value in config: " + this.getPath() + "] ");
+        return Component.text(" [Invalid value in "+file().getName()+": " + getPath() + "] ");
     }
 
     default String asLegacy(TagResolver... tagResolvers){
@@ -110,7 +113,7 @@ public interface IConfig {
         if (entry != null) {
             return Utilities.legacy(Utilities.translateColors(entry, tagResolvers));
         }
-        return " [Invalid value in config: " + this.getPath() + "] ";
+        return " [Invalid value in "+file().getName()+": " + getPath() + "] ";
     }
 
     default List<String> asLegacyList(TagResolver... tagResolvers){

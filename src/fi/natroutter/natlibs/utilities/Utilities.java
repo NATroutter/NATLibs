@@ -1,5 +1,6 @@
 package fi.natroutter.natlibs.utilities;
 
+import fi.natroutter.natlibs.handlers.CustomResolver;
 import fi.natroutter.natlibs.objects.BaseItem;
 import fi.natroutter.natlibs.objects.Complete;
 import net.kyori.adventure.text.Component;
@@ -42,6 +43,7 @@ public class Utilities {
 		return formatter.format(balance);
 	}
 
+	public static List<String> emptyTab(){return Collections.singletonList("");}
 	public static List<String> getCompletesWithPerms(CommandSender sender, String arg, List<Complete> list) {
 		List<String> newList = list.stream()
 				.filter(c -> sender.hasPermission(c.permission()))
@@ -73,15 +75,41 @@ public class Utilities {
 		return lcs.serialize(comp);
 	}
 
-	public static Component translateColors(String str, List<TagResolver> placeholders) {
-		return translateColors(str, placeholders.toArray(new TagResolver[0]));
+	public static Component translateColors(String str, TagResolver... placeholders) {
+		return translateColors(str, true, placeholders);
 	}
-	public static Component translateColors(String str, @Nullable TagResolver... placeholders) {
+	public static Component translateColors(String str, List<TagResolver> placeholders) {
+		return translateColors(str, true, placeholders.toArray(new TagResolver[0]));
+	}
+	public static Component translateColors(String str, boolean useCustom, @Nullable TagResolver... placeholders) {
+		List<TagResolver> list = new ArrayList<>(List.of(placeholders));
+		if (useCustom) {
+			list.addAll(CustomResolver.resolvers());
+		}
 		TextComponent deserialize = lcs.deserialize(str.replace("§", "&"));
 		String serialize = mm.serialize(deserialize).replace("\\<", "<");
-		return placeholders == null ? mm.deserialize(serialize) : mm.deserialize(serialize, placeholders);
+		return mm.deserialize(serialize, list.toArray(new TagResolver[0]));
 	}
 
+	public static String toTitleCase(String sentence) {
+		if (sentence == null || sentence.isEmpty()) {
+			return sentence;
+		}
+		StringBuilder titleCase = new StringBuilder();
+		boolean nextTitleCase = true;
+		for (char c : sentence.toCharArray()) {
+			if (Character.isSpaceChar(c)) {
+				nextTitleCase = true;
+			} else if (nextTitleCase) {
+				c = Character.toTitleCase(c);
+				nextTitleCase = false;
+			} else {
+				c = Character.toLowerCase(c);
+			}
+			titleCase.append(c);
+		}
+		return titleCase.toString();
+	}
 
 	public static float pitchToFloat(Player p) {
         return 2 - (p.getLocation().getPitch() + 90) / 90;

@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public enum Config implements IConfig {
 
     CHECK_UPDATES("General.CheckUpdates"),
+    USE_INTERNAL_TOOLS("General.useInternalTools"),
     ;
 
 

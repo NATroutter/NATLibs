@@ -1,12 +1,13 @@
 package fi.natroutter.natlibs.handlers.guibuilder;
 
 import fi.natroutter.natlibs.objects.BaseItem;
+import fi.natroutter.natlibs.utilities.Utilities;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -18,8 +19,8 @@ public class GUI {
     @Getter
     private GUIFrame frame;
 
-    @Getter @Setter
-    private Component title;
+    @Setter
+    private String rawTitle;
 
     @Getter
     private Inventory inv;
@@ -30,10 +31,37 @@ public class GUI {
     private ConcurrentHashMap<Integer, Button> buttons = new ConcurrentHashMap<>();
     private ConcurrentHashMap<Integer, BaseItem> items = new ConcurrentHashMap<>();
 
+    private MiniMessage mm = MiniMessage.miniMessage();
+
     public GUI(GUIFrame frame){
         this.frame = frame;
-        this.title = frame.getTitle();
-        this.inv = Bukkit.createInventory(null, frame.getRows().getSize(), frame.getTitle());
+        this.rawTitle = frame.getRawTitle();
+        this.inv = Bukkit.createInventory(null, frame.getRows().getSize(), frame.getRawTitle());
+    }
+
+    public Component getTitle() {
+        return Utilities.translateColors(rawTitle,
+                Placeholder.parsed("page",String.valueOf(page)),
+                Placeholder.parsed("max_page",String.valueOf(frame.getMaxPages()))
+        );
+    }
+
+    public void switchGUI(Player p, GUIFrame gui) {
+        frame.switchGUI(p, gui);
+    }
+    public void switchGUI(Player p, GUIFrame gui, List<Object> args) {
+        frame.switchGUI(p, gui, args);
+    }
+
+    public void addNavigator(Navigator previous, Navigator next) {
+        if (getMaxPages() > 1) {
+            if (getPage() > 1) {
+                setButton(previous.getButton(), previous.getRow(), previous.getSlot());
+            }
+            if (getMaxPages() > getPage()) {
+                setButton(next.getButton(), next.getRow(), next.getSlot());
+            }
+        }
     }
 
     public void close(Player p) {
@@ -41,8 +69,20 @@ public class GUI {
         p.closeInventory();
     }
 
+    public int getMaxPages() {
+        return frame.getMaxPages();
+    }
+
     public int getPage() {
         return this.page;
+    }
+
+    public void nextPage() {
+        changePage(this.page + 1);
+    }
+
+    public void previousPage() {
+        changePage(this.page - 1);
     }
 
     public void changePage(int page) {

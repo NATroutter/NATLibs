@@ -2,6 +2,7 @@ package fi.natroutter.natlibs.handlers.guibuilder;
 
 import fi.natroutter.natlibs.config.IConfig;
 import fi.natroutter.natlibs.objects.BaseItem;
+import fi.natroutter.natlibs.utilities.Utilities;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
@@ -11,14 +12,13 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
 public abstract class GUIFrame {
 
     @Getter
-    private Component title;
+    private String rawTitle;
 
     @Getter
     private Rows rows;
@@ -41,15 +41,17 @@ public abstract class GUIFrame {
     @Setter @Getter
     private int maxPages = 0;
 
-    public GUIFrame(Component title, Rows rows) {
-        this.title = title;
+    private PlainTextComponentSerializer plain = PlainTextComponentSerializer.plainText();
+
+    public GUIFrame(String title, Rows rows) {
+        this.rawTitle = title;
         this.rows = rows;
-        this.strippedTitle = PlainTextComponentSerializer.plainText().serialize(title);
+        this.strippedTitle = plain.serialize(Utilities.translateColors(title));
         useDefaultSettings(true);
     }
 
     public GUIFrame(IConfig title, Rows rows) {
-        this(title.asComponent(), rows);
+        this(title.asString(), rows);
     }
 
     public void useDefaultSettings(boolean value){
@@ -82,10 +84,18 @@ public abstract class GUIFrame {
     public void show(Player p, List<Object> args) {show(p,args,true);}
 
     public void switchGUI(Player p, GUIFrame frame) {
+        switchGUI(p, frame, null);
+    }
+
+    public void switchGUI(Player p, GUIFrame frame, List<Object> args) {
         GUI gui = GUIListener.guis.get(p.getUniqueId());
         if (gui != null) {
             gui.closing = true;
-            frame.show(p);
+            if (args == null) {
+                frame.show(p);
+            } else {
+                frame.show(p, args);
+            }
         }
     }
 
