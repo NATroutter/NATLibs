@@ -8,4 +8,4 @@ softdepend: [PlaceholderAPI]
 website: ${project.url}
 prefix: NATLibs
 libraries:
-   - org.jsoup:jsoup:1.15.3
+   - org.jsoup:jsoup:1.16.1

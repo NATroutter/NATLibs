@@ -19,7 +19,7 @@
         <foxlib.version>1.0.7</foxlib.version>
         <anvilgui.version>1.7.0-SNAPSHOT</anvilgui.version>
         <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
-        <jsoup.version>1.15.4</jsoup.version>
+        <jsoup.version>1.16.1</jsoup.version>
         <bstats.version>3.0.1</bstats.version>
         <lombok.version>1.18.26</lombok.version>
         <placeholderapi.version>2.11.3</placeholderapi.version>
