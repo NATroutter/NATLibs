@@ -22,9 +22,9 @@ public class Hook {
         private String PluginName;
         private boolean isSoftDepend;
 
-        private String hookedMessage = " §a+ §7Plugin hooked succesfully!";
-        private String hookingFailedMessage = " §4- §7Plugin hooking failed!";
-        private String disabledMessage = "§cDisabling plugin because failed to hook plugin!";
+        private String hookedMessage = " §a+ §7<plugin> hooked succesfully!";
+        private String hookingFailedMessage = " §4- §7<plugin> hooking failed!";
+        private String disabledMessage = "§cDisabling plugin because failed to hook <plugin>!";
         private boolean disableWhenFailed;
 
         /**
@@ -133,7 +133,9 @@ public class Hook {
         if (args.instance != null) {plName = args.instance.getName();}
 
         if (args.disableWhenFailed) {
-            console.sendMessage("§4["+plName+"][Hook] " + args.disabledMessage);
+            console.sendMessage(Utilities.translateColors("§4["+plName+"][Hook] " + args.disabledMessage,
+                    Placeholder.parsed("plugin", plName)
+            ));
             Bukkit.getServer().getPluginManager().disablePlugin(args.instance);
         }
     }

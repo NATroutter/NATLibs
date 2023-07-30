@@ -10,6 +10,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -170,7 +171,17 @@ public class MiniMessageViewer extends Command implements Listener {
                 Arrays.stream(message.split("<br>")).map(m->
                         Utilities.translateColors(m, CustomResolver.resolvers().toArray(new TagResolver[0]))
                 )
-                .map(c-> c.clickEvent(ClickEvent.copyToClipboard(JSONComponentSerializer.json().serialize(c))))
+                .map(c-> {
+                    try {
+                        return c.clickEvent(ClickEvent.copyToClipboard(JSONComponentSerializer.json().serialize(c)));
+                    } catch (Exception e) {
+                        try {
+                            return c.clickEvent(ClickEvent.copyToClipboard(GsonComponentSerializer.gson().serialize(c)));
+                        } catch (Exception e2) {
+                            return c;
+                        }
+                    }
+                })
                 .map(c-> c.hoverEvent(Theme.main("Click to copy raw json!")))
                 .forEach(p::sendMessage);
                 return true;

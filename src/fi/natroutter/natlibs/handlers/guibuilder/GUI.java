@@ -66,6 +66,8 @@ public class GUI {
 
     public void close(Player p) {
         closing = true;
+        GUIListener.guis.remove(p.getUniqueId());
+        GUIListener.args.remove(p.getUniqueId());
         p.closeInventory();
     }
 

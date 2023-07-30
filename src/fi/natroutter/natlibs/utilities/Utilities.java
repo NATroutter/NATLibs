@@ -1,5 +1,6 @@
 package fi.natroutter.natlibs.utilities;
 
+import fi.natroutter.natlibs.config.IConfig;
 import fi.natroutter.natlibs.handlers.CustomResolver;
 import fi.natroutter.natlibs.objects.BaseItem;
 import fi.natroutter.natlibs.objects.Complete;
@@ -46,8 +47,8 @@ public class Utilities {
 	public static List<String> emptyTab(){return Collections.singletonList("");}
 	public static List<String> getCompletesWithPerms(CommandSender sender, String arg, List<Complete> list) {
 		List<String> newList = list.stream()
-				.filter(c -> sender.hasPermission(c.permission()))
-				.map(Complete::arg)
+				.filter(c -> sender.hasPermission(c.getPermission()))
+				.map(Complete::getArg)
 				.collect(Collectors.toList());
 		return getCompletes(sender, arg, newList);
 	}
@@ -75,6 +76,15 @@ public class Utilities {
 		return lcs.serialize(comp);
 	}
 
+	public static String parse(String value, TagResolver... placeholders) {
+		if (placeholders == null) return value;
+		return plain(Utilities.translateColors(value, placeholders));
+	}
+
+
+	public static Component translateColors(IConfig config, TagResolver... placeholders) {
+		return translateColors(config.asString(), true, placeholders);
+	}
 	public static Component translateColors(String str, TagResolver... placeholders) {
 		return translateColors(str, true, placeholders);
 	}
@@ -82,14 +92,33 @@ public class Utilities {
 		return translateColors(str, true, placeholders.toArray(new TagResolver[0]));
 	}
 	public static Component translateColors(String str, boolean useCustom, @Nullable TagResolver... placeholders) {
-		List<TagResolver> list = new ArrayList<>(List.of(placeholders));
-		if (useCustom) {
-			list.addAll(CustomResolver.resolvers());
+		List<TagResolver> list = new ArrayList<>();
+		if (placeholders != null) {
+			list.addAll(List.of(placeholders));
+			if (useCustom) {
+				list.addAll(CustomResolver.resolvers());
+			}
 		}
 		TextComponent deserialize = lcs.deserialize(str.replace("§", "&"));
 		String serialize = mm.serialize(deserialize).replace("\\<", "<");
 		return mm.deserialize(serialize, list.toArray(new TagResolver[0]));
 	}
+
+
+
+	public static boolean locationMatch(Location loc1, Location loc2) {
+		if (loc1.getWorld() == null || loc2.getWorld() == null) {
+			return loc1.getBlockX() == loc2.getBlockX() &&
+					loc1.getBlockY() == loc2.getBlockY() &&
+					loc1.getBlockZ() == loc2.getBlockZ();
+		} else {
+			return loc1.getWorld().equals(loc2.getWorld()) &&
+					loc1.getBlockX() == loc2.getBlockX() &&
+					loc1.getBlockY() == loc2.getBlockY() &&
+					loc1.getBlockZ() == loc2.getBlockZ();
+		}
+	}
+
 
 	public static String toTitleCase(String sentence) {
 		if (sentence == null || sentence.isEmpty()) {

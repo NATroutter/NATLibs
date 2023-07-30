@@ -113,6 +113,10 @@ public enum Language {
     @Getter
     private String langKey;
 
+    public static Language getFromKey(IConfig config) {
+        return getFromKey(config.asString());
+    }
+
     public static Language getFromKey(String key) {
         for (Language language : values()) {
             if(language.getLangKey().equals(key)) {

@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -98,6 +99,10 @@ public interface IConfig {
 
     default Component asSingleComponent(TagResolver... tagResolvers) {
         return Component.join(JoinConfiguration.newlines(),asComponentList(tagResolvers));
+    }
+
+    default String asJson() {
+        return GsonComponentSerializer.gson().serialize(asComponent());
     }
 
     default Component asComponent(TagResolver... tagResolvers){

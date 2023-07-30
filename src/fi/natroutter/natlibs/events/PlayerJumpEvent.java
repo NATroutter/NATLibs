@@ -26,10 +26,10 @@ public class PlayerJumpEvent extends Event {
     public static HandlerList getHandlerList() {return handlers;}
 
     @Getter
-    private final Player p;
+    private final Player player;
 
-    public PlayerJumpEvent(Player p) {
-        this.p = p;
+    public PlayerJumpEvent(Player player) {
+        this.player = player;
     }
 
    public static class PlayerJumpEventListener implements Listener {
