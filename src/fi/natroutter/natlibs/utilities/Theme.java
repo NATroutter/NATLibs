@@ -35,9 +35,12 @@ public class Theme {
     public static String highlight(String value) {
         return "<color:#dd5555>"+value+"</color>";
     }
+    public static String main(String value) {
+        return "<color:#ff0000>"+value+"</color>";
+    }
 
-    public static Component main(String value) {
-        return Utilities.translateColors("<color:#ff0000>"+value+"</color>");
+    public static Component mainC(String value) {
+        return Utilities.translateColors(main(value));
     }
 
     public static Component prefixed(String value) {

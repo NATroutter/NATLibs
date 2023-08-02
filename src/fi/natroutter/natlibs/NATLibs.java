@@ -1,6 +1,8 @@
 package fi.natroutter.natlibs;
 
-import fi.natroutter.natlibs.commands.MiniMessageViewer;
+import fi.natroutter.natlibs.Tools.LocateBlock.LocateBlock;
+import fi.natroutter.natlibs.Tools.MagicWand;
+import fi.natroutter.natlibs.Tools.MiniMessageViewer;
 import fi.natroutter.natlibs.events.PlayerJumpEvent;
 import fi.natroutter.natlibs.files.Config;
 import fi.natroutter.natlibs.handlers.CustomResolver;
@@ -8,7 +10,6 @@ import fi.natroutter.natlibs.handlers.Hook;
 import fi.natroutter.natlibs.handlers.VersionChecker;
 
 import fi.natroutter.natlibs.handlers.database.YamlDatabase;
-import fi.natroutter.natlibs.handlers.fancyfont.FancyChar;
 import fi.natroutter.natlibs.handlers.fancyfont.FancyFont;
 import fi.natroutter.natlibs.handlers.fancyfont.FontRegistery;
 import fi.natroutter.natlibs.handlers.fancyfont.fonts.BlockyFont;
@@ -73,14 +74,22 @@ public class NATLibs extends JavaPlugin {
 
 		if (Config.USE_INTERNAL_TOOLS.asBoolean()) {
 			MiniMessageViewer mmv = new MiniMessageViewer();
+			MagicWand mw = new MagicWand();
+			LocateBlock locateBlock = new LocateBlock(this);
+
 			Bukkit.getCommandMap().register("natlibs", mmv);
 			pm.registerEvents(mmv, this);
+
+			Bukkit.getCommandMap().register("natlibs", mw);
+			pm.registerEvents(mw, this);
+
+			Bukkit.getCommandMap().register("natlibs", locateBlock);
+			pm.registerEvents(locateBlock, this);
 		}
 
 		if (Demo.demo) Bukkit.getCommandMap().register("natlibs", new Demo());
 
 		new Metrics(this, 15070);
 	}
-
 
 }

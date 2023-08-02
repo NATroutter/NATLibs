@@ -1,4 +1,4 @@
-package fi.natroutter.natlibs.commands;
+package fi.natroutter.natlibs.Tools;
 
 import fi.natroutter.natlibs.NATLibs;
 import fi.natroutter.natlibs.handlers.CustomResolver;
@@ -12,7 +12,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -186,7 +185,7 @@ public class MiniMessageViewer extends Command implements Listener {
                         return c;
                     }
                 })
-                .map(c-> c.hoverEvent(Theme.main("Click to copy raw json!")))
+                .map(c-> c.hoverEvent(Theme.mainC("Click to copy raw json!")))
                 .forEach(p::sendMessage);
                 return true;
             }
