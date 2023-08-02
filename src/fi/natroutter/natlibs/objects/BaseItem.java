@@ -1,15 +1,10 @@
 package fi.natroutter.natlibs.objects;
 
-import java.util.*;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
 import com.google.common.collect.Multimap;
 import fi.natroutter.natlibs.config.IConfig;
 import fi.natroutter.natlibs.utilities.Utilities;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -20,12 +15,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class BaseItem extends ItemStack {
-
-	private LegacyComponentSerializer lcs = LegacyComponentSerializer.legacyAmpersand();
-
 	public BaseItem(Material material) {
 		super(material);
 	}
@@ -51,27 +46,27 @@ public class BaseItem extends ItemStack {
 
 	@Override
 	public boolean isSimilar(@NotNull ItemStack item) {
-
-		if (item.getAmount() != getAmount()) return false;
-		if (item.getType() != getType()) return false;
-
-		if (item.hasItemMeta()) {
-			if (hasItemMeta()) {
-				ItemMeta meta = item.getItemMeta();
-				ItemMeta meta2 = getItemMeta();
-
-				if (!Objects.equals(meta.displayName(), meta2.displayName())) return false;
-				if (!Objects.equals(meta.lore(), meta2.lore())) return false;
-				if (!Objects.equals(meta.getPersistentDataContainer(), meta2.getPersistentDataContainer())) return false;
-				if (!Objects.equals(meta.getEnchants(), meta2.getEnchants())) return false;
-				if (!Objects.equals(meta.getAttributeModifiers(), meta2.getAttributeModifiers())) return false;
-				if (!Objects.equals(meta.getCustomModelData(), meta2.getCustomModelData())) return false;
-				if (!Objects.equals(meta.getItemFlags(), meta2.getItemFlags())) return false;
-				return true;
-			}
-			return false;
-		}
-		return true;
+		return super.isSimilar(item);
+//		if (item.getAmount() != getAmount()) return false;
+//		if (item.getType() != getType()) return false;
+//
+//		if (item.hasItemMeta()) {
+//			if (hasItemMeta()) {
+//				ItemMeta meta = item.getItemMeta();
+//				ItemMeta meta2 = getItemMeta();
+//
+//				if (!Objects.equals(meta.displayName(), meta2.displayName())) return false;
+//				if (!Objects.equals(meta.lore(), meta2.lore())) return false;
+//				if (!Objects.equals(meta.getPersistentDataContainer(), meta2.getPersistentDataContainer())) return false;
+//				if (!Objects.equals(meta.getEnchants(), meta2.getEnchants())) return false;
+//				if (!Objects.equals(meta.getAttributeModifiers(), meta2.getAttributeModifiers())) return false;
+//				if (!Objects.equals(meta.getCustomModelData(), meta2.getCustomModelData())) return false;
+//				if (!Objects.equals(meta.getItemFlags(), meta2.getItemFlags())) return false;
+//				return true;
+//			}
+//			return false;
+//		}
+//		return true;
 	}
 
 	public BaseItem setMaterial(Material material) {

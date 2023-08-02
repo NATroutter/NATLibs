@@ -4,7 +4,7 @@
 
     <groupId>fi.natroutter</groupId>
     <artifactId>natlibs</artifactId>
-    <version>4.0.6</version>
+    <version>4.0.7</version>
     <packaging>jar</packaging>
 
     <name>NATLibs</name>
@@ -18,7 +18,7 @@
 
         <foxlib.version>1.0.8</foxlib.version>
         <anvilgui.version>1.7.0-SNAPSHOT</anvilgui.version>
-        <paper-api.version>1.18.2-R0.1-SNAPSHOT</paper-api.version>
+        <paper-api.version>1.20.1-R0.1-SNAPSHOT</paper-api.version>
         <jsoup.version>1.16.1</jsoup.version>
         <bstats.version>3.0.1</bstats.version>
         <lombok.version>1.18.26</lombok.version>

@@ -6,6 +6,7 @@ import fi.natroutter.natlibs.objects.BaseItem;
 import fi.natroutter.natlibs.objects.Complete;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -31,8 +32,13 @@ import java.util.stream.Collectors;
 @SuppressWarnings({"unused"})
 public class Utilities {
 
-	private static MiniMessage mm = MiniMessage.builder().build();
-	private static LegacyComponentSerializer lcs = LegacyComponentSerializer.legacyAmpersand();
+	private static MiniMessage mm = MiniMessage.builder()
+			.build();
+	private static LegacyComponentSerializer lcs = LegacyComponentSerializer
+			.builder()
+			.hexColors()
+			.character('&')
+			.build();
 
 	public static String currencyFormat(double balance) {
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.ENGLISH);
@@ -99,9 +105,12 @@ public class Utilities {
 				list.addAll(CustomResolver.resolvers());
 			}
 		}
+
+		Component italicFix = Component.text("").style(style -> style.decoration(TextDecoration.ITALIC, false));
+
 		TextComponent deserialize = lcs.deserialize(str.replace("§", "&"));
 		String serialize = mm.serialize(deserialize).replace("\\<", "<");
-		return mm.deserialize(serialize, list.toArray(new TagResolver[0]));
+		return italicFix.append(mm.deserialize(serialize, list.toArray(new TagResolver[0])));
 	}
 
 

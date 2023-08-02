@@ -3,6 +3,7 @@ package fi.natroutter.natlibs.commands;
 import fi.natroutter.natlibs.NATLibs;
 import fi.natroutter.natlibs.handlers.CustomResolver;
 import fi.natroutter.natlibs.handlers.database.YamlDatabase;
+import fi.natroutter.natlibs.objects.BaseItem;
 import fi.natroutter.natlibs.objects.DualString;
 import fi.natroutter.natlibs.utilities.Theme;
 import fi.natroutter.natlibs.utilities.Utilities;
@@ -13,6 +14,7 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -70,6 +72,12 @@ public class MiniMessageViewer extends Command implements Listener {
 
     private String stateString(boolean state) {
         return (state ? "Enabled" : "Disabled");
+    }
+
+    public static BaseItem testItem(String str) {
+        BaseItem item = new BaseItem(Material.PAPER);
+        item.name(str);
+        return item;
     }
 
     @Override
