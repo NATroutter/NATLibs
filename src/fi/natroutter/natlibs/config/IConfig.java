@@ -10,6 +10,10 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
+import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -82,6 +86,14 @@ public interface IConfig {
     default boolean asBoolean() {return yml().getBoolean(getPath());}
     default List<String> asStringList() {return yml().getStringList(getPath());}
     default Material asMaterial() {return Material.getMaterial(yml().getString(getPath()));}
+
+    default float asFloat() {return (float)yml().getDouble(getPath());}
+    default byte asByte() {return (byte)yml().getInt(getPath());}
+    default short asShort() {return (short)yml().getInt(getPath());}
+    default Sound asSound() {return Sound.valueOf(yml().getString(getPath()));}
+    default SoundCategory asSoundCategory() {return SoundCategory.valueOf(yml().getString(getPath()));}
+    default Particle asParticle() {return Particle.valueOf(yml().getString(getPath()));}
+
 
     default Rows asRows() {return Rows.fromString(yml().getString(getPath()));}
 
