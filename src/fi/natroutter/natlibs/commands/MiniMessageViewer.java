@@ -181,13 +181,9 @@ public class MiniMessageViewer extends Command implements Listener {
                 )
                 .map(c-> {
                     try {
-                        return c.clickEvent(ClickEvent.copyToClipboard(JSONComponentSerializer.json().serialize(c)));
+                        return c.clickEvent(ClickEvent.copyToClipboard(GsonComponentSerializer.gson().serialize(c)));
                     } catch (Exception e) {
-                        try {
-                            return c.clickEvent(ClickEvent.copyToClipboard(GsonComponentSerializer.gson().serialize(c)));
-                        } catch (Exception e2) {
-                            return c;
-                        }
+                        return c;
                     }
                 })
                 .map(c-> c.hoverEvent(Theme.main("Click to copy raw json!")))
