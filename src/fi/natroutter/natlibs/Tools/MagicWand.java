@@ -69,7 +69,7 @@ public class MagicWand extends Command implements Listener {
     }
 
     private BaseItem wand() {
-        BaseItem item = new BaseItem(Material.END_ROD);
+        BaseItem item = new BaseItem(Material.BLAZE_ROD);
         item.name(Utilities.translateColors("<gradient:#3a34eb:#eb34e8><bold>MagicWand"));
         item.lore(List.of(
                 Utilities.translateColors("<color:#b0b0b0>Magical Wand that can rewrite past and future!"),
@@ -80,13 +80,6 @@ public class MagicWand extends Command implements Listener {
         item.setGlow(true);
         item.addItemFlags(ItemFlag.values());
         return item;
-    }
-
-    @EventHandler
-    public void onPlace(BlockPlaceEvent e) {
-        if (wand().isSimilar(e.getItemInHand())) {
-            e.setCancelled(true);
-        }
     }
 
     @EventHandler
