@@ -14,25 +14,25 @@ import org.bukkit.inventory.meta.SkullMeta;
 public class SkullCreator {
 	
 	
-	public BaseItem Create(String name, String base64) {
+	public static BaseItem create(String name, String base64) {
 		BaseItem item = itemWithBase64(new BaseItem(Material.PLAYER_HEAD), base64);
 		item.name(name);
 		return item;
 	}
 
-	public BaseItem Create(Component name, String base64) {
+	public static BaseItem create(Component name, String base64) {
 		BaseItem item = itemWithBase64(new BaseItem(Material.PLAYER_HEAD), base64);
 		item.name(name);
 		return item;
 	}
 
-	public BaseItem Create(IConfig name, String base64) {
+	public static BaseItem create(IConfig name, String base64) {
 		BaseItem item = itemWithBase64(new BaseItem(Material.PLAYER_HEAD), base64);
 		item.name(name);
 		return item;
 	}
 	
-	public BaseItem Create(Player p) {
+	public static BaseItem create(Player p) {
 		BaseItem item = new BaseItem(Material.PLAYER_HEAD);
 		SkullMeta meta = (SkullMeta) item.getItemMeta();
 		assert meta != null;
@@ -43,7 +43,7 @@ public class SkullCreator {
 	
 	
 
-	private BaseItem itemWithBase64(BaseItem item, String skullCode) {
+	private static BaseItem itemWithBase64(BaseItem item, String skullCode) {
 		notNull(item, "item");
 		notNull(skullCode, "base64");
 
@@ -51,7 +51,7 @@ public class SkullCreator {
 		return BaseItem.from(Bukkit.getUnsafe().modifyItemStack(item,"{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + skullCode + "\"}]}}}"));
 	}
 	
-	private void notNull(Object o, String name) {
+	private static void notNull(Object o, String name) {
 		if (o == null) {
 			throw new NullPointerException(name + " should not be null!");
 		}
