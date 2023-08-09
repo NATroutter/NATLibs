@@ -47,21 +47,17 @@ public abstract class GUIFrame {
         this.rawTitle = title;
         this.rows = rows;
         this.strippedTitle = plain.serialize(Utilities.translateColors(title));
-        useDefaultSettings(true);
+
+        openSound = new SoundSettings(Sound.BLOCK_CHEST_OPEN, 100, 1);
+        closeSound = new SoundSettings(Sound.BLOCK_CHEST_CLOSE, 100, 1);
+        clickSound = new SoundSettings(Sound.UI_BUTTON_CLICK, 100, 1);
+        filler = new BaseItem(Material.BLACK_STAINED_GLASS_PANE).name(" ");
     }
 
     public GUIFrame(IConfig title, Rows rows) {
         this(title.asString(), rows);
     }
 
-    public void useDefaultSettings(boolean value){
-        if (value) {
-            openSound = new SoundSettings(Sound.BLOCK_CHEST_OPEN, 100, 1);
-            closeSound = new SoundSettings(Sound.BLOCK_CHEST_CLOSE, 100, 1);
-            clickSound = new SoundSettings(Sound.UI_BUTTON_CLICK, 100, 1);
-            filler = new BaseItem(Material.BLACK_STAINED_GLASS_PANE).name(" ");
-        }
-    }
 
     protected abstract boolean onShow(Player player, GUI gui, List<Object> args);
     public void onClose(Player player, GUI gui){}
@@ -80,8 +76,12 @@ public abstract class GUIFrame {
         return GUIListener.guis.containsKey(p.getUniqueId());
     }
 
-    public void show(Player p) {show(p,null,true);}
-    public void show(Player p, List<Object> args) {show(p,args,true);}
+    protected void update(Player p, List<Object> args, boolean sound) {
+        GUI gui = GUIListener.guis.get(p.getUniqueId());
+        if (gui != null) {
+            show(p, gui, args,sound);
+        }
+    }
 
     public void switchGUI(Player p, GUIFrame frame) {
         switchGUI(p, frame, null);
@@ -91,20 +91,12 @@ public abstract class GUIFrame {
         GUI gui = GUIListener.guis.get(p.getUniqueId());
         if (gui != null) {
             gui.closing = true;
-            if (args == null) {
-                frame.show(p);
-            } else {
-                frame.show(p, args);
-            }
+            frame.show(p, args, false);
         }
     }
 
-    protected void update(Player p, List<Object> args, boolean sound) {
-        GUI gui = GUIListener.guis.get(p.getUniqueId());
-        if (gui != null) {
-            show(p, gui, args,sound);
-        }
-    }
+    public void show(Player p) {show(p,null,true);}
+    public void show(Player p, List<Object> args) {show(p,args,true);}
 
     protected void show(Player p, List<Object> args, boolean sound) {
         show(p, new GUI(this), args, sound);
@@ -118,14 +110,20 @@ public abstract class GUIFrame {
         inv.clear();
 
         if (!onShow(p, gui, args)) {
+            gui.closing = true;
             GUIListener.guis.remove(p.getUniqueId());
             GUIListener.args.remove(p.getUniqueId());
+            p.closeInventory();
             return;
         }
 
         if (sound){
             if (openSound != null) {
-                p.playSound(p.getLocation(), openSound.sound(), openSound.volume(), openSound.pitch());
+                if (openSound.isEnumSound()) {
+                    p.playSound(p.getLocation(), openSound.getSound(), openSound.getVolume(), openSound.getPitch());
+                } else {
+                    p.playSound(p.getLocation(), openSound.getStrSound(), openSound.getVolume(), openSound.getPitch());
+                }
             }
         }
 

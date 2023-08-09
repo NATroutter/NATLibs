@@ -12,9 +12,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
@@ -27,6 +25,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -41,6 +40,52 @@ public class Utilities {
 			.hexColors()
 			.character('&')
 			.build();
+
+
+	public static Color colorArrayFade(List<Color> colors, AtomicInteger index) {
+		if (index.get() > colors.size()-1) { index.set(0); }
+		return colors.get(index.getAndIncrement());
+	}
+
+	public static List<Color> generateLoopFade(Color color1, Color color2, int FadeSteps) {
+		List<Color> colors = new ArrayList<>();
+		colors.addAll(generateOneDirectionFade(color1, color2, FadeSteps));
+		colors.addAll(generateOneDirectionFade(color2, color1, FadeSteps));
+		return colors;
+	}
+
+	public static List<Color> generateOneDirectionFade(Color color1, Color color2, int FadeSteps) {
+		List<Color> colors = new ArrayList<>();;
+		final int dRed = color2.getRed() - color1.getRed();
+		final int dGreen = color2.getGreen() - color1.getGreen();
+		final int dBlue = color2.getBlue() - color1.getBlue();
+		if (dRed != 0 || dGreen != 0 || dBlue != 0) {
+			for (int i = 0; i <= FadeSteps; i++) {
+				final Color c = Color.fromBGR(
+						color1.getRed() + ((dRed * i) / FadeSteps),
+						color1.getGreen() + ((dGreen * i) / FadeSteps),
+						color1.getBlue() + ((dBlue * i) / FadeSteps)
+				);
+				colors.add(c);
+			}
+		}
+		return colors;
+	}
+
+
+	public static <E extends Enum<E>> E findEnumValue(String name, Class<E> enumClass) {
+		if (enumClass.isEnum()) {
+			E[] values = enumClass.getEnumConstants();
+			for (E value : values) {
+				if (value.name().equalsIgnoreCase(name)) {
+					return value;
+				}
+			}
+			return values[0];
+		} else {
+			throw new IllegalArgumentException("The provided class is not an enum.");
+		}
+	}
 
 	public static String currencyFormat(double balance) {
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.ENGLISH);

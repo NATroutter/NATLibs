@@ -68,8 +68,16 @@ public class YamlDatabase {
     }
 
     //Check if contains value
-    public boolean valueExits(String value) {
+    public boolean valueExists(String value) {
         return yml.contains(value);
+    }
+
+    public boolean valueExists(Object Identifier, String key) {
+        if (Identifier instanceof OfflinePlayer p) {
+            return yml.contains("PlayerData." + p.getUniqueId() + "." + key);
+        } else {
+            return yml.contains(Identifier + "." + key);
+        }
     }
 
     //Get Location from config
@@ -77,8 +85,7 @@ public class YamlDatabase {
     public Location getLocation(Object Identifier, String key) {
 
         try {
-            if (Identifier instanceof OfflinePlayer) {
-                OfflinePlayer p = (OfflinePlayer)Identifier;
+            if (Identifier instanceof OfflinePlayer p) {
                 String world = yml.getString("PlayerData." + p.getUniqueId() + "." + key + ".World");
                 double X = yml.getDouble("PlayerData." + p.getUniqueId() + "." + key + ".X");
                 double Y = yml.getDouble("PlayerData." + p.getUniqueId() + "." + key + ".Y");

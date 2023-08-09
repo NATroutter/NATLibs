@@ -42,6 +42,11 @@ public class LocateBlock extends Command implements Listener {
             return false;
         }
 
+        if (!p.hasPermission("natlibs.tools.locateblock")) {
+            Theme.sendError(sender, Theme.Error.NO_PERMISSION);
+            return false;
+        }
+
         if (args.length == 0) {
             errorMessage(p, "You have not specified range or block what you want to search!");
         } else if (args.length == 1) {

@@ -39,7 +39,11 @@ public class GUIListener implements Listener {
                 if (item.getType().equals(Material.AIR)) { return; }
 
                 if (frame.getClickSound() != null) {
-                    p.playSound(p.getLocation(), frame.getClickSound().sound(), frame.getClickSound().volume(), frame.getClickSound().pitch());
+                    if (frame.getClickSound().isEnumSound()) {
+                        p.playSound(p.getLocation(), frame.getClickSound().getSound(), frame.getClickSound().getVolume(), frame.getClickSound().getPitch());
+                    } else {
+                        p.playSound(p.getLocation(), frame.getClickSound().getStrSound(), frame.getClickSound().getVolume(), frame.getClickSound().getPitch());
+                    }
                 }
                 item.clickEvent.accept(new ClickAction(
                         p,e.getClick(),e.getAction(),e.getClickedInventory(),
@@ -63,7 +67,11 @@ public class GUIListener implements Listener {
                 GUIFrame frame = gui.getFrame();
 
                 if (frame.getCloseSound() != null) {
-                    p.playSound(p.getLocation(), frame.getCloseSound().sound(), frame.getCloseSound().volume(), frame.getCloseSound().pitch());
+                    if (frame.getCloseSound().isEnumSound()) {
+                        p.playSound(p.getLocation(), frame.getCloseSound().getSound(), frame.getCloseSound().getVolume(), frame.getCloseSound().getPitch());
+                    } else {
+                        p.playSound(p.getLocation(), frame.getCloseSound().getStrSound(), frame.getCloseSound().getVolume(), frame.getCloseSound().getPitch());
+                    }
                 }
                 frame.onClose(p, gui);
                 guis.remove(p.getUniqueId());

@@ -13,7 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -61,7 +61,7 @@ public interface IConfig {
     }
 
     @SneakyThrows
-    private <T> T getObj(String name, Class<T> clazz){
+    private <T> T getObj(String name, Class<T> clazz) {
         T obj = clazz.getConstructor().newInstance();
         for (Field field : clazz.getDeclaredFields()) {
             field.setAccessible(true);
@@ -85,17 +85,34 @@ public interface IConfig {
     default double asDouble() {return yml().getDouble(getPath());}
     default boolean asBoolean() {return yml().getBoolean(getPath());}
     default List<String> asStringList() {return yml().getStringList(getPath());}
-    default Material asMaterial() {return Material.getMaterial(yml().getString(getPath()));}
 
     default float asFloat() {return (float)yml().getDouble(getPath());}
     default byte asByte() {return (byte)yml().getInt(getPath());}
     default short asShort() {return (short)yml().getInt(getPath());}
-    default Sound asSound() {return Sound.valueOf(yml().getString(getPath()));}
-    default SoundCategory asSoundCategory() {return SoundCategory.valueOf(yml().getString(getPath()));}
-    default Particle asParticle() {return Particle.valueOf(yml().getString(getPath()));}
 
+    default Material asMaterial() {
+        return Utilities.findEnumValue(yml().getString(getPath()), Material.class);
+    }
 
-    default Rows asRows() {return Rows.fromString(yml().getString(getPath()));}
+    default Sound asSound() {
+        return Utilities.findEnumValue(yml().getString(getPath()), Sound.class);
+    }
+
+    default SoundCategory asSoundCategory() {
+        return Utilities.findEnumValue(yml().getString(getPath()), SoundCategory.class);
+    }
+
+    default BlockFace asBlockFace() {
+        return Utilities.findEnumValue(yml().getString(getPath()), BlockFace.class);
+    }
+
+    default Particle asParticle() {
+        return Utilities.findEnumValue(yml().getString(getPath()), Particle.class);
+    }
+
+    default Rows asRows() {
+        return Utilities.findEnumValue(yml().getString(getPath()), Rows.class);
+    }
 
     default Component asComponent(){return asComponent(null);}
     default List<Component> asComponentList(){return asComponentList(null);}

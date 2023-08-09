@@ -10,8 +10,11 @@ import fi.natroutter.natlibs.utilities.Utilities;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -111,7 +114,8 @@ public class MiniMessageViewer extends Command implements Listener {
                 if (args[1].equalsIgnoreCase("show")) {
                     p.sendMessage(Theme.multiline("<bold>»</bold>",true,true,
                             new DualString("HoloVisible", stateString(database.getBoolean("Tools.MiniMessageViewer", "HoloVisible"))),
-                            new DualString("ClickToVisible", stateString(database.getBoolean("Tools.MiniMessageViewer", "ClickToVisible")))
+                            new DualString("ClickToVisible", stateString(database.getBoolean("Tools.MiniMessageViewer", "ClickToVisible"))),
+                            new DualString("CopyFormat", Utilities.toTitleCase(database.getString("Tools.MiniMessageViewer", "CopyFormat")))
                     ));
                     return true;
                 }
@@ -132,6 +136,15 @@ public class MiniMessageViewer extends Command implements Listener {
                         database.save("Tools.MiniMessageViewer", "ClickToVisible", state);
                         return true;
                     }
+                    case "copyformat" -> {
+                        if (!copyFormats.contains(args[2])) {
+                            p.sendMessage(Theme.prefixed("Invalid copy format!"));
+                            return true;
+                        }
+                        p.sendMessage(Theme.prefixed("Copy format set to: " + Theme.highlight(Utilities.toTitleCase(args[2]))));
+                        database.save("Tools.MiniMessageViewer", "CopyFormat", args[2]);
+                        return true;
+                    }
                 }
             }
             return mmCommand(p, args);
@@ -140,6 +153,16 @@ public class MiniMessageViewer extends Command implements Listener {
         }
         return false;
     }
+
+    private List<String> copyFormats = List.of(
+            "LegacyHexAmpersand",
+            "LegacyHexSection",
+            "LegacyAmpersand",
+            "LegacySection",
+            "MiniMessage",
+            "Component",
+            "Plain"
+    );
 
     private String getMessage(Player p, String[] args) {
         String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
@@ -179,11 +202,36 @@ public class MiniMessageViewer extends Command implements Listener {
                         Utilities.translateColors(m, CustomResolver.resolvers().toArray(new TagResolver[0]))
                 )
                 .map(c-> {
-                    try {
+                    String format = database.getString("Tools.MiniMessageViewer", "CopyFormat");
+                    if (format == null) {format = "Component";}
+
+                    if (format.equalsIgnoreCase("LegacyHexAmpersand")) {
+                        LegacyComponentSerializer lcs = LegacyComponentSerializer.builder().hexColors().character('&').build();
+                        return c.clickEvent(ClickEvent.copyToClipboard(lcs.serialize(c)));
+
+                    } else if (format.equalsIgnoreCase("LegacyHexSection")) {
+                        LegacyComponentSerializer lcs = LegacyComponentSerializer.builder().hexColors().character('§').build();
+                        return c.clickEvent(ClickEvent.copyToClipboard(lcs.serialize(c)));
+
+                    } else if (format.equalsIgnoreCase("LegacyAmpersand")) {
+                        LegacyComponentSerializer lcs = LegacyComponentSerializer.legacyAmpersand();
+                        return c.clickEvent(ClickEvent.copyToClipboard(lcs.serialize(c)));
+
+                    } else if (format.equalsIgnoreCase("LegacySection")) {
+                        LegacyComponentSerializer lcs = LegacyComponentSerializer.legacySection();
+                        return c.clickEvent(ClickEvent.copyToClipboard(lcs.serialize(c)));
+
+                    } else if (format.equalsIgnoreCase("MiniMessage")) {
+                        return c.clickEvent(ClickEvent.copyToClipboard(MiniMessage.miniMessage().serialize(c)));
+
+                    } else if (format.equalsIgnoreCase("Component")) {
                         return c.clickEvent(ClickEvent.copyToClipboard(GsonComponentSerializer.gson().serialize(c)));
-                    } catch (Exception e) {
-                        return c;
+
+                    } else if (format.equalsIgnoreCase("Plain")) {
+                        return c.clickEvent(ClickEvent.copyToClipboard(PlainTextComponentSerializer.plainText().serialize(c)));
+
                     }
+                    return c;
                 })
                 .map(c-> c.hoverEvent(Theme.mainC("Click to copy raw json!")))
                 .forEach(p::sendMessage);
@@ -245,7 +293,7 @@ public class MiniMessageViewer extends Command implements Listener {
             switch (args[0].toLowerCase()) {
                 case "settings" -> {
                     return Utilities.getCompletes(sender, args[1], Arrays.asList(
-                            "HoloVisible", "Show", "ClickToVisible"
+                            "HoloVisible", "Show", "ClickToVisible", "CopyFormat"
                     ));
                 }
             }
@@ -259,6 +307,8 @@ public class MiniMessageViewer extends Command implements Listener {
                 } else if (args[1].toLowerCase().equalsIgnoreCase("ClickToVisible")) {
                     String response = String.valueOf(!database.getBoolean("Tools.MiniMessageViewer", "ClickToVisible"));
                     return Utilities.getCompletes(sender, args[2], Collections.singletonList(response));
+                } else if (args[1].toLowerCase().equalsIgnoreCase("CopyFormat")) {
+                    return Utilities.getCompletes(sender, args[2], copyFormats);
                 }
                 return Utilities.emptyTab();
             }
