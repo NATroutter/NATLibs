@@ -281,7 +281,6 @@ public class MiniMessageViewer extends Command implements Listener {
     public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
 
         if (!sender.hasPermission("natlibs.tools.minimessageviewer")) {
-            Theme.sendError(sender, Theme.Error.NO_PERMISSION);
             return Utilities.emptyTab();
         }
 
