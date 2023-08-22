@@ -4,7 +4,7 @@
 
     <groupId>fi.natroutter</groupId>
     <artifactId>natlibs</artifactId>
-    <version>4.0.13</version>
+    <version>4.0.14</version>
     <packaging>jar</packaging>
 
     <name>NATLibs</name>

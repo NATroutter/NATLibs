@@ -17,7 +17,9 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.StringUtil;
 
 import javax.annotation.Nullable;
@@ -72,6 +74,22 @@ public class Utilities {
 		return colors;
 	}
 
+	public static boolean canItemFit(Inventory inventory, ItemStack item) {
+		if (inventory.firstEmpty() != -1) {
+			return true;
+		}
+		for (ItemStack stack : inventory.getStorageContents()) {
+			if (stack == null) {
+				return true;
+			}
+			if (item.isSimilar(stack)) {
+				if ((stack.getAmount() + item.getAmount()) <= stack.getMaxStackSize()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	public static <E extends Enum<E>> E findEnumValue(String name, Class<E> enumClass) {
 		if (enumClass.isEnum()) {

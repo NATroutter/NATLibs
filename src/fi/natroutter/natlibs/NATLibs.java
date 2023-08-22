@@ -29,6 +29,8 @@ public class NATLibs extends JavaPlugin {
 	/*
 	TODO
 	 2. add new SQL database handler
+
+	 FIX : mmv tabcomplete permission message remove (check other commands also)
 	*/
 
 	@Getter
