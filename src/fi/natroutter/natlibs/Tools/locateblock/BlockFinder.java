@@ -1,4 +1,4 @@
-package fi.natroutter.natlibs.Tools.LocateBlock;
+package fi.natroutter.natlibs.Tools.locateblock;
 
 import fi.natroutter.natlibs.utilities.Theme;
 import fi.natroutter.natlibs.utilities.Utilities;

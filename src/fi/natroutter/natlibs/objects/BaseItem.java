@@ -154,6 +154,10 @@ public class BaseItem extends ItemStack {
 		return getItemMeta().getPersistentDataContainer();
 	}
 
+	public void editData(Consumer<PersistentDataContainer> data) {
+		editMeta(meta -> data.accept(meta.getPersistentDataContainer()));
+	}
+
 	public Map<Enchantment, Integer> getEnchants() {
 		return getItemMeta().getEnchants();
 	}

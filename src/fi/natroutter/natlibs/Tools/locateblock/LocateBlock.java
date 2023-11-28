@@ -1,6 +1,5 @@
-package fi.natroutter.natlibs.Tools.LocateBlock;
+package fi.natroutter.natlibs.Tools.locateblock;
 
-import fi.natroutter.natlibs.objects.Complete;
 import fi.natroutter.natlibs.utilities.Theme;
 import fi.natroutter.natlibs.utilities.Utilities;
 import org.bukkit.Material;
@@ -9,10 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

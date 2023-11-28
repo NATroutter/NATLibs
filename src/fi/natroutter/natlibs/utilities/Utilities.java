@@ -3,8 +3,10 @@ package fi.natroutter.natlibs.utilities;
 import com.google.common.collect.Lists;
 import fi.natroutter.natlibs.config.IConfig;
 import fi.natroutter.natlibs.handlers.CustomResolver;
+import fi.natroutter.natlibs.handlers.Particles;
 import fi.natroutter.natlibs.objects.BaseItem;
 import fi.natroutter.natlibs.objects.Complete;
+import fi.natroutter.natlibs.objects.ParticleSettings;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -193,7 +195,15 @@ public class Utilities {
 		}
 	}
 
-	public static List<Location> getHollowCube(Location loc, double particleDistance) {
+	public static void drawBlockOutlines(Player p, Location loc, double pointDistance, Color color) {
+		ParticleSettings settings = new ParticleSettings(Particle.REDSTONE, 1, 0, 0, 0, 0);
+		settings.setDustOptions(new Particle.DustOptions(color, 1));
+		for (Location point : Utilities.getHollowCube(loc, pointDistance)) {
+			Particles.spawn(p, point, settings);
+		}
+	}
+
+	public static List<Location> getHollowCube(Location loc, double pointDistance) {
 		List<Location> result = Lists.newArrayList();
 		World world = loc.getWorld();
 		double minX = loc.getBlockX();
@@ -203,9 +213,9 @@ public class Utilities {
 		double maxY = loc.getBlockY()+1;
 		double maxZ = loc.getBlockZ()+1;
 
-		for (double x = minX; x <= maxX; x = Math.round((x + particleDistance) * 1e2) / 1e2) {
-			for (double y = minY; y <= maxY; y = Math.round((y + particleDistance) * 1e2) / 1e2) {
-				for (double z = minZ; z <= maxZ; z = Math.round((z + particleDistance) * 1e2) / 1e2) {
+		for (double x = minX; x <= maxX; x = Math.round((x + pointDistance) * 1e2) / 1e2) {
+			for (double y = minY; y <= maxY; y = Math.round((y + pointDistance) * 1e2) / 1e2) {
+				for (double z = minZ; z <= maxZ; z = Math.round((z + pointDistance) * 1e2) / 1e2) {
 					int components = 0;
 					if (x == minX || x == maxX) components++;
 					if (y == minY || y == maxY) components++;

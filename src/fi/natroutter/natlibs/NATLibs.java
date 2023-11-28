@@ -1,7 +1,8 @@
 package fi.natroutter.natlibs;
 
-import fi.natroutter.natlibs.Tools.LocateBlock.LocateBlock;
-import fi.natroutter.natlibs.Tools.MagicWand;
+import fi.natroutter.natlibs.Tools.locateblock.LocateBlock;
+import fi.natroutter.natlibs.Tools.magicwand.MWCommand;
+import fi.natroutter.natlibs.Tools.magicwand.MWListener;
 import fi.natroutter.natlibs.Tools.MiniMessageViewer;
 import fi.natroutter.natlibs.events.PlayerJumpEvent;
 import fi.natroutter.natlibs.files.Config;
@@ -75,14 +76,13 @@ public class NATLibs extends JavaPlugin {
 
 		if (Config.USE_INTERNAL_TOOLS.asBoolean()) {
 			MiniMessageViewer mmv = new MiniMessageViewer();
-			MagicWand mw = new MagicWand();
 			LocateBlock locateBlock = new LocateBlock(this);
 
 			Bukkit.getCommandMap().register("natlibs", mmv);
 			pm.registerEvents(mmv, this);
 
-			Bukkit.getCommandMap().register("natlibs", mw);
-			pm.registerEvents(mw, this);
+			Bukkit.getCommandMap().register("natlibs", new MWCommand());
+			pm.registerEvents(new MWListener(), this);
 
 			Bukkit.getCommandMap().register("natlibs", locateBlock);
 			pm.registerEvents(locateBlock, this);
