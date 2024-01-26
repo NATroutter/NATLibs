@@ -35,5 +35,3 @@ Old version documentation can be found in [ProjectHub](https://hub.nat.gg/index.
 
 ## Statistics overview
 ![stats](https://bstats.org/signatures/bukkit/NATLibs.svg)
-
-  
