@@ -1,6 +1,7 @@
 package fi.natroutter.natlibs.config;
 
 import fi.natroutter.natlibs.handlers.guibuilder.Rows;
+import fi.natroutter.natlibs.utilities.Colors;
 import fi.natroutter.natlibs.utilities.Utilities;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
@@ -9,12 +10,8 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
+import org.bukkit.*;
 import org.bukkit.block.BlockFace;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -29,10 +26,10 @@ public interface IConfig {
     HashMap<String, SimpleYml> saved = new HashMap<>();
 
     String getPath();
-    JavaPlugin getPlugin();
+    File getDataFolder();
 
     private String identifier() {
-        return getPlugin().getName().toLowerCase() + "-" + fileName();
+        return getDataFolder().getName().toLowerCase() + "-" + fileName();
     }
 
     default String fileName() {
@@ -40,14 +37,19 @@ public interface IConfig {
     }
 
     default File file() {
-        return new File(getPlugin().getDataFolder(), fileName() + ".yml");
+        return new File(getDataFolder(), fileName() + ".yml");
     }
 
     default void reloadFile() {
         if (resourceLocation() != null) {
-            saved.put(identifier(), new SimpleYml(getPlugin(), file(), resourceLocation()));
+            File file = new File(getDataFolder(), resourceLocation());
+            SimpleYml simpleYml = new SimpleYml(getClass(), file, resourceLocation());
+
+            Bukkit.getConsoleSender().sendMessage("§6USING CUSTOM RESOURCE FILE! §e" + resourceLocation());
+            saved.put(identifier(), simpleYml);
         } else {
-            saved.put(identifier(), new SimpleYml(getPlugin(), file()));
+            saved.put(identifier(), new SimpleYml(getClass(), file()));
+            Bukkit.getConsoleSender().sendMessage("§6USING DEFAULT RESOURCE FILE! §e" + file().getName());
         }
     }
 
@@ -123,7 +125,7 @@ public interface IConfig {
     default List<Component> asComponentList(TagResolver... tagResolvers) {
         List<String> values = yml().getStringList(getPath());
 
-        return values.stream().map(entry-> Utilities.translateColors(entry,tagResolvers)).toList();
+        return values.stream().map(entry-> Colors.translate(entry,tagResolvers)).toList();
     }
 
     default Component asSingleComponent(TagResolver... tagResolvers) {
@@ -137,7 +139,7 @@ public interface IConfig {
     default Component asComponent(TagResolver... tagResolvers){
         String entry = yml().getString(getPath());
         if (entry != null) {
-            return Utilities.translateColors(entry, tagResolvers);
+            return Colors.translate(entry, tagResolvers);
         }
         return Component.text(" [Invalid value in "+file().getName()+": " + getPath() + "] ");
     }
@@ -145,14 +147,14 @@ public interface IConfig {
     default String asLegacy(TagResolver... tagResolvers){
         String entry = yml().getString(getPath());
         if (entry != null) {
-            return Utilities.legacy(Utilities.translateColors(entry, tagResolvers));
+            return Colors.legacy(Colors.translate(entry, tagResolvers));
         }
         return " [Invalid value in "+file().getName()+": " + getPath() + "] ";
     }
 
     default List<String> asLegacyList(TagResolver... tagResolvers){
         List<String> values = yml().getStringList(getPath());
-        return values.stream().map(entry -> Utilities.legacy(Utilities.translateColors(entry, tagResolvers))).toList();
+        return values.stream().map(entry -> Colors.legacy(Colors.translate(entry, tagResolvers))).toList();
     }
 
 }

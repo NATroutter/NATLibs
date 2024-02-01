@@ -2,6 +2,7 @@ package fi.natroutter.natlibs.Tools.magicwand;
 
 import fi.natroutter.natlibs.NATLibs;
 import fi.natroutter.natlibs.objects.BaseItem;
+import fi.natroutter.natlibs.utilities.Colors;
 import fi.natroutter.natlibs.utilities.Utilities;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -27,9 +28,9 @@ public class MWHandler {
     }
     protected static BaseItem wand(MagicMode mode) {
         BaseItem item = new BaseItem(Material.BLAZE_ROD);
-        item.name(Utilities.translateColors("<gradient:#3a34eb:#eb34e8><bold>MagicWand</bold></gradient><color:#f174ef> ("+mode.getFriendlyName()+")</color>"));
+        item.name(Colors.translate("<gradient:#3a34eb:#eb34e8><bold>MagicWand</bold></gradient><color:#f174ef> ("+mode.getFriendlyName()+")</color>"));
         item.lore(List.of(
-                Utilities.translateColors("<color:#b0b0b0>Magical Wand that can rewrite past and future!"),
+                Colors.translate("<color:#b0b0b0>Magical Wand that can rewrite past and future!"),
                 Component.text(" ")
         ));
 
@@ -47,7 +48,7 @@ public class MWHandler {
         ItemMeta meta = item.getItemMeta();
         PersistentDataContainer data = meta.getPersistentDataContainer();
         MagicMode mode = MagicMode.valueOf(data.get(wandMode, PersistentDataType.STRING));
-        meta.displayName(Utilities.translateColors("<gradient:#3a34eb:#eb34e8><bold>MagicWand</bold></gradient><color:#f174ef:> ("+mode.getFriendlyName()+")</color>"));
+        meta.displayName(Colors.translate("<gradient:#3a34eb:#eb34e8><bold>MagicWand</bold></gradient><color:#f174ef:> ("+mode.getFriendlyName()+")</color>"));
         item.setItemMeta(meta);
     }
 

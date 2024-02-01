@@ -14,7 +14,7 @@ public interface ILang extends IConfig {
 
     @Override
     default File file() {
-        File langFolder = new File(getPlugin().getDataFolder(), "langs");
+        File langFolder = new File(getDataFolder(), "langs");
         if (!langFolder.exists()) {
             langFolder.mkdirs();
         }

@@ -1,5 +1,6 @@
 package fi.natroutter.natlibs.handlers.database;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,9 +21,9 @@ public class YamlDatabase {
 
     public YamlDatabase(JavaPlugin pl) {
         this.pl = pl;
-        this.yml = new SimpleYml(pl, "Database.yml");
+        this.yml = new SimpleYml(pl.getClass(), new File(pl.getDataFolder(), "database.yml"));
     }
-    
+
     public void reload() {
         yml.reload();
     }

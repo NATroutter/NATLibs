@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 @AllArgsConstructor
 public enum Config implements IConfig {
 
@@ -18,7 +20,7 @@ public enum Config implements IConfig {
     final String path;
 
     @Override
-    public JavaPlugin getPlugin() {
-        return NATLibs.getInstance();
+    public File getDataFolder() {
+        return NATLibs.getInstance().getDataFolder();
     }
 }

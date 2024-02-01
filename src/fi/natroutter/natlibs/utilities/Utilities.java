@@ -1,19 +1,11 @@
 package fi.natroutter.natlibs.utilities;
 
 import com.google.common.collect.Lists;
-import fi.natroutter.natlibs.config.IConfig;
-import fi.natroutter.natlibs.handlers.CustomResolver;
 import fi.natroutter.natlibs.handlers.Particles;
 import fi.natroutter.natlibs.objects.BaseItem;
 import fi.natroutter.natlibs.objects.Complete;
 import fi.natroutter.natlibs.objects.ParticleSettings;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -24,7 +16,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.StringUtil;
 
-import javax.annotation.Nullable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -36,15 +27,6 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings({"unused"})
 public class Utilities {
-
-	private static MiniMessage mm = MiniMessage.builder()
-			.build();
-	private static LegacyComponentSerializer lcs = LegacyComponentSerializer
-			.builder()
-			.hexColors()
-			.character('&')
-			.build();
-
 
 	public static Color colorArrayFade(List<Color> colors, AtomicInteger index) {
 		if (index.get() > colors.size()-1) { index.set(0); }
@@ -140,47 +122,10 @@ public class Utilities {
 			item.removeEnchantment(Enchantment.DURABILITY);
 		}
 	}
-
-	public static String plain(Component comp) {
-		return PlainTextComponentSerializer.plainText().serialize(comp);
-	}
-
-	public static String legacy(Component comp)  {
-		return lcs.serialize(comp);
-	}
-
 	public static String parse(String value, TagResolver... placeholders) {
 		if (placeholders == null) return value;
-		return plain(Utilities.translateColors(value, placeholders));
+		return Colors.plain(Colors.translate(value, placeholders));
 	}
-
-
-	public static Component translateColors(IConfig config, TagResolver... placeholders) {
-		return translateColors(config.asString(), true, placeholders);
-	}
-	public static Component translateColors(String str, TagResolver... placeholders) {
-		return translateColors(str, true, placeholders);
-	}
-	public static Component translateColors(String str, List<TagResolver> placeholders) {
-		return translateColors(str, true, placeholders.toArray(new TagResolver[0]));
-	}
-	public static Component translateColors(String str, boolean useCustom, @Nullable TagResolver... placeholders) {
-		List<TagResolver> list = new ArrayList<>();
-		if (placeholders != null) {
-			list.addAll(List.of(placeholders));
-			if (useCustom) {
-				list.addAll(CustomResolver.resolvers());
-			}
-		}
-
-		Component italicFix = Component.text("").style(style -> style.decoration(TextDecoration.ITALIC, false));
-
-		TextComponent deserialize = lcs.deserialize(str.replace("§", "&"));
-		String serialize = mm.serialize(deserialize).replace("\\<", "<");
-		return italicFix.append(mm.deserialize(serialize, list.toArray(new TagResolver[0])));
-	}
-
-
 
 	public static boolean locationMatch(Location loc1, Location loc2) {
 		if (loc1.getWorld() == null || loc2.getWorld() == null) {

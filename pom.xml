@@ -4,27 +4,20 @@
 
     <groupId>fi.natroutter</groupId>
     <artifactId>natlibs</artifactId>
-    <version>4.1.0</version>
     <packaging>jar</packaging>
+
+    <version>4.1.2</version>
+
+
 
     <name>NATLibs</name>
     <description>NATroutter's library for plugin Developement</description>
-    <url>https://plugins.nat.gg/resource?id=2</url>
+    <url>https://github.com/NATroutter/NATLibs</url>
 
     <properties>
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spigot.annotations.version>1.2.3-SNAPSHOT</spigot.annotations.version>
-
-        <foxlib.version>1.0.8</foxlib.version>
-        <anvilgui.version>1.7.0-SNAPSHOT</anvilgui.version>
-        <paper-api.version>1.20.1-R0.1-SNAPSHOT</paper-api.version>
-        <jsoup.version>1.16.1</jsoup.version>
-        <bstats.version>3.0.1</bstats.version>
-        <lombok.version>1.18.26</lombok.version>
-        <placeholderapi.version>2.11.3</placeholderapi.version>
-        <adventure.gsonserializer.version>4.14.0</adventure.gsonserializer.version>
-        <mongo.version>4.9.0</mongo.version>
 
     </properties>
 
@@ -93,10 +86,6 @@
                                     <pattern>org.bstats</pattern>
                                     <shadedPattern>${project.groupId}.${project.artifactId}.bstats</shadedPattern>
                                 </relocation>
-                                <relocation>
-                                    <pattern>net.wesjd.anvilgui</pattern>
-                                    <shadedPattern>${project.groupId}.${project.artifactId}.anvilgui</shadedPattern>
-                                </relocation>
                             </relocations>
                         </configuration>
                     </execution>
@@ -112,6 +101,7 @@
                 <includes>
                     <include>plugin.yml</include>
                     <include>config.yml</include>
+                    <include>database.yml</include>
                 </includes>
             </resource>
         </resources>
@@ -146,60 +136,48 @@
         <dependency>
             <groupId>fi.natroutter</groupId>
             <artifactId>foxlib</artifactId>
-            <version>${foxlib.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>net.wesjd</groupId>
-            <artifactId>anvilgui</artifactId>
-            <version>${anvilgui.version}</version>
+            <version>1.0.8</version>
         </dependency>
 
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>${paper-api.version}</version>
+            <version>1.20.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>${jsoup.version}</version>
+            <version>1.16.1</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>${bstats.version}</version>
+            <version>3.0.1</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
+            <version>1.18.26</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>${placeholderapi.version}</version>
+            <version>2.11.3</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-gson</artifactId>
-            <version>${adventure.gsonserializer.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-sync</artifactId>
-            <version>${mongo.version}</version>
+            <version>4.14.0</version>
         </dependency>
 
     </dependencies>

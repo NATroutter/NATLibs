@@ -1,6 +1,7 @@
 package fi.natroutter.natlibs.handlers.guibuilder;
 
 import fi.natroutter.natlibs.objects.BaseItem;
+import fi.natroutter.natlibs.utilities.Colors;
 import fi.natroutter.natlibs.utilities.Utilities;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,7 +41,7 @@ public class GUI {
     }
 
     public Component getTitle() {
-        return Utilities.translateColors(rawTitle,
+        return Colors.translate(rawTitle,
                 Placeholder.parsed("page",String.valueOf(page)),
                 Placeholder.parsed("max_page",String.valueOf(frame.getMaxPages()))
         );

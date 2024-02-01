@@ -5,6 +5,7 @@ import fi.natroutter.natlibs.handlers.CustomResolver;
 import fi.natroutter.natlibs.handlers.database.YamlDatabase;
 import fi.natroutter.natlibs.objects.BaseItem;
 import fi.natroutter.natlibs.objects.DualString;
+import fi.natroutter.natlibs.utilities.Colors;
 import fi.natroutter.natlibs.utilities.Theme;
 import fi.natroutter.natlibs.utilities.Utilities;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -130,6 +131,18 @@ public class MiniMessageViewer extends Command implements Listener {
                         database.save("Tools.MiniMessageViewer", "HoloVisible", state);
                         return true;
                     }
+                    case "holoheight" -> {
+                        float height = 0;
+                        try {
+                            height = Float.parseFloat(args[2]);
+                        } catch (Exception ignored) {
+                            p.sendMessage(Theme.prefixed("Invalid height!"));
+                            return false;
+                        }
+                        p.sendMessage(Theme.prefixed("Hologram height set to: " + Theme.highlight(String.valueOf(height))));
+                        database.save("Tools.MiniMessageViewer", "HoloHeight", height);
+                        return true;
+                    }
                     case "clicktovisible" -> {
                         boolean state = Boolean.parseBoolean(args[2]);
                         p.sendMessage(Theme.prefixed("Click visibility set to: " + Theme.highlight(stateString(state))));
@@ -178,7 +191,7 @@ public class MiniMessageViewer extends Command implements Listener {
                 ItemStack item = getItem(p);
                 if (item == null) return false;
                 item.editMeta(meta->
-                        meta.displayName(Utilities.translateColors(getMessage(p, args), CustomResolver.resolvers().toArray(new TagResolver[0])))
+                        meta.displayName(Colors.translate(getMessage(p, args), CustomResolver.resolvers().toArray(new TagResolver[0])))
                 );
                 p.sendMessage(Theme.prefixed("Item editted!"));
                 return true;
@@ -188,7 +201,7 @@ public class MiniMessageViewer extends Command implements Listener {
                 if (item == null) return false;
                 String message = getMessage(p, args);
                 List<Component> comp = Arrays.stream(message.split("<br>")).map(m->
-                        Utilities.translateColors(m, CustomResolver.resolvers().toArray(new TagResolver[0]))
+                        Colors.translate(m, CustomResolver.resolvers().toArray(new TagResolver[0]))
                 ).toList();
                 item.editMeta(meta->
                         meta.lore(comp)
@@ -199,7 +212,7 @@ public class MiniMessageViewer extends Command implements Listener {
             case "chat", "c" -> {
                 String message = getMessage(p, args);
                 Arrays.stream(message.split("<br>")).map(m->
-                        Utilities.translateColors(m, CustomResolver.resolvers().toArray(new TagResolver[0]))
+                                Colors.translate(m, CustomResolver.resolvers().toArray(new TagResolver[0]))
                 )
                 .map(c-> {
                     String format = database.getString("Tools.MiniMessageViewer", "CopyFormat");
@@ -241,7 +254,13 @@ public class MiniMessageViewer extends Command implements Listener {
                 String message = getMessage(p, args);
                 World world = p.getWorld();
                 Location spawnLoc = p.getLocation().add(0,-2,0);
-                float adjustment = 0.25f;
+
+                double adjustment;
+                if (database.valueExists("Tools.MiniMessageViewer", "HoloHeight")) {
+                    adjustment = database.getDouble("Tools.MiniMessageViewer", "HoloHeight");
+                } else {
+                    adjustment = 0.25;
+                }
 
                 Arrays.stream(message.split("<br>")).forEach(line->{
                     if (line.isEmpty()) {
@@ -250,7 +269,7 @@ public class MiniMessageViewer extends Command implements Listener {
                         ArmorStand stand = (ArmorStand)world.spawnEntity(spawnLoc, EntityType.ARMOR_STAND);
                         stand.getPersistentDataContainer().set(namespacedKey, PersistentDataType.INTEGER, 1);
                         stand.setCustomNameVisible(true);
-                        stand.customName(Utilities.translateColors(line, CustomResolver.resolvers().toArray(new TagResolver[0])));
+                        stand.customName(Colors.translate(line, CustomResolver.resolvers().toArray(new TagResolver[0])));
                         stand.setGravity(false);
                         stand.setVisible(database.getBoolean("Tools.MiniMessageViewer", "HoloVisible"));
                         spawnLoc.add(0, -adjustment, 0);
@@ -292,7 +311,7 @@ public class MiniMessageViewer extends Command implements Listener {
             switch (args[0].toLowerCase()) {
                 case "settings" -> {
                     return Utilities.getCompletes(sender, args[1], Arrays.asList(
-                            "HoloVisible", "Show", "ClickToVisible", "CopyFormat"
+                            "HoloVisible", "Show", "ClickToVisible", "CopyFormat", "HoloHeight"
                     ));
                 }
             }
@@ -308,6 +327,14 @@ public class MiniMessageViewer extends Command implements Listener {
                     return Utilities.getCompletes(sender, args[2], Collections.singletonList(response));
                 } else if (args[1].toLowerCase().equalsIgnoreCase("CopyFormat")) {
                     return Utilities.getCompletes(sender, args[2], copyFormats);
+                } else if (args[1].toLowerCase().equalsIgnoreCase("HoloHeight")) {
+                    double response;
+                    if (database.valueExists("Tools.MiniMessageViewer", "HoloHeight")) {
+                        response = database.getDouble("Tools.MiniMessageViewer", "HoloHeight");
+                    } else {
+                        response = 0.25;
+                    }
+                    return Utilities.getCompletes(sender, args[2], Collections.singletonList(String.valueOf(response)));
                 }
                 return Utilities.emptyTab();
             }

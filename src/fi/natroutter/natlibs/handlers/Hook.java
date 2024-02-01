@@ -1,5 +1,6 @@
 package fi.natroutter.natlibs.handlers;
 
+import fi.natroutter.natlibs.utilities.Colors;
 import fi.natroutter.natlibs.utilities.Utilities;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -104,10 +105,10 @@ public class Hook {
     private Hook(Builder builder) {
         this.args = builder;
 
-        Component success = Utilities.translateColors(args.hookedMessage,
+        Component success = Colors.translate(args.hookedMessage,
                 Placeholder.parsed("plugin", args.PluginName)
         );
-        Component failed = Utilities.translateColors(args.hookingFailedMessage,
+        Component failed = Colors.translate(args.hookingFailedMessage,
                 Placeholder.parsed("plugin", args.PluginName)
         );
 
@@ -133,7 +134,7 @@ public class Hook {
         if (args.instance != null) {plName = args.instance.getName();}
 
         if (args.disableWhenFailed) {
-            console.sendMessage(Utilities.translateColors("§4["+plName+"][Hook] " + args.disabledMessage,
+            console.sendMessage(Colors.translate("§4["+plName+"][Hook] " + args.disabledMessage,
                     Placeholder.parsed("plugin", plName)
             ));
             Bukkit.getServer().getPluginManager().disablePlugin(args.instance);

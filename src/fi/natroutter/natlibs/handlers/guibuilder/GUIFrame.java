@@ -2,6 +2,7 @@ package fi.natroutter.natlibs.handlers.guibuilder;
 
 import fi.natroutter.natlibs.config.IConfig;
 import fi.natroutter.natlibs.objects.BaseItem;
+import fi.natroutter.natlibs.utilities.Colors;
 import fi.natroutter.natlibs.utilities.Utilities;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,7 +47,7 @@ public abstract class GUIFrame {
     public GUIFrame(String title, Rows rows) {
         this.rawTitle = title;
         this.rows = rows;
-        this.strippedTitle = plain.serialize(Utilities.translateColors(title));
+        this.strippedTitle = plain.serialize(Colors.translate(title));
 
         openSound = new SoundSettings(Sound.BLOCK_CHEST_OPEN, 100, 1);
         closeSound = new SoundSettings(Sound.BLOCK_CHEST_CLOSE, 100, 1);

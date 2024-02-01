@@ -2,6 +2,7 @@ package fi.natroutter.natlibs.objects;
 
 import com.google.common.collect.Multimap;
 import fi.natroutter.natlibs.config.IConfig;
+import fi.natroutter.natlibs.utilities.Colors;
 import fi.natroutter.natlibs.utilities.Utilities;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -76,11 +77,11 @@ public class BaseItem extends ItemStack {
 
 
 	public BaseItem lore(String... line) {
-		lore(Arrays.stream(line).map(Utilities::translateColors).toList());
+		lore(Arrays.stream(line).map(Colors::translate).toList());
 		return this;
 	}
 	public BaseItem lore(List<String> lines, TagResolver... placeholders) {
-		lore(lines.stream().map(entry->Utilities.translateColors(entry,placeholders)).toList());
+		lore(lines.stream().map(entry->Colors.translate(entry,placeholders)).toList());
 		return this;
 	}
 	public BaseItem lore(IConfig lore) {
@@ -93,7 +94,7 @@ public class BaseItem extends ItemStack {
 	}
 
 	public BaseItem name(String name) {
-		setMeta(meta-> meta.displayName(Utilities.translateColors(name)));
+		setMeta(meta-> meta.displayName(Colors.translate(name)));
 		return this;
 	}
 	public BaseItem name(Component component) {
@@ -144,10 +145,10 @@ public class BaseItem extends ItemStack {
 	//Getters
 
 	public String name() {
-		return Utilities.legacy(displayName());
+		return Colors.legacy(displayName());
 	}
 	public List<String> loreLegacy() {
-		return lore().stream().map(Utilities::legacy).collect(Collectors.toList());
+		return lore().stream().map(Colors::legacy).collect(Collectors.toList());
 	}
 
 	public PersistentDataContainer getPersistentDataContainer() {
