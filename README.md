@@ -5,9 +5,8 @@
 
 ![GitHub](https://img.shields.io/github/license/NATroutter/NATLibs?style=for-the-badge)
 
-![Jenkins](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fhub.nat.gg%2Fjenkins%2Fjob%2FNATLibs%2F&style=for-the-badge)
+![Jenkins](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fhub.nat.gg%2Fjenkins%2Fjob%2Fplugins%2Fjob%2FNATLibs%2F&style=for-the-badge)
 ![Sonatype Nexus (Releases)](https://img.shields.io/nexus/r/fi.natroutter/natlibs?server=https%3A%2F%2Fhub.nat.gg%2Fnexus%2F&style=for-the-badge&label=Version)
-![Custom badge](https://img.shields.io/endpoint?color=%2303fc4e&style=for-the-badge&url=https%3A%2F%2Fhub.nat.gg%2Fjavadoc%2Fversion.php%3Fproject%3Dnatlibs)
 
 NATLibs is simple and powerful spigot plugin library that provides  
 easier and faster way to do things in code I have made this library mainly  
@@ -20,8 +19,7 @@ for my personal use but if you want to use it feel free to do so
 2. [Hooking into developer api](https://github.com/NATroutter/NATLibs/wiki/Hook-into-NATLibs)  
 
 ## Documentation
-Documentation: [Latest](https://hub.nat.gg/javadoc/latest.php?project=natlibs)  
-Old version documentation can be found in [ProjectHub](https://hub.nat.gg/index.php?project=NATLibs) for limited time
+Documentation: [Latest](https://hub.nat.gg/jenkins/job/plugins/job/NATLibs/javadoc)  
 
 
 ## Support
@@ -30,7 +28,7 @@ Old version documentation can be found in [ProjectHub](https://hub.nat.gg/index.
 
 ## Quick Links
 - [Plugin Statistics](https://bstats.org/plugin/bukkit/NATLibs/15070)
-- [Jenkins](https://hub.nat.gg/jenkins/job/NATLibs/)
+- [Jenkins](https://hub.nat.gg/jenkins/job/plugins/job/NATLibs/)
 
 
 ## Statistics overview
