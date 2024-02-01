@@ -1,4 +1,4 @@
-package fi.natroutter.natlibs.config;
+package fi.natroutter.natlibs.configuration;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import fi.natroutter.natlibs.config.SimpleYml;
+import fi.natroutter.natlibs.configuration.SimpleYml;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;

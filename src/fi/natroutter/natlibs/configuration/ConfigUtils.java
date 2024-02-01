@@ -1,7 +1,6 @@
-package fi.natroutter.natlibs.config;
+package fi.natroutter.natlibs.configuration;
 
 import fi.natroutter.natlibs.utilities.Colors;
-import fi.natroutter.natlibs.utilities.Utilities;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

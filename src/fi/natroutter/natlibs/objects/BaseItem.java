@@ -1,9 +1,8 @@
 package fi.natroutter.natlibs.objects;
 
 import com.google.common.collect.Multimap;
-import fi.natroutter.natlibs.config.IConfig;
+import fi.natroutter.natlibs.configuration.IConfig;
 import fi.natroutter.natlibs.utilities.Colors;
-import fi.natroutter.natlibs.utilities.Utilities;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.Material;

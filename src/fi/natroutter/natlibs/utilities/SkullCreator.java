@@ -2,7 +2,7 @@ package fi.natroutter.natlibs.utilities;
 
 import java.util.UUID;
 
-import fi.natroutter.natlibs.config.IConfig;
+import fi.natroutter.natlibs.configuration.IConfig;
 import fi.natroutter.natlibs.objects.BaseItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;

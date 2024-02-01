@@ -1,12 +1,10 @@
 package fi.natroutter.natlibs.handlers.guibuilder;
 
-import fi.natroutter.natlibs.config.IConfig;
+import fi.natroutter.natlibs.configuration.IConfig;
 import fi.natroutter.natlibs.objects.BaseItem;
 import fi.natroutter.natlibs.utilities.Colors;
-import fi.natroutter.natlibs.utilities.Utilities;
 import lombok.Getter;
 import lombok.Setter;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

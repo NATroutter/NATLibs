@@ -1,14 +1,10 @@
-package fi.natroutter.natlibs.config;
+package fi.natroutter.natlibs.configuration;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import fi.natroutter.natlibs.NATLibs;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,10 +78,8 @@ public class SimpleYml extends YamlConfiguration {
 
     //* Reloads config from file
     public void save() {
-        Bukkit.getConsoleSender().sendMessage("Saving file: " + file.getName());
         try {
             save(file);
-            Bukkit.getConsoleSender().sendMessage("Save: OK");
         } catch (IOException e) {
             e.printStackTrace();
         }

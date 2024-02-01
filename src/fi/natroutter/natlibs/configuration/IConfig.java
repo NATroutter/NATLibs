@@ -1,4 +1,4 @@
-package fi.natroutter.natlibs.config;
+package fi.natroutter.natlibs.configuration;
 
 import fi.natroutter.natlibs.handlers.guibuilder.Rows;
 import fi.natroutter.natlibs.utilities.Colors;
@@ -40,20 +40,17 @@ public interface IConfig {
         return new File(getDataFolder(), fileName() + ".yml");
     }
 
-    default void reloadFile() {
-        if (resourceLocation() != null) {
-            File file = new File(getDataFolder(), resourceLocation());
-            SimpleYml simpleYml = new SimpleYml(getClass(), file, resourceLocation());
-
-            saved.put(identifier(), simpleYml);
-        }
+    default SimpleYml reloadFile() {
+        SimpleYml simpleYml = new SimpleYml(getClass(), file(), resourceLocation());
+        saved.put(identifier(), simpleYml);
+        return simpleYml;
     }
 
-    default String resourceLocation() { return null; }
+    default String resourceLocation() { return fileName() + ".yml"; }
 
     default SimpleYml yml() {
         if (!saved.containsKey(identifier())) {
-            reloadFile();
+            return reloadFile();
         }
         return saved.get(identifier());
     }
