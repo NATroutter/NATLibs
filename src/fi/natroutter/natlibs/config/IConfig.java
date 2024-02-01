@@ -45,11 +45,7 @@ public interface IConfig {
             File file = new File(getDataFolder(), resourceLocation());
             SimpleYml simpleYml = new SimpleYml(getClass(), file, resourceLocation());
 
-            Bukkit.getConsoleSender().sendMessage("§6USING CUSTOM RESOURCE FILE! §e" + resourceLocation());
             saved.put(identifier(), simpleYml);
-        } else {
-            saved.put(identifier(), new SimpleYml(getClass(), file()));
-            Bukkit.getConsoleSender().sendMessage("§6USING DEFAULT RESOURCE FILE! §e" + file().getName());
         }
     }
 
