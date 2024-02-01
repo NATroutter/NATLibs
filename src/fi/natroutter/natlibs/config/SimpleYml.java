@@ -111,25 +111,12 @@ public class SimpleYml extends YamlConfiguration {
     public void reload() {
         //Reloads loads file and sets defaults from source
 
-        Bukkit.getConsoleSender().sendMessage("§4TEST: " + clazz.getPackage().getName() + " - " + clazz.getSimpleName());
-        Bukkit.getConsoleSender().sendMessage("§4TEST1: " + file.getAbsolutePath());
-        Bukkit.getConsoleSender().sendMessage("§4TEST2: " + file.getName());
-        Bukkit.getConsoleSender().sendMessage("§4TEST3: " + file.getPath());
-        Bukkit.getConsoleSender().sendMessage("§4TEST4: " + resourceLocation);
-
-
         try {
             Files.createParentDirs(file);
             file.createNewFile();
 
             load(file);
             InputStream defaultStream = getResource(resourceLocation);
-
-            if (defaultStream == null) {
-                Bukkit.getConsoleSender().sendMessage("§4DEBUG 1");
-            } else {
-                Bukkit.getConsoleSender().sendMessage("§4DEBUG 2");
-            }
 
             if (defaultStream != null) {
                 //todo switch to use Files.bufferedreader
