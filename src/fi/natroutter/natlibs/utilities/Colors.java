@@ -25,6 +25,16 @@ public class Colors {
             .build();
 
     /**
+     * Translates component to minimessage string
+     *
+     * @param component component to translate
+     * @return minimessag formating string
+     */
+    public static String serialize(Component component) {
+        return mm.serialize(component);
+    }
+
+    /**
      * Translates component to legacy string without colors
      *
      * @param component component to translate

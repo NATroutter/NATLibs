@@ -45,7 +45,7 @@ public class NATLibs extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		instance = this;
-		database = new YamlDatabase(this);
+		database = new YamlDatabase.Builder(this).build();
 
 		new CustomResolver();
 

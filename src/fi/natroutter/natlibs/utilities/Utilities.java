@@ -1,10 +1,8 @@
 package fi.natroutter.natlibs.utilities;
 
 import com.google.common.collect.Lists;
-import fi.natroutter.natlibs.handlers.Particles;
 import fi.natroutter.natlibs.objects.BaseItem;
 import fi.natroutter.natlibs.objects.Complete;
-import fi.natroutter.natlibs.objects.ParticleSettings;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -140,14 +138,6 @@ public class Utilities {
 		}
 	}
 
-	public static void drawBlockOutlines(Player p, Location loc, double pointDistance, Color color) {
-		ParticleSettings settings = new ParticleSettings(Particle.REDSTONE, 1, 0, 0, 0, 0);
-		settings.setDustOptions(new Particle.DustOptions(color, 1));
-		for (Location point : Utilities.getHollowCube(loc, pointDistance)) {
-			Particles.spawn(p, point, settings);
-		}
-	}
-
 	public static List<Location> getHollowCube(Location loc, double pointDistance) {
 		List<Location> result = Lists.newArrayList();
 		World world = loc.getWorld();
@@ -272,6 +262,13 @@ public class Utilities {
 			}
 		}
 		return blocks;
+	}
+
+	public static Location centerLocation(Location loc) {
+		return centerLocation(loc,false);
+	}
+	public static Location centerLocation(Location loc, boolean centerY) {
+		return loc.clone().set(loc.getBlockX()+0.5, (centerY ? loc.getBlockY()+0.5 : loc.getBlockY()), loc.getBlockZ()+0.5);
 	}
 
 	public static boolean isInside(Location pos, Location corner1, Location corner2) {

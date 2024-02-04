@@ -1,107 +1,227 @@
 package fi.natroutter.natlibs.handlers.database;
 
+import java.awt.desktop.QuitEvent;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import fi.natroutter.natlibs.configuration.SimpleYml;
+import dev.dejvokep.boostedyaml.YamlDocument;
+import dev.dejvokep.boostedyaml.block.implementation.Section;
+import dev.dejvokep.boostedyaml.settings.dumper.DumperSettings;
+import dev.dejvokep.boostedyaml.settings.general.GeneralSettings;
+import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
+import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
+import lombok.Getter;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.ConfigurationSection;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 public class YamlDatabase {
 
-    final JavaPlugin pl;
-    final SimpleYml yml;
+    final JavaPlugin plugin;
+    final YamlDocument document;
 
-    public YamlDatabase(JavaPlugin pl) {
-        this.pl = pl;
-        this.yml = new SimpleYml(pl.getClass(), new File(pl.getDataFolder(), "database.yml"));
+    @SneakyThrows
+    private YamlDatabase(Builder builder) {
+        this.plugin = builder.getInstance();
+        this.document = YamlDocument.create(
+                new File(builder.getDataFolder(), builder.getFileName()),
+                builder.getGeneralSettings(),
+                builder.getLoaderSettings(),
+                builder.getDumperSettings(),
+                builder.getUpdaterSettings()
+        );
     }
 
+    @Getter
+    public static class Builder {
+
+        private JavaPlugin instance;
+
+        public Builder(JavaPlugin plugin) {
+            this.instance = plugin;
+            this.dataFolder = plugin.getDataFolder();
+        }
+
+        private File dataFolder;
+        private String fileName = "database.yml";
+        private LoaderSettings loaderSettings = LoaderSettings.DEFAULT;
+        private DumperSettings dumperSettings = DumperSettings.DEFAULT;
+        private GeneralSettings generalSettings = GeneralSettings.DEFAULT;
+        private UpdaterSettings updaterSettings = UpdaterSettings.DEFAULT;
+
+        public Builder setDataFolder(File dataFolder) {
+            this.dataFolder = dataFolder;
+            return this;
+        }
+
+        public Builder setFileName(String fileName) {
+            this.fileName = fileName;
+            return this;
+        }
+
+        public Builder setLoaderSettings(LoaderSettings loaderSettings) {
+            this.loaderSettings = loaderSettings;
+            return this;
+        }
+
+        public Builder setDumperSettings(DumperSettings dumperSettings) {
+            this.dumperSettings = dumperSettings;
+            return this;
+        }
+
+        public Builder setGeneralSettings(GeneralSettings generalSettings) {
+            this.generalSettings = generalSettings;
+            return this;
+        }
+
+        public Builder setUpdaterSettings(UpdaterSettings updaterSettings) {
+            this.updaterSettings = updaterSettings;
+            return this;
+        }
+
+        public YamlDatabase build() {
+            return new YamlDatabase(this);
+        }
+    }
+
+
+    @SneakyThrows
     public void reload() {
-        yml.reload();
+        document.reload();
     }
+
+    public <T> T getObject(Object identifier, Class<T> clazz) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getAs("PlayerData." + p.getUniqueId(), clazz);
+        } else {
+            return document.getAs(identifier.toString(), clazz);
+        }
+    }
+    public <T> T getObject(Object identifier, String key, Class<T> clazz) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getAs("PlayerData." + p.getUniqueId() + "." + key, clazz);
+        } else {
+            return document.getAs(identifier + "." + key, clazz);
+        }
+    }
+
+    public <T> Map<String, T> getObjectList(Object identifier, Class<T> clazz) {
+        Section section = document.getSection(identifier.toString());
+        if (section == null) return null;
+
+        Set<Object> keys = section.getKeys();
+        return keys.stream().collect(Collectors.toMap(
+                Object::toString,
+                entry -> getObject(identifier + "." + entry, clazz)
+        ));
+
+    }
+    public <T> Map<String, T> getObjectList(Object identifier, String key, Class<T> clazz) {
+        Section section = document.getSection(key);
+        if (section == null) return null;
+
+        Set<Object> keys = section.getKeys();
+        return keys.stream().collect(Collectors.toMap(
+                Object::toString,
+                entry -> getObject(identifier, key + "." + entry, clazz)
+        ));
+    }
+
 
     //Save data to config
-    public void save(Object Identifier, String key, Object value) {
-        if (value instanceof Location loc) {
-            if (Identifier instanceof OfflinePlayer p) {
-                yml.set("PlayerData." + p.getUniqueId() + "." + key + ".World", loc.getWorld().getName());
-                yml.set("PlayerData." + p.getUniqueId() + "." + key + ".X", loc.getX());
-                yml.set("PlayerData." + p.getUniqueId() + "." + key + ".Y", loc.getY());
-                yml.set("PlayerData." + p.getUniqueId() + "." + key + ".Z", loc.getZ());
-                yml.set("PlayerData." + p.getUniqueId() + "." + key + ".Pitch", loc.getPitch());
-                yml.set("PlayerData." + p.getUniqueId() + "." + key + ".Yaw", loc.getYaw());
-            } else {
-                yml.set(Identifier + "." + key + ".World", loc.getWorld().getName());
-                yml.set(Identifier + "." + key + ".X", loc.getX());
-                yml.set(Identifier + "." + key + ".Y", loc.getY());
-                yml.set(Identifier + "." + key + ".Z", loc.getZ());
-                yml.set(Identifier + "." + key + ".Pitch", loc.getPitch());
-                yml.set(Identifier + "." + key + ".Yaw", loc.getYaw());
-            }
-        } else {
-            if (Identifier instanceof OfflinePlayer p) {
-                yml.set("PlayerData." + p.getUniqueId() + "." + key, value);
-            } else {
-                yml.set(Identifier + "." + key, value);
-            }
-        }
-        yml.save();
+    @SneakyThrows
+    public void save() {
+        document.save();
     }
 
-    //Get config keys
-    public Set<String> getKeys(Object Identifier, Object key) {
-        return getKeys(Identifier + "." + key);
-    }
-    public @Nullable Set<String> getKeys(String key) {
-        ConfigurationSection sect = yml.getConfigurationSection(key);
-        if (sect != null) {
-            return sect.getKeys(false);
+    public void remove(Object identifier, String key){
+        if (identifier instanceof Player p) {
+            document.remove("PlayerData." + p.getUniqueId() + "." + key);
+        } else {
+            document.remove(identifier + "." + key);
         }
-        return null;
+    }
+
+    public void save(Object identifier, String key, Object value) {
+        set(identifier, key, value);
+        save();
+    }
+    public void set(Object identifier, String key, Object value) {
+        if (value instanceof Location loc) {
+            if (identifier instanceof OfflinePlayer p) {
+                document.set("PlayerData." + p.getUniqueId() + "." + key + ".World", loc.getWorld().getName());
+                document.set("PlayerData." + p.getUniqueId() + "." + key + ".X", loc.getX());
+                document.set("PlayerData." + p.getUniqueId() + "." + key + ".Y", loc.getY());
+                document.set("PlayerData." + p.getUniqueId() + "." + key + ".Z", loc.getZ());
+                document.set("PlayerData." + p.getUniqueId() + "." + key + ".Pitch", loc.getPitch());
+                document.set("PlayerData." + p.getUniqueId() + "." + key + ".Yaw", loc.getYaw());
+            } else {
+                document.set(identifier + "." + key + ".World", loc.getWorld().getName());
+                document.set(identifier + "." + key + ".X", loc.getX());
+                document.set(identifier + "." + key + ".Y", loc.getY());
+                document.set(identifier + "." + key + ".Z", loc.getZ());
+                document.set(identifier + "." + key + ".Pitch", loc.getPitch());
+                document.set(identifier + "." + key + ".Yaw", loc.getYaw());
+            }
+        } else {
+            if (identifier instanceof OfflinePlayer p) {
+                document.set("PlayerData." + p.getUniqueId() + "." + key, value);
+            } else {
+                document.set(identifier + "." + key, value);
+            }
+        }
+    }
+
+
+
+    //Get config keys
+    public List<String> getKeys(Object identifier, Object key) {
+        return document.getSection(identifier + "." + key).getKeys().stream().map(Object::toString).toList();
     }
 
     //Check if contains value
     public boolean valueExists(String value) {
-        return yml.contains(value);
+        return document.contains(value);
     }
 
-    public boolean valueExists(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.contains("PlayerData." + p.getUniqueId() + "." + key);
+    public boolean valueExists(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.contains("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.contains(Identifier + "." + key);
+            return document.contains(identifier + "." + key);
         }
     }
 
     //Get Location from config
     @Nullable
-    public Location getLocation(Object Identifier, String key) {
+    public Location getLocation(Object identifier, String key) {
 
         try {
-            if (Identifier instanceof OfflinePlayer p) {
-                String world = yml.getString("PlayerData." + p.getUniqueId() + "." + key + ".World");
-                double X = yml.getDouble("PlayerData." + p.getUniqueId() + "." + key + ".X");
-                double Y = yml.getDouble("PlayerData." + p.getUniqueId() + "." + key + ".Y");
-                double Z = yml.getDouble("PlayerData." + p.getUniqueId() + "." + key + ".Z");
-                float Pitch = Float.parseFloat(yml.getString("PlayerData." + p.getUniqueId() + "." + key + ".Pitch"));
-                float Yaw = Float.parseFloat(yml.getString("PlayerData." + p.getUniqueId() + "." + key + ".Yaw"));
+            if (identifier instanceof OfflinePlayer p) {
+                String world = document.getString("PlayerData." + p.getUniqueId() + "." + key + ".World");
+                double X = document.getDouble("PlayerData." + p.getUniqueId() + "." + key + ".X");
+                double Y = document.getDouble("PlayerData." + p.getUniqueId() + "." + key + ".Y");
+                double Z = document.getDouble("PlayerData." + p.getUniqueId() + "." + key + ".Z");
+                float Pitch = Float.parseFloat(document.getString("PlayerData." + p.getUniqueId() + "." + key + ".Pitch"));
+                float Yaw = Float.parseFloat(document.getString("PlayerData." + p.getUniqueId() + "." + key + ".Yaw"));
                 return new Location(Bukkit.getWorld(world), X, Y, Z, Yaw, Pitch);
 
             } else {
-                String world = yml.getString(Identifier + "." + key + ".World");
-                double X = yml.getDouble(Identifier + "." + key + ".X");
-                double Y = yml.getDouble(Identifier + "." + key + ".Y");
-                double Z = yml.getDouble(Identifier + "." + key + ".Z");
-                float Pitch = Float.parseFloat(yml.getString(Identifier + "." + key + ".Pitch"));
-                float Yaw = Float.parseFloat(yml.getString(Identifier + "." + key + ".Yaw"));
+                String world = document.getString(identifier + "." + key + ".World");
+                double X = document.getDouble(identifier + "." + key + ".X");
+                double Y = document.getDouble(identifier + "." + key + ".Y");
+                double Z = document.getDouble(identifier + "." + key + ".Z");
+                float Pitch = Float.parseFloat(document.getString(identifier + "." + key + ".Pitch"));
+                float Yaw = Float.parseFloat(document.getString(identifier + "." + key + ".Yaw"));
                 return new Location(Bukkit.getWorld(world), X, Y, Z, Yaw, Pitch);
             }
         } catch (Exception ignore) {}
@@ -109,147 +229,129 @@ public class YamlDatabase {
     }
 
     //Get String List from configs
-    public List<String> getStringList(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getStringList("PlayerData." + p.getUniqueId() + "." + key);
+    public List<String> getStringList(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getStringList("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.getStringList(Identifier + "." + key);
-        }
-    }
-
-    //Get Boolean List from configs
-    public List<Boolean> getBooleanList(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getBooleanList("PlayerData." + p.getUniqueId() + "." + key);
-        } else {
-            return yml.getBooleanList(Identifier + "." + key);
+            return document.getStringList(identifier + "." + key);
         }
     }
 
     //Get Byte List from configs
-    public List<Byte> getByteList(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getByteList("PlayerData." + p.getUniqueId() + "." + key);
+    public List<Byte> getByteList(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getByteList("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.getByteList(Identifier + "." + key);
-        }
-    }
-
-    //Get Character List from configs
-    public List<Character> getCharacterList(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getCharacterList("PlayerData." + p.getUniqueId() + "." + key);
-        } else {
-            return yml.getCharacterList(Identifier + "." + key);
+            return document.getByteList(identifier + "." + key);
         }
     }
 
     //Get Double List from configs
-    public List<Double> getDoubleList(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getDoubleList("PlayerData." + p.getUniqueId() + "." + key);
+    public List<Double> getDoubleList(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getDoubleList("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.getDoubleList(Identifier + "." + key);
+            return document.getDoubleList(identifier + "." + key);
         }
     }
 
     //Get Float List from configs
-    public List<Float> getFloatList(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getFloatList("PlayerData." + p.getUniqueId() + "." + key);
+    public List<Float> getFloatList(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getFloatList("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.getFloatList(Identifier + "." + key);
+            return document.getFloatList(identifier + "." + key);
         }
     }
 
     //Get Integer List from configs
-    public List<Integer> getIntegerList(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getIntegerList("PlayerData." + p.getUniqueId() + "." + key);
+    public List<Integer> getIntegerList(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getIntList("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.getIntegerList(Identifier + "." + key);
+            return document.getIntList(identifier + "." + key);
         }
     }
 
     //Get Long List from configs
-    public List<Long> getLongList(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getLongList("PlayerData." + p.getUniqueId() + "." + key);
+    public List<Long> getLongList(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getLongList("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.getLongList(Identifier + "." + key);
+            return document.getLongList(identifier + "." + key);
         }
     }
 
     //Get Map<?, ?> List from configs
-    public List<Map<?,?>> getMapList(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getMapList("PlayerData." + p.getUniqueId() + "." + key);
+    public List<Map<?,?>> getMapList(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getMapList("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.getMapList(Identifier + "." + key);
+            return document.getMapList(identifier + "." + key);
         }
     }
 
     //Get Short List from configs
-    public List<Short> getShortList(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getShortList("PlayerData." + p.getUniqueId() + "." + key);
+    public List<Short> getShortList(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getShortList("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.getShortList(Identifier + "." + key);
+            return document.getShortList(identifier + "." + key);
         }
     }
 
     //Get ? List from configs
-    public List<?> getList(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getList("PlayerData." + p.getUniqueId() + "." + key);
+    public List<?> getList(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getList("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.getList(Identifier + "." + key);
+            return document.getList(identifier + "." + key);
         }
     }
 
 
     //Get String from configs
-    public String getString(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getString("PlayerData." + p.getUniqueId() + "." + key);
+    public String getString(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getString("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.getString(Identifier + "." + key);
+            return document.getString(identifier + "." + key);
         }
 
     }
 
     //Get Boolean from config
-    public Boolean getBoolean(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getBoolean("PlayerData." + p.getUniqueId() + "." + key);
+    public Boolean getBoolean(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getBoolean("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.getBoolean(Identifier + "." + key);
+            return document.getBoolean(identifier + "." + key);
         }
     }
 
     //Get Integer from config
-    public Integer getInt(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getInt("PlayerData." + p.getUniqueId() + "." + key);
+    public Integer getInt(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getInt("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.getInt(Identifier + "." + key);
+            return document.getInt(identifier + "." + key);
         }
     }
 
     //Get Double from config
-    public Double getDouble(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getDouble("PlayerData." + p.getUniqueId() + "." + key);
+    public Double getDouble(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getDouble("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.getDouble(Identifier + "." + key);
+            return document.getDouble(identifier + "." + key);
         }
     }
 
-    public Long getLong(Object Identifier, String key) {
-        if (Identifier instanceof OfflinePlayer p) {
-            return yml.getLong("PlayerData." + p.getUniqueId() + "." + key);
+    public Long getLong(Object identifier, String key) {
+        if (identifier instanceof OfflinePlayer p) {
+            return document.getLong("PlayerData." + p.getUniqueId() + "." + key);
         } else {
-            return yml.getLong(Identifier + "." + key);
+            return document.getLong(identifier + "." + key);
         }
     }
 }
