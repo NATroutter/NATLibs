@@ -6,6 +6,7 @@ import fi.natroutter.natlibs.handlers.database.YamlDatabase;
 import fi.natroutter.natlibs.objects.BaseItem;
 import fi.natroutter.natlibs.objects.DualString;
 import fi.natroutter.natlibs.utilities.Colors;
+import fi.natroutter.natlibs.utilities.TabUtils;
 import fi.natroutter.natlibs.utilities.Theme;
 import fi.natroutter.natlibs.utilities.Utilities;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -300,33 +301,33 @@ public class MiniMessageViewer extends Command implements Listener {
     public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
 
         if (!sender.hasPermission("natlibs.tools.minimessageviewer")) {
-            return Utilities.emptyTab();
+            return TabUtils.empty();
         }
 
         if (args.length == 1) {
-            return Utilities.getCompletes(sender, args[0],Arrays.asList(
+            return TabUtils.completes(sender, args[0],Arrays.asList(
                     "Help", "Name", "Lore", "Chat","Holo", "Settings", "Resolvers"
             ));
         } else if (args.length == 2) {
             switch (args[0].toLowerCase()) {
                 case "settings" -> {
-                    return Utilities.getCompletes(sender, args[1], Arrays.asList(
+                    return TabUtils.completes(sender, args[1], Arrays.asList(
                             "HoloVisible", "Show", "ClickToVisible", "CopyFormat", "HoloHeight"
                     ));
                 }
             }
-            Utilities.emptyTab();
+            TabUtils.empty();
         } else if (args.length == 3) {
             if (args[0].equalsIgnoreCase("settings")) {
                 if (args[1].toLowerCase().equalsIgnoreCase("HoloVisible")) {
                     String response = String.valueOf(!database.getBoolean("Tools.MiniMessageViewer", "HoloVisible"));
-                    return Utilities.getCompletes(sender, args[2], Collections.singletonList(response));
+                    return TabUtils.completes(sender, args[2], Collections.singletonList(response));
 
                 } else if (args[1].toLowerCase().equalsIgnoreCase("ClickToVisible")) {
                     String response = String.valueOf(!database.getBoolean("Tools.MiniMessageViewer", "ClickToVisible"));
-                    return Utilities.getCompletes(sender, args[2], Collections.singletonList(response));
+                    return TabUtils.completes(sender, args[2], Collections.singletonList(response));
                 } else if (args[1].toLowerCase().equalsIgnoreCase("CopyFormat")) {
-                    return Utilities.getCompletes(sender, args[2], copyFormats);
+                    return TabUtils.completes(sender, args[2], copyFormats);
                 } else if (args[1].toLowerCase().equalsIgnoreCase("HoloHeight")) {
                     double response;
                     if (database.valueExists("Tools.MiniMessageViewer", "HoloHeight")) {
@@ -334,16 +335,16 @@ public class MiniMessageViewer extends Command implements Listener {
                     } else {
                         response = 0.25;
                     }
-                    return Utilities.getCompletes(sender, args[2], Collections.singletonList(String.valueOf(response)));
+                    return TabUtils.completes(sender, args[2], Collections.singletonList(String.valueOf(response)));
                 }
-                return Utilities.emptyTab();
+                return TabUtils.empty();
             }
-            return Utilities.emptyTab();
+            return TabUtils.empty();
         } else {
             if (args[0].equalsIgnoreCase("settings")) {
-                return Utilities.emptyTab();
+                return TabUtils.empty();
             }
-            return Utilities.emptyTab();
+            return TabUtils.empty();
         }
         return super.tabComplete(sender, alias, args);
     }
