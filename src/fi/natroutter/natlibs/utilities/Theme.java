@@ -40,11 +40,11 @@ public class Theme {
     }
 
     public static Component mainC(String value) {
-        return Utilities.translateColors(main(value));
+        return Colors.translate(main(value));
     }
 
     public static Component prefixed(String value) {
-        return Utilities.translateColors("<bold><color:#454545><color:#ff0000>⚡</color></color></bold> <bold><color:#ff3333>NATLibs</color></bold><color:#454545> <bold>➤</bold> <color:#b3b3b3>"+value+"</color></color>");
+        return Colors.translate("<bold><color:#454545><color:#ff0000>⚡</color></color></bold> <bold><color:#ff3333>NATLibs</color></bold><color:#454545> <bold>➤</bold> <color:#b3b3b3>"+value+"</color></color>");
     }
 
     public static Component multiline(DualString... helps) {
@@ -54,19 +54,19 @@ public class Theme {
         String main = invertColor ? "#b3b3b3" : "#dd5555";
         String high = invertColor ? "#dd5555" : "#b3b3b3";
         List<Component> comps = new ArrayList<>();
-        comps.add(Utilities.translateColors("<bold><color:#454545><st>━━━━━━━━━━━━</st>|</color> <color:#ff3333>NATLibs</color> <color:#454545>|<st>━━━━━━━━━━━━</st></color></bold>"));
+        comps.add(Colors.translate("<bold><color:#454545><st>━━━━━━━━━━━━</st>|</color> <color:#ff3333>NATLibs</color> <color:#454545>|<st>━━━━━━━━━━━━</st></color></bold>"));
 
         comps.addAll(Arrays.stream(helps).map(h-> {
 
             if (h.getFirst().isBlank() && h.getSecond().isBlank()) {
                 return Component.empty();
             } else {
-                return Utilities.translateColors((removeStartPrefix ? "" : "<bold><color:#454545>»</color></bold> ") + "<color:"+main+">"+h.getFirst()+"</color> <color:#454545>"+separator+"</color> <color:"+high+">"+h.getSecond()+"</color>");
+                return Colors.translate((removeStartPrefix ? "" : "<bold><color:#454545>»</color></bold> ") + "<color:"+main+">"+h.getFirst()+"</color> <color:#454545>"+separator+"</color> <color:"+high+">"+h.getSecond()+"</color>");
             }
 
         }).toList());
 
-        comps.add(Utilities.translateColors("<bold><color:#454545><st>━━━━━━━━━━━━</st>|</color> <color:#ff3333>NATLibs</color> <color:#454545>|<st>━━━━━━━━━━━━</st></color></bold>"));
+        comps.add(Colors.translate("<bold><color:#454545><st>━━━━━━━━━━━━</st>|</color> <color:#ff3333>NATLibs</color> <color:#454545>|<st>━━━━━━━━━━━━</st></color></bold>"));
         return Component.join(JoinConfiguration.newlines(), comps);
     }
 

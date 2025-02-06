@@ -1,10 +1,7 @@
-package fi.natroutter.natlibs.config;
+package fi.natroutter.natlibs.configuration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
 
 @AllArgsConstructor
 public enum Language {

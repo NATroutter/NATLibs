@@ -1,6 +1,6 @@
 package fi.natroutter.natlibs.objects;
 
-import fi.natroutter.natlibs.config.IConfig;
+import fi.natroutter.natlibs.configuration.IConfig;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,5 +1,6 @@
 package fi.natroutter.natlibs.Tools.magicwand;
 
+import fi.natroutter.natlibs.handlers.Particles;
 import fi.natroutter.natlibs.utilities.Utilities;
 import io.papermc.paper.math.Rotations;
 import org.bukkit.Bukkit;
@@ -39,12 +40,12 @@ public class MWListener implements Listener {
             switch (mode) {
                 case FRAME -> {
                     if (ent instanceof ItemFrame frame && frame.getPersistentDataContainer().has(MWHandler.frameKey)) {
-                        Utilities.drawBlockOutlines(p, ent.getLocation(), 0.1, Color.fromRGB(235, 52, 232));
+                        Particles.drawBlockOutlines(p, ent.getLocation(), 0.1, Color.fromRGB(235, 52, 232));
                     }
                 }
                 case STAND -> {
                     if (ent instanceof ArmorStand stand && stand.getPersistentDataContainer().has(MWHandler.standKey)) {
-                        Utilities.drawBlockOutlines(p, ent.getLocation(), 0.1, Color.fromRGB(235, 52, 232));
+                        Particles.drawBlockOutlines(p, ent.getLocation(), 0.1, Color.fromRGB(235, 52, 232));
                     }
                 }
             }

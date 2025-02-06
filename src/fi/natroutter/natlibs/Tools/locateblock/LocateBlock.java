@@ -1,5 +1,7 @@
 package fi.natroutter.natlibs.Tools.locateblock;
 
+import fi.natroutter.natlibs.utilities.Colors;
+import fi.natroutter.natlibs.utilities.TabUtils;
 import fi.natroutter.natlibs.utilities.Theme;
 import fi.natroutter.natlibs.utilities.Utilities;
 import org.bukkit.Material;
@@ -53,19 +55,19 @@ public class LocateBlock extends Command implements Listener {
                 blockFinder.info(p);
             } else if (args[0].equalsIgnoreCase("help")) {
                 p.sendMessage(" ");
-                p.sendMessage(Utilities.translateColors("<dark_gray><bold>&m━━━━━━━━━━━━|</bold></dark_gray> " +Theme.main("<bold>SearchInfo</bold>")+ " <dark_gray><bold>|&m━━━━━━━━━━━━</bold></dark_gray>"));
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> " + Theme.highlight("/locateblock abort")));
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> <color:#b3b3b3>Forcefully stop current search</color>"));
+                p.sendMessage(Colors.translate("<dark_gray><bold>&m━━━━━━━━━━━━|</bold></dark_gray> " +Theme.main("<bold>SearchInfo</bold>")+ " <dark_gray><bold>|&m━━━━━━━━━━━━</bold></dark_gray>"));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> " + Theme.highlight("/locateblock abort")));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> <color:#b3b3b3>Forcefully stop current search</color>"));
                 p.sendMessage("");
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> " + Theme.highlight("/locateblock info")));
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> <color:#b3b3b3>show information about current search</color>"));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> " + Theme.highlight("/locateblock info")));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> <color:#b3b3b3>show information about current search</color>"));
                 p.sendMessage("");
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> " + Theme.highlight("/locateblock help")));
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> <color:#b3b3b3>Shows this help message"));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> " + Theme.highlight("/locateblock help")));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> <color:#b3b3b3>Shows this help message"));
                 p.sendMessage("");
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> " + Theme.highlight("/locateblock search <block> <radius>")));
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> <color:#b3b3b3>Locates all selected blocks in selected radius</color>"));
-                p.sendMessage(Utilities.translateColors("<dark_gray><bold>&m━━━━━━━━━━━━|</bold></dark_gray> " +Theme.main("<bold>SearchInfo</bold>")+ " <dark_gray><bold>|&m━━━━━━━━━━━━</bold></dark_gray>"));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> " + Theme.highlight("/locateblock search <block> <radius>")));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> <color:#b3b3b3>Locates all selected blocks in selected radius</color>"));
+                p.sendMessage(Colors.translate("<dark_gray><bold>&m━━━━━━━━━━━━|</bold></dark_gray> " +Theme.main("<bold>SearchInfo</bold>")+ " <dark_gray><bold>|&m━━━━━━━━━━━━</bold></dark_gray>"));
                 p.sendMessage("");
             } else {
                 errorMessage(p, "Invalid command argument");
@@ -106,13 +108,13 @@ public class LocateBlock extends Command implements Listener {
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
 
         if (args.length == 1) {
-            return Utilities.getCompletes(sender, args[0], List.of(
+            return TabUtils.completes(sender, args[0], List.of(
                     "help","abort","info","search"
             ));
 
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("search")) {
-                return Utilities.getCompletes(sender, args[1], Arrays.stream(Material.values()).filter(Material::isBlock).map(Enum::name).collect(Collectors.toList()));
+                return TabUtils.completes(sender, args[1], Arrays.stream(Material.values()).filter(Material::isBlock).map(Enum::name).collect(Collectors.toList()));
             }
         } else if (args.length == 3) {
             return Collections.singletonList("<radius>");

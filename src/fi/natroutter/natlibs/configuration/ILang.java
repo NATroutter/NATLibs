@@ -1,4 +1,4 @@
-package fi.natroutter.natlibs.config;
+package fi.natroutter.natlibs.configuration;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
@@ -14,7 +14,7 @@ public interface ILang extends IConfig {
 
     @Override
     default File file() {
-        File langFolder = new File(getPlugin().getDataFolder(), "langs");
+        File langFolder = new File(getDataFolder(), "langs");
         if (!langFolder.exists()) {
             langFolder.mkdirs();
         }

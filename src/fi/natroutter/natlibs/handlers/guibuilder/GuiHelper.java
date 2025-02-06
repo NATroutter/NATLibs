@@ -1,7 +1,7 @@
 package fi.natroutter.natlibs.handlers.guibuilder;
 
-import fi.natroutter.natlibs.config.IConfig;
-import fi.natroutter.natlibs.utilities.Utilities;
+import fi.natroutter.natlibs.configuration.IConfig;
+import fi.natroutter.natlibs.utilities.Colors;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -30,7 +30,7 @@ public class GuiHelper {
 
     public static Component pagedTitle(Component component, int page, int max) {
         String title = mm.serialize(component);
-        return Utilities.translateColors(title,
+        return Colors.translate(title,
                 Placeholder.parsed("page",String.valueOf(page)),
                 Placeholder.parsed("max_page",String.valueOf(max))
         );

@@ -1,81 +1,93 @@
-package fi.natroutter.natlibs.config;
+package fi.natroutter.natlibs.configuration;
 
+import dev.dejvokep.boostedyaml.YamlDocument;
+import dev.dejvokep.boostedyaml.settings.dumper.DumperSettings;
+import dev.dejvokep.boostedyaml.settings.general.GeneralSettings;
+import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
+import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import fi.natroutter.natlibs.handlers.guibuilder.Rows;
+import fi.natroutter.natlibs.utilities.Colors;
 import fi.natroutter.natlibs.utilities.Utilities;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.JoinConfiguration;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
-import org.bukkit.SoundCategory;
+import org.bukkit.*;
 import org.bukkit.block.BlockFace;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.List;
 
 public interface IConfig {
 
-    MiniMessage mm = MiniMessage.miniMessage();
-    LegacyComponentSerializer lcs = LegacyComponentSerializer.legacyAmpersand();
-
-    HashMap<String, SimpleYml> saved = new HashMap<>();
+    HashMap<String, YamlDocument> documents = new HashMap<>();
 
     String getPath();
-    JavaPlugin getPlugin();
+    File getDataFolder();
 
     private String identifier() {
-        return getPlugin().getName().toLowerCase() + "-" + fileName();
+        return getDataFolder().getName().toLowerCase() + "-" + fileName();
     }
-
     default String fileName() {
         return getClass().getSimpleName().toLowerCase();
     }
-
     default File file() {
-        return new File(getPlugin().getDataFolder(), fileName() + ".yml");
+        return new File(getDataFolder(), fileName() + ".yml");
     }
 
-    default void reloadFile() {
-        if (resourceLocation() != null) {
-            saved.put(identifier(), new SimpleYml(getPlugin(), file(), resourceLocation()));
-        } else {
-            saved.put(identifier(), new SimpleYml(getPlugin(), file()));
-        }
+    // "langs/en_us.yml"
+    default String resourceLocation() { return fileName() + ".yml"; }
+
+    //Yaml handling
+
+    @SneakyThrows
+    default YamlDocument createFile() {
+        YamlDocument doc = YamlDocument.create(file(), ConfigUtils.getResource(getClass(), "/"+resourceLocation()));
+//        doc.setDumperSettings(dumperSettings());
+//        doc.setGeneralSettings(generalSettings());
+//        doc.setUpdaterSettings(updaterSettings());
+//        doc.setLoaderSettings(loaderSettings());
+        doc.setSettings(dumperSettings(),generalSettings(),updaterSettings(),loaderSettings());
+        documents.put(identifier(), doc);
+        return doc;
     }
 
-    default String resourceLocation() { return null; }
+    default LoaderSettings loaderSettings() { return LoaderSettings.DEFAULT; }
+    default DumperSettings dumperSettings() {
+        return DumperSettings.DEFAULT;
+    }
+    default GeneralSettings generalSettings() {
+        return GeneralSettings.DEFAULT;
+    }
+    default UpdaterSettings updaterSettings() {
+        return UpdaterSettings.DEFAULT;
+    }
 
-    default SimpleYml yml() {
-        if (!saved.containsKey(identifier())) {
-            reloadFile();
+    default YamlDocument yml() {
+        if (!documents.containsKey(identifier())) {
+            return createFile();
         }
-        return saved.get(identifier());
+        return documents.get(identifier());
     }
 
     @SneakyThrows
-    private <T> T getObj(String name, Class<T> clazz) {
-        T obj = clazz.getConstructor().newInstance();
-        for (Field field : clazz.getDeclaredFields()) {
-            field.setAccessible(true);
-            Object val = yml().get(getPath() + "." + name + "." + field.getName());
-            field.set(obj, val);
-        }
-        return obj;
+    default void reload() {
+        yml().reload();
     }
+
+    //Methods
 
     @SneakyThrows
     default <T> List<T> asObjectList(Class<T> clazz) {
-        return yml().getConfigurationSection(getPath()).getKeys(false)
+        return yml().getSection(getPath()).getKeys()
                 .stream()
-                .map(key -> getObj(key, clazz))
+                .map(key -> yml().getAs(getPath() +"."+ key.toString(), clazz))
                 .toList();
     }
 
@@ -86,9 +98,9 @@ public interface IConfig {
     default boolean asBoolean() {return yml().getBoolean(getPath());}
     default List<String> asStringList() {return yml().getStringList(getPath());}
 
-    default float asFloat() {return (float)yml().getDouble(getPath());}
-    default byte asByte() {return (byte)yml().getInt(getPath());}
-    default short asShort() {return (short)yml().getInt(getPath());}
+    default float asFloat() {return yml().getFloat(getPath());}
+    default byte asByte() {return yml().getByte(getPath());}
+    default short asShort() {return yml().getShort(getPath());}
 
     default Material asMaterial() {
         return Utilities.findEnumValue(yml().getString(getPath()), Material.class);
@@ -123,7 +135,7 @@ public interface IConfig {
     default List<Component> asComponentList(TagResolver... tagResolvers) {
         List<String> values = yml().getStringList(getPath());
 
-        return values.stream().map(entry-> Utilities.translateColors(entry,tagResolvers)).toList();
+        return values.stream().map(entry-> Colors.translate(entry,tagResolvers)).toList();
     }
 
     default Component asSingleComponent(TagResolver... tagResolvers) {
@@ -137,7 +149,7 @@ public interface IConfig {
     default Component asComponent(TagResolver... tagResolvers){
         String entry = yml().getString(getPath());
         if (entry != null) {
-            return Utilities.translateColors(entry, tagResolvers);
+            return Colors.translate(entry, tagResolvers);
         }
         return Component.text(" [Invalid value in "+file().getName()+": " + getPath() + "] ");
     }
@@ -145,14 +157,14 @@ public interface IConfig {
     default String asLegacy(TagResolver... tagResolvers){
         String entry = yml().getString(getPath());
         if (entry != null) {
-            return Utilities.legacy(Utilities.translateColors(entry, tagResolvers));
+            return Colors.legacy(Colors.translate(entry, tagResolvers));
         }
         return " [Invalid value in "+file().getName()+": " + getPath() + "] ";
     }
 
     default List<String> asLegacyList(TagResolver... tagResolvers){
         List<String> values = yml().getStringList(getPath());
-        return values.stream().map(entry -> Utilities.legacy(Utilities.translateColors(entry, tagResolvers))).toList();
+        return values.stream().map(entry -> Colors.legacy(Colors.translate(entry, tagResolvers))).toList();
     }
 
 }

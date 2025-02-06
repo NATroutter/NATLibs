@@ -1,10 +1,11 @@
 package fi.natroutter.natlibs.files;
 
 import fi.natroutter.natlibs.NATLibs;
-import fi.natroutter.natlibs.config.IConfig;
+import fi.natroutter.natlibs.configuration.IConfig;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 @AllArgsConstructor
 public enum Config implements IConfig {
@@ -18,7 +19,7 @@ public enum Config implements IConfig {
     final String path;
 
     @Override
-    public JavaPlugin getPlugin() {
-        return NATLibs.getInstance();
+    public File getDataFolder() {
+        return NATLibs.getInstance().getDataFolder();
     }
 }

@@ -1,5 +1,6 @@
 package fi.natroutter.natlibs.Tools.locateblock;
 
+import fi.natroutter.natlibs.utilities.Colors;
 import fi.natroutter.natlibs.utilities.Theme;
 import fi.natroutter.natlibs.utilities.Utilities;
 import net.kyori.adventure.text.Component;
@@ -41,7 +42,7 @@ public class BlockFinder {
             if (searchActive) {
                 if (activator != null) {
                     if (activator.isOnline()) {
-                        activator.sendActionBar(Utilities.translateColors(
+                        activator.sendActionBar(Colors.translate(
                                 Theme.main("Searching") + " " + Theme.highlight(searchBlock.name()) + " &8| " + Theme.main("Radius") + " " + Theme.highlight(String.valueOf(searchRadius)) + " &8| " + Theme.main("Time") + " " + Theme.highlight(timeEnlapsed())
                         ));
                     }
@@ -75,26 +76,26 @@ public class BlockFinder {
         if (searchActive) {
             if (activator != null) {
                 Location l = activator.getLocation();
-                p.sendMessage(Utilities.translateColors("<dark_gray><bold>&m━━━━━━━━━━━━|</bold></dark_gray> " +Theme.main("<bold>SearchInfo</bold>")+ " <dark_gray><bold>|&m━━━━━━━━━━━━</bold></dark_gray>"));
+                p.sendMessage(Colors.translate(("<dark_gray><bold>&m━━━━━━━━━━━━|</bold></dark_gray> " +Theme.main("<bold>SearchInfo</bold>")+ " <dark_gray><bold>|&m━━━━━━━━━━━━</bold></dark_gray>")));
 
                 ZonedDateTime time = ZonedDateTime.of(timestamp, ZoneId.of("Europe/Helsinki"));
 
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> <color:#b3b3b3>Start time:</color> " + Theme.highlight(time.getDayOfMonth() + "." + time.getMonthValue() + "." + time.getYear() + " " + time.getHour() + ":" + time.getMinute())));
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> <color:#b3b3b3>Time past:</color> " + Theme.highlight(timeEnlapsed())));
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> <color:#b3b3b3>Started by:</color> " + Theme.highlight(activator.getName())));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> <color:#b3b3b3>Start time:</color> " + Theme.highlight(time.getDayOfMonth() + "." + time.getMonthValue() + "." + time.getYear() + " " + time.getHour() + ":" + time.getMinute())));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> <color:#b3b3b3>Time past:</color> " + Theme.highlight(timeEnlapsed())));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> <color:#b3b3b3>Started by:</color> " + Theme.highlight(activator.getName())));
 
 
 
-                Component message = Utilities.translateColors("&8<bold>»</bold> <color:#b3b3b3>Started at:</color> &8("+ Theme.highlight(l.getWorld().getName()+", "+l.getBlockX()+", "+l.getBlockY()+", "+l.getBlockZ()) +"&8) ");
-                Component btn = Utilities.translateColors(Theme.main("<bold>[TELEPORT]</bold>"))
+                Component message = Colors.translate("&8<bold>»</bold> <color:#b3b3b3>Started at:</color> &8("+ Theme.highlight(l.getWorld().getName()+", "+l.getBlockX()+", "+l.getBlockY()+", "+l.getBlockZ()) +"&8) ");
+                Component btn = Colors.translate(Theme.main("<bold>[TELEPORT]</bold>"))
                         .clickEvent(ClickEvent.runCommand("/minecraft:tp " + p.getName() + " " + l.getBlockX() + " " + l.getBlockY() + " " + l.getBlockZ()))
                         .hoverEvent(HoverEvent.showText(Theme.mainC("Click to teleport")));
                 message = message.append(btn);
                 p.sendMessage(message);
 
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> <color:#b3b3b3>Searching for:</color> " + Theme.highlight(searchBlock.name())));
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> <color:#b3b3b3>Search Radius:</color> " + Theme.highlight(String.valueOf(searchRadius))));
-                p.sendMessage(Utilities.translateColors("<dark_gray><bold>&m━━━━━━━━━━━━|</bold></dark_gray> " +Theme.main("<bold>SearchInfo</bold>")+ " <dark_gray><bold>|&m━━━━━━━━━━━━</bold></dark_gray>"));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> <color:#b3b3b3>Searching for:</color> " + Theme.highlight(searchBlock.name())));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> <color:#b3b3b3>Search Radius:</color> " + Theme.highlight(String.valueOf(searchRadius))));
+                p.sendMessage(Colors.translate("<dark_gray><bold>&m━━━━━━━━━━━━|</bold></dark_gray> " +Theme.main("<bold>SearchInfo</bold>")+ " <dark_gray><bold>|&m━━━━━━━━━━━━</bold></dark_gray>"));
                 p.sendMessage(" ");
             }
         } else {
@@ -139,26 +140,26 @@ public class BlockFinder {
             if (!searchActive)return;
 
             if (filtered.size() > 0) {
-                p.sendMessage(Utilities.translateColors("<dark_gray><bold>&m━━━━━━━━━━━━|</bold></dark_gray> " +Theme.main("<bold>LocateBlock</bold>")+ " <dark_gray><bold>|&m━━━━━━━━━━━━</bold></dark_gray>"));
+                p.sendMessage(Colors.translate("<dark_gray><bold>&m━━━━━━━━━━━━|</bold></dark_gray> " +Theme.main("<bold>LocateBlock</bold>")+ " <dark_gray><bold>|&m━━━━━━━━━━━━</bold></dark_gray>"));
                 for (Block lb : filtered) {
                     if (!searchActive)return;
                     Location l = lb.getLocation();
 
-                    Component message = Utilities.translateColors("&8<bold>»</bold> " + Theme.highlight(lb.getType().name()) + " &8| " + Theme.highlight(String.valueOf(l.getBlockX())) + "&7, " + Theme.highlight(String.valueOf(l.getBlockY())) + "&7, " + Theme.highlight(String.valueOf(l.getBlockZ())) + " &8| ");
-                    Component btn = Utilities.translateColors(Theme.main("<bold>[TELEPORT]</bold>"))
+                    Component message = Colors.translate("&8<bold>»</bold> " + Theme.highlight(lb.getType().name()) + " &8| " + Theme.highlight(String.valueOf(l.getBlockX())) + "&7, " + Theme.highlight(String.valueOf(l.getBlockY())) + "&7, " + Theme.highlight(String.valueOf(l.getBlockZ())) + " &8| ");
+                    Component btn = Colors.translate(Theme.main("<bold>[TELEPORT]</bold>"))
                             .clickEvent(ClickEvent.runCommand("/minecraft:tp " + p.getName() + " " + l.getBlockX() + " " + l.getBlockY() + " " + l.getBlockZ()))
                             .hoverEvent(HoverEvent.showText(Theme.mainC("Click to teleport")));
                     message = message.append(btn);
                     p.sendMessage(message);
                 }
                 p.sendMessage(" ");
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> <color:#b3b3b3>Located</color> " + Theme.highlight(String.valueOf(filtered.size())) + " <color:#b3b3b3>blocks of</color> " + Theme.highlight(searchBlock.name())));
-                p.sendMessage(Utilities.translateColors("&8<bold>»</bold> <color:#b3b3b3>Time Took:</color> " + Theme.highlight(timeEnlapsed())));
-                p.sendMessage(Utilities.translateColors("<dark_gray><bold>&m━━━━━━━━━━━━|</bold></dark_gray> " +Theme.main("<bold>LocateBlock</bold>")+ " <dark_gray><bold>|&m━━━━━━━━━━━━</bold></dark_gray>"));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> <color:#b3b3b3>Located</color> " + Theme.highlight(String.valueOf(filtered.size())) + " <color:#b3b3b3>blocks of</color> " + Theme.highlight(searchBlock.name())));
+                p.sendMessage(Colors.translate("&8<bold>»</bold> <color:#b3b3b3>Time Took:</color> " + Theme.highlight(timeEnlapsed())));
+                p.sendMessage(Colors.translate("<dark_gray><bold>&m━━━━━━━━━━━━|</bold></dark_gray> " +Theme.main("<bold>LocateBlock</bold>")+ " <dark_gray><bold>|&m━━━━━━━━━━━━</bold></dark_gray>"));
             } else {
                 p.sendMessage(Theme.prefixed("Can't find any " + Theme.highlight(searchBlock.name()) + " in radius of " + Theme.highlight(radius.toString()) + " Time took: " + Theme.highlight(timeEnlapsed())));
             }
-            p.sendActionBar(Utilities.translateColors(Theme.main("Search finished in ") + Theme.highlight(timeEnlapsed())));
+            p.sendActionBar(Colors.translate(Theme.main("Search finished in ") + Theme.highlight(timeEnlapsed())));
             searchActive = false;
         });
 

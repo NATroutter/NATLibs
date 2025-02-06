@@ -1,50 +1,61 @@
 package fi.natroutter.natlibs.utilities;
 
 import com.google.common.collect.Lists;
-import fi.natroutter.natlibs.config.IConfig;
-import fi.natroutter.natlibs.handlers.CustomResolver;
 import fi.natroutter.natlibs.handlers.Particles;
 import fi.natroutter.natlibs.objects.BaseItem;
-import fi.natroutter.natlibs.objects.Complete;
 import fi.natroutter.natlibs.objects.ParticleSettings;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.StringUtil;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
-import javax.annotation.Nullable;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 
 @SuppressWarnings({"unused"})
 public class Utilities {
 
-	private static MiniMessage mm = MiniMessage.builder()
-			.build();
-	private static LegacyComponentSerializer lcs = LegacyComponentSerializer
-			.builder()
-			.hexColors()
-			.character('&')
-			.build();
+	public static ArrayList<Location> getTwoPointCircle(Location loc, double size, int increment){
+		ArrayList<Location> locations = new ArrayList<>();
+		for (int d = 0; d <= 180; d += increment) {
+			Location point1 = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ());
+			point1.setX(loc.getX() + Math.cos(Math.toRadians(d)) * size);
+			point1.setZ(loc.getZ() + Math.sin(Math.toRadians(d)) * size);
+			locations.add(point1);
 
+			Location point2 = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ());
+			point2.setX(loc.getX() + Math.cos(Math.toRadians(d + 180)) * size);
+			point2.setZ(loc.getZ() + Math.sin(Math.toRadians(d + 180)) * size);
+			locations.add(point2);
+		}
+		return locations;
+	}
+
+	public static ArrayList<Location> getCircle(Location loc, double size){
+		ArrayList<Location> locations = new ArrayList<>();
+		for (int d = 0; d <= 90; d += 1) {
+			Location point = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ());
+			point.setX(loc.getX() + Math.cos(d) * size);
+			point.setZ(loc.getZ() + Math.sin(d) * size);
+			locations.add(point);
+		}
+		return locations;
+	}
 
 	public static Color colorArrayFade(List<Color> colors, AtomicInteger index) {
 		if (index.get() > colors.size()-1) { index.set(0); }
@@ -59,7 +70,7 @@ public class Utilities {
 	}
 
 	public static List<Color> generateOneDirectionFade(Color color1, Color color2, int FadeSteps) {
-		List<Color> colors = new ArrayList<>();;
+		List<Color> colors = new ArrayList<>();
 		final int dRed = color2.getRed() - color1.getRed();
 		final int dGreen = color2.getGreen() - color1.getGreen();
 		final int dBlue = color2.getBlue() - color1.getBlue();
@@ -107,6 +118,13 @@ public class Utilities {
 		}
 	}
 
+	public static boolean isNumberic(Object obj) {
+		return obj.toString().matches("^[0-9]+$");
+	}
+	public static boolean isDouble(Object obj) {
+		return obj.toString().matches("[-+]?[0-9]*\\.?[0-9]+(?:[eE][-+]?[0-9]+)?");
+	}
+
 	public static String currencyFormat(double balance) {
 		DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.ENGLISH);
 		DecimalFormatSymbols sym = formatter.getDecimalFormatSymbols();
@@ -117,21 +135,6 @@ public class Utilities {
 		return formatter.format(balance);
 	}
 
-	public static List<String> emptyTab(){return Collections.singletonList("");}
-	public static List<String> getCompletesWithPerms(CommandSender sender, String arg, List<Complete> list) {
-		List<String> newList = list.stream()
-				.filter(c -> sender.hasPermission(c.getPermission()))
-				.map(Complete::getArg)
-				.collect(Collectors.toList());
-		return getCompletes(sender, arg, newList);
-	}
-	public static List<String> getCompletes(CommandSender sender, String arg, List<String> list) {
-		List<String> shorted = new ArrayList<>();
-		StringUtil.copyPartialMatches(arg, list, shorted);
-		Collections.sort(shorted);
-		return shorted;
-	}
-
 	public static void glint(BaseItem item, boolean state) {
 		item.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		if (state) {
@@ -140,47 +143,10 @@ public class Utilities {
 			item.removeEnchantment(Enchantment.DURABILITY);
 		}
 	}
-
-	public static String plain(Component comp) {
-		return PlainTextComponentSerializer.plainText().serialize(comp);
-	}
-
-	public static String legacy(Component comp)  {
-		return lcs.serialize(comp);
-	}
-
 	public static String parse(String value, TagResolver... placeholders) {
 		if (placeholders == null) return value;
-		return plain(Utilities.translateColors(value, placeholders));
+		return Colors.plain(Colors.translate(value, placeholders));
 	}
-
-
-	public static Component translateColors(IConfig config, TagResolver... placeholders) {
-		return translateColors(config.asString(), true, placeholders);
-	}
-	public static Component translateColors(String str, TagResolver... placeholders) {
-		return translateColors(str, true, placeholders);
-	}
-	public static Component translateColors(String str, List<TagResolver> placeholders) {
-		return translateColors(str, true, placeholders.toArray(new TagResolver[0]));
-	}
-	public static Component translateColors(String str, boolean useCustom, @Nullable TagResolver... placeholders) {
-		List<TagResolver> list = new ArrayList<>();
-		if (placeholders != null) {
-			list.addAll(List.of(placeholders));
-			if (useCustom) {
-				list.addAll(CustomResolver.resolvers());
-			}
-		}
-
-		Component italicFix = Component.text("").style(style -> style.decoration(TextDecoration.ITALIC, false));
-
-		TextComponent deserialize = lcs.deserialize(str.replace("§", "&"));
-		String serialize = mm.serialize(deserialize).replace("\\<", "<");
-		return italicFix.append(mm.deserialize(serialize, list.toArray(new TagResolver[0])));
-	}
-
-
 
 	public static boolean locationMatch(Location loc1, Location loc2) {
 		if (loc1.getWorld() == null || loc2.getWorld() == null) {
@@ -192,14 +158,6 @@ public class Utilities {
 					loc1.getBlockX() == loc2.getBlockX() &&
 					loc1.getBlockY() == loc2.getBlockY() &&
 					loc1.getBlockZ() == loc2.getBlockZ();
-		}
-	}
-
-	public static void drawBlockOutlines(Player p, Location loc, double pointDistance, Color color) {
-		ParticleSettings settings = new ParticleSettings(Particle.REDSTONE, 1, 0, 0, 0, 0);
-		settings.setDustOptions(new Particle.DustOptions(color, 1));
-		for (Location point : Utilities.getHollowCube(loc, pointDistance)) {
-			Particles.spawn(p, point, settings);
 		}
 	}
 
@@ -327,6 +285,13 @@ public class Utilities {
 			}
 		}
 		return blocks;
+	}
+
+	public static Location centerLocation(Location loc) {
+		return centerLocation(loc,false);
+	}
+	public static Location centerLocation(Location loc, boolean centerY) {
+		return loc.clone().set(loc.getBlockX()+0.5, (centerY ? loc.getBlockY()+0.5 : loc.getBlockY()), loc.getBlockZ()+0.5);
 	}
 
 	public static boolean isInside(Location pos, Location corner1, Location corner2) {
