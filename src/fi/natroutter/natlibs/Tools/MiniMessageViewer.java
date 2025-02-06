@@ -316,16 +316,16 @@ public class MiniMessageViewer extends Command implements Listener {
                     ));
                 }
             }
-            Utilities.emptyTab();
+            TabUtils.empty();
         } else if (args.length == 3) {
             if (args[0].equalsIgnoreCase("settings")) {
                 if (args[1].toLowerCase().equalsIgnoreCase("HoloVisible")) {
                     String response = String.valueOf(!database.getBoolean("Tools.MiniMessageViewer", "HoloVisible"));
-                    return Utilities.getCompletes(sender, args[2], Collections.singletonList(response));
+                    return TabUtils.completes(sender, args[2], Collections.singletonList(response));
 
                 } else if (args[1].toLowerCase().equalsIgnoreCase("ClickToVisible")) {
                     String response = String.valueOf(!database.getBoolean("Tools.MiniMessageViewer", "ClickToVisible"));
-                    return Utilities.getCompletes(sender, args[2], Collections.singletonList(response));
+                    return TabUtils.completes(sender, args[2], Collections.singletonList(response));
                 } else if (args[1].toLowerCase().equalsIgnoreCase("CopyFormat")) {
                     return TabUtils.completes(sender, args[2], copyFormats);
                 } else if (args[1].toLowerCase().equalsIgnoreCase("HoloHeight")) {
@@ -342,9 +342,9 @@ public class MiniMessageViewer extends Command implements Listener {
             return TabUtils.empty();
         } else {
             if (args[0].equalsIgnoreCase("settings")) {
-                return Utilities.emptyTab();
+                return TabUtils.empty();
             }
-            return Utilities.emptyTab();
+            return TabUtils.empty();
         }
         return super.tabComplete(sender, alias, args);
     }
