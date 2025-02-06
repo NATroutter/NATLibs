@@ -130,6 +130,18 @@ public class MiniMessageViewer extends Command implements Listener {
                         database.save("Tools.MiniMessageViewer", "HoloVisible", state);
                         return true;
                     }
+                    case "holoheight" -> {
+                        float height = 0;
+                        try {
+                            height = Float.parseFloat(args[2]);
+                        } catch (Exception ignored) {
+                            p.sendMessage(Theme.prefixed("Invalid height!"));
+                            return false;
+                        }
+                        p.sendMessage(Theme.prefixed("Hologram height set to: " + Theme.highlight(String.valueOf(height))));
+                        database.save("Tools.MiniMessageViewer", "HoloHeight", height);
+                        return true;
+                    }
                     case "clicktovisible" -> {
                         boolean state = Boolean.parseBoolean(args[2]);
                         p.sendMessage(Theme.prefixed("Click visibility set to: " + Theme.highlight(stateString(state))));
@@ -241,7 +253,13 @@ public class MiniMessageViewer extends Command implements Listener {
                 String message = getMessage(p, args);
                 World world = p.getWorld();
                 Location spawnLoc = p.getLocation().add(0,-2,0);
-                float adjustment = 0.25f;
+
+                double adjustment;
+                if (database.valueExists("Tools.MiniMessageViewer", "HoloHeight")) {
+                    adjustment = database.getDouble("Tools.MiniMessageViewer", "HoloHeight");
+                } else {
+                    adjustment = 0.25;
+                }
 
                 Arrays.stream(message.split("<br>")).forEach(line->{
                     if (line.isEmpty()) {
@@ -292,7 +310,7 @@ public class MiniMessageViewer extends Command implements Listener {
             switch (args[0].toLowerCase()) {
                 case "settings" -> {
                     return Utilities.getCompletes(sender, args[1], Arrays.asList(
-                            "HoloVisible", "Show", "ClickToVisible", "CopyFormat"
+                            "HoloVisible", "Show", "ClickToVisible", "CopyFormat", "HoloHeight"
                     ));
                 }
             }
@@ -308,6 +326,14 @@ public class MiniMessageViewer extends Command implements Listener {
                     return Utilities.getCompletes(sender, args[2], Collections.singletonList(response));
                 } else if (args[1].toLowerCase().equalsIgnoreCase("CopyFormat")) {
                     return Utilities.getCompletes(sender, args[2], copyFormats);
+                } else if (args[1].toLowerCase().equalsIgnoreCase("HoloHeight")) {
+                    double response;
+                    if (database.valueExists("Tools.MiniMessageViewer", "HoloHeight")) {
+                        response = database.getDouble("Tools.MiniMessageViewer", "HoloHeight");
+                    } else {
+                        response = 0.25;
+                    }
+                    return Utilities.getCompletes(sender, args[2], Collections.singletonList(String.valueOf(response)));
                 }
                 return Utilities.emptyTab();
             }
